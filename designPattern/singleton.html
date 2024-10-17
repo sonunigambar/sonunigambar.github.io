@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Java</title>
+          <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Custom Header</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+       <link rel="stylesheet" type="text/css" href="../main.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="/design.css">
+    </head>
+<body>
+    <div id="include-index"></div>
+
+    <script>
+        fetch('../codingcure.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('include-index').innerHTML = data;
+        });
+    </script>
+    <div class="container mt-4">
+<h1>Singleton Design Pattern in Java</h1>
+<p>
+    <pre>
+    <code>
+        import java.io.Serializable;
+
+public abstract class Singleton implements Cloneable, Serializable {
+
+    private static Singleton instance;
+
+    private Singleton() {}
+
+    public static Singleton getInstance() {
+        if (instance == null) {
+            synchronized (Singleton.class) {
+                if (instance == null) {
+                    instance = new Singleton() {};
+                }
+            }
+        }
+        return instance;
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        throw new CloneNotSupportedException();
+    }
+
+    protected Object readResolve() {
+        return instance;
+    }
+}
+
+    </code>
+</pre>
+<pre>
+    <code>
+        public class SingletonImpl implements Runnable {
+
+            @Override
+            public void run() {
+                Singleton instance = Singleton.getInstance();
+                System.out.println(instance.hashCode());
+            }
+        }
+        
+    </code>
+</pre>
+</p>
+</div>
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<html>
+<head>
+	<title>Big O Notation</title>
+</head>
+<body>
+	<p>Why Big O notation</p>
+	<p>Automobiles are divided by size into several categories: subcompacts, compacts, midsize, and so on. These categories provide a quick idea what size car you’re talking about, without needing to mention actual dimensions. Similarly, it’s useful to have a shorthand way to say how efficient a computer algorithm is. In computer science, this rough measure is called “Big O” notation. </p>
+
+	<h3>Insertion in an Unordered Array:</h3> 
+	<p>Constant Insertion into an unordered array is the only algorithm we’ve seen that doesn’t depend on how many items are in the array. The new item is always placed in the next available position, at a[nElems], and nElems is then incremented. Insertion requires the same amount of time no matter how big N—the number of items in the array—is. We can say that the time, T, to insert an item into an unsorted array is a constant K: T = K </p>
+
+	<h3>Linear Search: Proportional to N </h3>
+	<p>
+		<ul>
+		  <li>Best Case (O(1)): The element being searched for is found at the first position of the array.</li>
+		  <li>Worst Case (O(n)): The element is either at the last position or not present in the array, requiring a scan of the entire array.</li>
+		</ul>
+		 if N is the total number of items, the search time(T) is propor- tional to N:
+		 T = k * N,  k = constant time
+
+	</p>
+	<h3>Don’t Need the Constant </h3>
+	<p>Big O notation looks like the formulas just described, but it dispenses with the constant K. When comparing algorithms, you don’t really care about the particular microprocessor chip or compiler; all you want to compare is how T changes for different values of N, not what the actual numbers are. Therefore, the constant isn’t needed. Big O notation uses the uppercase letter O, which you can think of as meaning “order of.” In Big O notation, we would say that a linear search takes O(N) time, and a binary search takes O(log N) time. Insertion into an unordered array takes O(1), or constant time.
+		<table border="1">
+  <tr>
+    <th>Algorithm</th>
+    <th>Running Time (Big O Notation)</th>
+  </tr>
+  <tr>
+    <td>Linear search</td>
+    <td>O(N)</td>
+  </tr>
+  <tr>
+    <td>Binary search</td>
+    <td>O(log N)</td>
+  </tr>
+  <tr>
+    <td>Insertion in unordered array</td>
+    <td>O(1)</td>
+  </tr>
+  <tr>
+    <td>Insertion in ordered array</td>
+    <td>O(N)</td>
+  </tr>
+  <tr>
+    <td>Deletion in unordered array</td>
+    <td>O(N)</td>
+  </tr>
+  <tr>
+    <td>Deletion in ordered array</td>
+    <td>O(N)</td>
+  </tr>
+</table>
+
+	</p>
+
+</body>
+</html>
