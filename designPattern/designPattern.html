@@ -28,7 +28,7 @@
     <div id="include-index"></div>
 
     <script>
-        fetch('/codingcure.html')
+        fetch('../codingcure.html')
         .then(response => response.text())
         .then(data => {
             document.getElementById('include-index').innerHTML = data;
