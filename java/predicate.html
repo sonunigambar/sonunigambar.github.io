@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predicate</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+    <link rel="stylesheet" type="text/css" href="/design.css">
+</head>
+<body>
+    <div id="include-index"></div>
+
+    <script>
+        fetch('../codingcure.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('include-index').innerHTML = data;
+            });
+    </script>
+    <!-- Scroll to Top Button (initially hidden) -->
+<button id="scrollToTopBtn" class="btn btn-primary rounded-circle position-fixed" title="Go to top" style="bottom: 20px; right: 20px; display: none;">
+  <i class="fas fa-arrow-up"></i>
+</button>
+
+<script src="/scrollTop.js"></script>
+  
+  <div class="container my-4">
+    <h1 class="mb-4">Predicate</h1>
+
+    <section class="mb-5">
+        <ul class="list-unstyled">
+            <li class="mb-2">
+              <i class="fas fa-check-circle text-primary"></i> Predicate is a functional interface present in <code>java.util.function</code> package.
+            </li>
+            <li class="mb-2">
+              <i class="fas fa-check-circle text-primary"></i> It is used to perform some conditional check and returns <code>true</code> or <code>false</code>.
+            </li>
+            <li class="mb-2">
+              <i class="fas fa-check-circle text-primary"></i> Predicate has a <code>test()</code> method which is used to invoke lambda expression.
+            </li>
+          </ul>
+          
+      <p class="example mt-4">Example:-1</p>
+      <p class="question">Check whether the given number is greater than 20 or not?</p>
+      <p>Logic without Lambda:</p>
+      <pre>
+public class Test {
+    public static void main(String[] args) {
+        System.out.println(test(23));
+    }
+
+    public static boolean test(int number) {
+        if (number > 20) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+      </pre>
+      <p>Logic with Lambda:</p>
+      <pre>
+import java.util.function.Predicate;
+
+public class Test {
+    public static void main(String[] args) {
+        Predicate&lt;Integer&gt; predicate = (number) -&gt; number &gt; 20;
+        System.out.println(predicate.test(40));
+    }
+}
+      </pre>
+    </section>
+
+    <section class="mb-5">
+      <p class="question">Write a program to check if a person's name has 7 characters or not.</p>
+      <pre>
+import java.util.function.Predicate;
+
+public class Test {
+    public static void main(String[] args) {
+        Predicate&lt;String&gt; predicate = (name) -&gt; name.length() &gt;= 7;
+        System.out.println(predicate.test("Why are you Drinking"));
+    }
+}
+      </pre>
+    </section>
+
+    <section class="mb-5">
+      <p class="question">Write a program to print names starting with the character 'A' using lambda from the names below.</p>
+      <pre>
+import java.util.function.Predicate;
+
+public class NameListPrinting {
+    public static void main(String[] args) {
+        String[] names = { "Sonu", "Trilochan", "Akash", "Manoranjan", "Rajendra", "Ommprakash", "Milan", "Anand" };
+        Predicate&lt;String&gt; predicate = (name) -&gt; name.startsWith("A");
+        for (String name : names) {
+            if (predicate.test(name)) {
+                System.out.println(name);
+            }
+        }
+    }
+}
+      </pre>
+    </section>
+
+    <section class="mb-5">
+      <p class="question">Write a Java program to print the names of persons eligible to vote from the list using Lambda.</p>
+      <pre>
+import java.util.ArrayList;
+import java.util.List;
+
+class Person {
+    private String name;
+    private int age;
+
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public String getName() {
+        return name;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        List&lt;Person&gt; persons = new ArrayList&lt;&gt;();
+        persons.add(new Person("Sonu", 25));
+        persons.add(new Person("Monu", 17));
+        persons.add(new Person("Raju", 30));
+        persons.add(new Person("David", 15));
+        persons.add(new Person("Akash", 21));
+
+        System.out.println("Persons eligible to vote:");
+
+        Predicate&lt;Integer&gt; voter = (age) -&gt; age &gt;= 18;
+        for (Person person : persons) {
+            if (voter.test(person.getAge())) {
+                System.out.println(person.getName());
+            }
+        }
+    }
+}
+      </pre>
+    </section>
+  </div>
+
+  <div class="container my-4">
+    <h2 class="mb-4">What is Predicate Joining</h2>
+    <section class="mb-5">
+        <ul class="list-unstyled">
+            <li class="mb-2">
+              <i class="fas fa-check-circle text-primary"></i> To combine multiple predicates we will use Predicate Joining
+            </li>
+            <li class="mb-2">
+              <i class="fas fa-check-circle text-primary"></i> We have the following methods in Predicate:
+              <ol class="mt-2">
+                <li><code>test()</code>: It is an abstract method</li>
+                <li><code>negate()</code>: To reverse condition</li>
+                <li><code>and()</code>: If all predicates are satisfied, it returns <code>true</code></li>
+                <li><code>or()</code>: If any one predicate is satisfied, it returns <code>true</code></li>
+              </ol>
+            </li>
+            <li class="mb-2">
+              <i class="fas fa-check-circle text-primary"></i> <code>negate()</code>, <code>and()</code>, and <code>or()</code> methods are default methods in the Predicate interface
+            </li>
+            <li class="mb-2">
+              <i class="fas fa-check-circle text-primary"></i> Using <code>and()</code> & <code>or()</code> methods, we can achieve predicate joining
+            </li>
+          </ul>
+          
+    </section>
+
+    <section class="mb-5">
+      <p class="question">Write a Java program to identify who is eligible for marriage</p>
+      <pre>
+public class PredicateJoinApp {
+
+  public static void main(String[] args) {
+      Person p1 = new Person("Raju", 21);
+      Person p2 = new Person("Sonu", 23);
+      Person p3 = new Person("Monu", 67);
+      Person p4 = new Person("Trilochan", 14);
+      Person p5 = new Person("Milan", 26);
+
+      List&lt;Person&gt; persons = Arrays.asList(p1, p2, p3, p4, p5);
+
+      Predicate&lt;Person&gt; ageLowerLimit = (p) -&gt; p.getAge() &gt;= 21;
+      Predicate&lt;Person&gt; ageUpperLimit = (p) -&gt; p.getAge() &lt;= 64;
+
+      for (Person p : persons) {
+          Predicate&lt;Person&gt; predicate = ageLowerLimit.and(ageUpperLimit);
+          boolean isEligibleForMarriage = predicate.test(p);
+          if (isEligibleForMarriage) {
+              System.out.println(p.getName());
+          }
+      }
+  }
+}
+      </pre>
+
+      <p>We can add multiple predicates as below</p>
+      <pre>
+Predicate finalPredicate1 = p1.and(p2).and(p3).and(p4).and(p5);
+Predicate finalPredicate2 = p1.or(p2).or(p3).or(p4).or(p5);
+      </pre>
+
+      <p><b>Note:</b> Here p1, p2, p3, p4, and p5 are predicates</p>
+      <p>We can execute the final predicate by calling the test() method</p>
+      <pre>
+boolean status1 = finalPredicate1.test(input);
+boolean status2 = finalPredicate2.test(input);
+      </pre>
+    </section>
+  </div>
+
+  <div class="container my-4">
+    <h2 class="mb-4">What is BiPredicate Interface</h2>
+    <section class="mb-5">
+        <ul class="list-unstyled">
+            <li class="mb-2">
+              <i class="fas fa-check-circle text-primary"></i> Predicate&lt;T&gt; takes only one parameter and returns the result.
+            </li>
+            <li class="mb-2">
+              <i class="fas fa-check-circle text-primary"></i> If we want to supply two parameters as input for lambda and return the result, then we can use BiPredicate for this.
+            </li>
+            <li class="mb-2">
+              <i class="fas fa-check-circle text-primary"></i> BiPredicate&lt;T, T&gt; is a functional interface that contains an abstract method <code>test()</code>.
+            </li>
+            <li class="mb-2">
+              <i class="fas fa-check-circle text-primary"></i> BiPredicate&lt;T, T&gt; takes two parameters and returns a boolean value.
+            </li>
+          </ul>
+          
+      <pre>
+public class Demo {
+
+    public static void main(String[] args) {
+        BiPredicate&lt;Integer, Integer&gt; biPredicate = (i, j) -&gt; i + j &gt;= 100;
+        System.out.println(biPredicate.test(10, 200));
+    }
+}
+      </pre>
+    </section>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

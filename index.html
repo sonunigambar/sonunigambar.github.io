@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+    <link rel="stylesheet" type="text/css" href="/design.css">
+   
+</head>
+<body>
+    <div id="include-index"></div>
+
+    <script>
+        fetch('/codingcure.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('include-index').innerHTML = data;
+        });
+    </script>
+
+<div class="container mt-5">
+    <header class="text-center">
+        <h1>Unlock Your Coding Potential with CodingCure</h1>
+        <p>Your journey to becoming a coding expert starts here!</p>
+        <a href="#courses" class="btn btn-primary btn-lg">Explore Courses</a>
+    </header>
+
+    <section id="features" class="mt-5">
+        <h2>Featured Courses</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Java Programming</h5>
+                        <p class="card-text">Master Java from the basics to advanced concepts.</p>
+                        <a href="#" class="btn btn-primary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Data Structures</h5>
+                        <p class="card-text">Build a solid foundation in data structures and algorithms.</p>
+                        <a href="#" class="btn btn-primary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Interview Preparation</h5>
+                        <p class="card-text">Ace your technical interviews with our expert tips and practice.</p>
+                        <a href="#" class="btn btn-primary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mt-5">
+        <h2>Why Choose Us?</h2>
+        <ul class="list-unstyled">
+            <li><i class="fas fa-check-circle"></i> Experienced Instructors</li>
+            <li><i class="fas fa-check-circle"></i> Hands-On Projects</li>
+            <li><i class="fas fa-check-circle"></i> Community Support</li>
+            <li><i class="fas fa-check-circle"></i> Flexible Learning Paths</li>
+        </ul>
+    </section>
+
+    <footer>
+        <div class="container text-center">
+            <p>&copy; 2024 CodingCure. All rights reserved.</p>
+        </div>
+    </footer>
+</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

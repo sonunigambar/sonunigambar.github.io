@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Transaction</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+    <link rel="stylesheet" type="text/css" href="/design.css">
+    <style>
+        
+
+    </style>
+</head>
+<body>
+
+    <div id="include-index"></div>
+
+    <!-- Navigation fetch -->
+    <script>
+        fetch('../codingcure.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('include-index').innerHTML = data;
+            });
+    </script>
+ <!-- Scroll to Top Button (initially hidden) -->
+ <button id="scrollToTopBtn" class="btn btn-primary rounded-circle position-fixed" title="Go to top" style="bottom: 20px; right: 20px; display: none;">
+    <i class="fas fa-arrow-up"></i>
+</button>
+    <!-- Main Content -->
+    <div class="container my-4">
+        <!-- <ul>
+            <li><a href="#spring_security_overview">Spring Security Overview</a></li>
+            <li><a href="#spring_boot_2_security_implement">Spring Boot 2.0 REST API with Security</a></li>
+        </ul> -->
+        <h1>Spring Transactions in REST API</h1>
+
+        <h2>What is a Transaction?</h2>
+        <p>Imagine you’re transferring money from one bank account to another. For this to happen correctly:</p>
+        <ul>
+            <li>Money has to be taken from one account.</li>
+            <li>Money has to be added to the other account.</li>
+        </ul>
+        <p>Both steps need to succeed together. If one fails, the whole operation should stop, and nothing should change. In other words, <strong>either both steps happen, or neither happens</strong>. This is what a <em>transaction</em> does — it ensures that multiple steps are done together as a single unit.</p>
+    
+        <h2>Why Do We Need Transactions in Code?</h2>
+        <p>In real-life scenarios, our code often has to make multiple changes to a database. Transactions make sure these changes are done in a safe way:</p>
+        <ul>
+            <li>If all changes succeed, they’re saved.</li>
+            <li>If any change fails, everything goes back to how it was before — nothing is saved.</li>
+        </ul>
+    
+        <h2>How to Use Transactions in a Spring Boot REST API?</h2>
+    
+        <ol>
+            <li><strong>Tell Spring to Use Transactions:</strong> In Spring, you don’t have to write a lot of code to manage transactions. You can simply tell Spring to manage them by using the <code>@Transactional</code> annotation.</li>
+            <li><strong>Where to Use <code>@Transactional</code>:</strong> Usually, you use <code>@Transactional</code> in the <em>service layer</em>, where business logic happens.</li>
+        </ol>
+    
+        <h2>Example Code</h2>
+        <p>Suppose you have a service to transfer money between accounts.</p>
+    
+        <div class="code-block">
+            <pre>
+    import org.springframework.stereotype.Service;
+    import org.springframework.transaction.annotation.Transactional;
+    
+    @Service
+    public class AccountService {
+    
+        private final AccountRepository accountRepository;
+    
+        public AccountService(AccountRepository accountRepository) {
+            this.accountRepository = accountRepository;
+        }
+    
+        @Transactional(
+            propagation = Propagation.REQUIRES_NEW,
+            isolation = Isolation.SERIALIZABLE,
+            timeout = 5, //Sets a limit of 5 seconds for the transaction to complete. If the transaction takes longer than 5 seconds, it will be automatically rolled back.
+            readOnly = false, // Indicates that this transaction will involve data modifications (not just  reading data). Setting readOnly = false allows updates, inserts, or deletes within this transaction.
+            rollbackFor = Exception.class
+        )
+        public void transferMoney(Long fromAccountId, Long toAccountId, Double amount) {
+            // Find accounts
+            Account fromAccount = accountRepository.findById(fromAccountId)
+                .orElseThrow(() -> new IllegalArgumentException("Account not found"));
+            Account toAccount = accountRepository.findById(toAccountId)
+                .orElseThrow(() -> new IllegalArgumentException("Account not found"));
+    
+            // Take money from one account and add to another
+            fromAccount.withdraw(amount);
+            toAccount.deposit(amount);
+    
+            // Save changes
+            accountRepository.save(fromAccount);
+            accountRepository.save(toAccount);
+        }
+    }
+            </pre>
+        </div>
+    
+        <h2>REST Controller Layer</h2>
+        <p>You would call this service from your REST API controller. For example:</p>
+    
+        <div class="code-block">
+            <pre>
+    import org.springframework.web.bind.annotation.*;
+    
+    @RestController
+    @RequestMapping("/api/accounts")
+    public class AccountController {
+    
+        private final AccountService accountService;
+    
+        public AccountController(AccountService accountService) {
+            this.accountService = accountService;
+        }
+    
+        @PostMapping("/transfer")
+        public String transferMoney(
+                @RequestParam Long fromAccountId,
+                @RequestParam Long toAccountId,
+                @RequestParam Double amount) {
+            accountService.transferMoney(fromAccountId, toAccountId, amount);
+            return "Transfer Successful";
+        }
+    }
+            </pre>
+        </div>
+        <h2>Spring Propagation Types</h2>
+        <p>In Spring, <strong>propagation</strong> is a way to control how transactions interact with each other when one method calls another method. Let’s break down the types of propagation one by one with simple examples.</p>
+    
+        <h3>1. REQUIRED (Default)</h3>
+        <p><strong>Meaning</strong>: If there’s an existing transaction, use it. If not, create a new one.</p>
+        <p class="example"><strong>Example</strong>: You’re at a restaurant. If your friend has already ordered for the table (existing transaction), you join that order. If no one has ordered yet, you start a new order.</p>
+    
+        <h3>2. REQUIRES_NEW</h3>
+        <p><strong>Meaning</strong>: Always start a new transaction, even if there’s already one running. The existing transaction is paused until this new one finishes.</p>
+        <p class="example"><strong>Example</strong>: Imagine you’re at the same restaurant, but this time, you want your own separate bill (new transaction). Even if others are already ordering, you’ll place a new order that doesn’t depend on theirs.</p>
+    
+        <h3>3. SUPPORTS</h3>
+        <p><strong>Meaning</strong>: Use the current transaction if there is one. If there isn’t, just continue without one.</p>
+        <p class="example"><strong>Example</strong>: You’re visiting a friend’s house. If they’re already having dinner (current transaction), you join them. But if they’re not, you’re okay just hanging out without dinner (no transaction).</p>
+    
+        <h3>4. NOT_SUPPORTED</h3>
+        <p><strong>Meaning</strong>: Don’t use any transaction at all. If there’s a current transaction, suspend (pause) it.</p>
+        <p class="example"><strong>Example</strong>: Imagine you’re going to a movie theater. Even if your friends are planning dinner afterward (ongoing transaction), the movie experience (NOT_SUPPORTED) is separate and doesn’t require any transaction.</p>
+    
+        <h3>5. MANDATORY</h3>
+        <p><strong>Meaning</strong>: Requires an existing transaction. If there isn’t one, it throws an error.</p>
+        <p class="example"><strong>Example</strong>: You’re part of a group project, but you’ll only work if someone else has already started. If no one has started yet, you won’t do anything and will give an error (like saying, “I need a project leader!”).</p>
+    
+        <h3>6. NEVER</h3>
+        <p><strong>Meaning</strong>: Opposite of MANDATORY. It should never be run within a transaction. If there’s one running, it throws an error.</p>
+        <p class="example"><strong>Example</strong>: You’re on vacation, and you’re clear about not working (no transaction). If someone tries to assign you a task, you’ll refuse it (error).</p>
+    
+        <h3>7. NESTED</h3>
+        <p><strong>Meaning</strong>: Starts a new transaction within the current one, but it’s “nested.” If the nested transaction fails, it can roll back without affecting the outer one.</p>
+        <p class="example"><strong>Example</strong>: Imagine you’re baking cookies. The main process is making the dough (outer transaction), but within that, you try adding chocolate chips (nested transaction). If you mess up the chips, you can remove them and continue with the dough.</p>
+    
+        <h3>Quick Summary</h3>
+        <ul>
+            <li><strong>REQUIRED</strong>: Use the current transaction if available, or create a new one.</li>
+            <li><strong>REQUIRES_NEW</strong>: Always create a new transaction, suspending any existing one.</li>
+            <li><strong>SUPPORTS</strong>: Use the current transaction if it exists; otherwise, don’t use any.</li>
+            <li><strong>NOT_SUPPORTED</strong>: Never use a transaction, and suspend any current one.</li>
+            <li><strong>MANDATORY</strong>: Requires an existing transaction; throws an error if there isn’t one.</li>
+            <li><strong>NEVER</strong>: Refuses to run if there’s an active transaction.</li>
+            <li><strong>NESTED</strong>: Runs a new transaction within the current one, rolling back independently if needed.</li>
+        </ul>
+        <h2>Database Isolation Levels</h2>
+        <p>Isolation in databases helps make sure that when multiple people (or systems) are accessing or changing the same data, they don’t interfere with each other. Think of isolation as setting boundaries between different operations so that each one happens in its own "bubble."</p>
+        
+        <p>Let’s go through isolation levels with simple examples to show how much "protection" each level gives:</p>
+    
+        <h3>1. READ UNCOMMITTED (Least Protected)</h3>
+        <p><strong>What it does</strong>: Allows you to see other people’s unfinished work.</p>
+        <p class="example"><strong>Example</strong>: Imagine you’re looking at a report someone else is working on. It’s not done, so you might see mistakes or incomplete information.</p>
+        <p><strong>Problem it can cause</strong>: You might base your decisions on something that wasn’t final, which could lead to errors.</p>
+    
+        <h3>2. READ COMMITTED (Common Default)</h3>
+        <p><strong>What it does</strong>: Lets you see only the finished work of others, hiding anything that’s still in progress.</p>
+        <p class="example"><strong>Example</strong>: You’re reading a report, but you only see what’s officially published, not drafts or half-finished versions.</p>
+        <p><strong>Problem it can avoid</strong>: This helps avoid "dirty reads" (seeing unfinished changes), so you’re only using completed, reliable information.</p>
+    
+        <h3>3. REPEATABLE READ (More Protected)</h3>
+        <p><strong>What it does</strong>: Ensures that once you’ve read some data, it won’t change for the rest of your work, even if others are updating it.</p>
+        <p class="example"><strong>Example</strong>: You’re reading a library book. While you’re reading it, no one can edit the pages you’re looking at, so the text won’t change while you’re in the middle of reading.</p>
+        <p><strong>Problem it can avoid</strong>: Prevents "non-repeatable reads" — meaning you won’t get different information if you check back on the same data during your session.</p>
+    
+        <h3>4. SERIALIZABLE (Most Protected)</h3>
+        <p><strong>What it does</strong>: Runs each operation as if it were the only one, giving you the maximum protection from interference.</p>
+        <p class="example"><strong>Example</strong>: Imagine a library where only one person can check out books at a time. If you have a book, no one else can read or edit it until you’re done.</p>
+        <p><strong>Problem it can avoid</strong>: Prevents all issues, including "phantom reads," where new records appear or disappear unexpectedly.</p>
+    
+        <h3>Summary</h3>
+        <ul>
+            <li><strong>READ UNCOMMITTED</strong>: Least safe, allows you to see other people’s unfinished work.</li>
+            <li><strong>READ COMMITTED</strong>: Safer, only lets you see completed work.</li>
+            <li><strong>REPEATABLE READ</strong>: Keeps your view consistent so the data doesn’t change mid-session.</li>
+            <li><strong>SERIALIZABLE</strong>: Completely isolated, runs as if no one else is doing anything at the same time.</li>
+        </ul>
+        <h2>Recap</h2>
+        <ul>
+            <li>Use <code>@Transactional</code> on methods where you need all steps to succeed together.</li>
+            <li>If an error happens, everything rolls back, so your data stays consistent.</li>
+        </ul>
+    </div>
+
+   
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/scrollTop.js"></script>
+</body>
+</html>

@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Functional Interface</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+    <link rel="stylesheet" type="text/css" href="/design.css">
+</head>
+<body>
+    <div id="include-index"></div>
+
+    <script>
+        fetch('../codingcure.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('include-index').innerHTML = data;
+            });
+    </script>
+    <!-- Scroll to Top Button (initially hidden) -->
+<button id="scrollToTopBtn" class="btn btn-primary rounded-circle position-fixed" title="Go to top" style="bottom: 20px; right: 20px; display: none;">
+    <i class="fas fa-arrow-up"></i>
+</button>
+
+<script src="/scrollTop.js"></script>
+
+<div class="container my-5">
+    <h2>Functional Interface</h2>
+    <ul class="list-unstyled">
+        <li>
+            <i class="fas fa-check-circle text-primary"></i>
+            If an interface contains only one abstract method, then it is called a Functional Interface.
+        </li>
+        <li>
+            <i class="fas fa-check-circle text-primary"></i>
+            Functional Interface is used to invoke lambda expressions.
+        </li>
+        <li>
+            <i class="fas fa-check-circle text-primary"></i>
+            Functional Interface can contain any number of default methods and static methods.
+        </li>
+        <li>
+            <i class="fas fa-check-circle text-primary"></i>
+            Functional Interface rule is applicable only for abstract methods. It should contain only one abstract method and can contain any number of static and default methods.
+        </li>
+        <li>
+            <i class="fas fa-check-circle text-primary"></i>
+            To represent an interface as a functional interface, we use the <code>@FunctionalInterface</code> annotation.
+        </li>
+    </ul>    
+
+    <section class="mb-4">
+        <h5 class="fw-bold">Example:-1</h5>
+        <pre class="border bg-light p-3">
+            @FunctionalInterface
+            public interface MyInterface{
+                  public void m1();
+            }
+        </pre>
+        <p>This is a valid functional interface.</p>
+    </section>
+
+    <section class="mb-4">
+        <h5 class="fw-bold">Example:-2</h5>
+        <pre class="border bg-light p-3">
+            @FunctionalInterface
+            public interface MyInterface{
+                  public void m1();
+                  public abstract void m2();
+            }
+        </pre>
+        <p>This is invalid because 2 abstract methods are present.</p>
+    </section>
+
+    <section class="mb-4">
+        <h5 class="fw-bold">Example:-3</h5>
+        <pre class="border bg-light p-3">
+            @FunctionalInterface
+            public interface Parent{
+               public void m1();
+            }
+            
+            @FunctionalInterface
+            public interface Child extends Parent{
+            
+            }
+        </pre>
+        <p>In the above scenario, the Child interface doesn't have any abstract methods. The Child inherits the abstract method from the Parent interface, hence it is also a functional interface.</p>
+    </section>
+
+    <section class="mb-4">
+        <h5 class="fw-bold">Example:-4</h5>
+        <pre class="border bg-light p-3">
+            @FunctionalInterface
+            public interface Parent{
+               public void m1();
+            }
+            
+            @FunctionalInterface
+            public interface Child extends Parent{
+               public void m1();
+            }
+        </pre>
+        <p>In the above scenario, the Child interface overrides the Parent interface's abstract method, so the Child interface has only one abstract method. It is a valid functional interface.</p>
+    </section>
+
+    <section class="mb-4">
+        <h5 class="fw-bold">Example:-5</h5>
+        <pre class="border bg-light p-3">
+            @FunctionalInterface
+            public interface Parent{
+               public void m1();
+            }
+            
+            @FunctionalInterface
+            public interface Child extends Parent{
+               public void m2();
+            }
+        </pre>
+        <p>In this case, the Child interface has two abstract methods, so it is not a functional interface.</p>
+    </section>
+
+    <section class="mb-4">
+        <h5 class="fw-bold">Example:-6</h5>
+        <pre class="border bg-light p-3">
+            @FunctionalInterface
+            public interface Parent{
+               public void m1();
+            }
+            
+            public interface Child extends Parent{
+               public void m2();
+            }
+        </pre>
+        <p>In this case, the Child interface can contain any number of abstract methods because it does not have the <code>@FunctionalInterface</code> annotation.</p>
+    </section>
+
+    <section class="mb-4">
+        <h5 class="fw-bold">Example:-7</h5>
+        <pre class="border bg-light p-3">
+            public interface Parent{
+               public void m1();
+            }
+        </pre>
+        <ul class="list-unstyled">
+            <li>
+                <i class="fas fa-check-circle text-primary"></i>
+                Writing <code>@FunctionalInterface</code> is optional.
+            </li>
+            <li>
+                <i class="fas fa-check-circle text-primary"></i>
+                If we write <code>@FunctionalInterface</code>, the Java compiler will verify whether it is a valid functional interface.
+            </li>
+        </ul>
+        
+    </section>
+
+    <h2 id="howToInvoke">2:How to Invoke Lambda Using Functional Interface</h2>
+
+    <section class="mb-4">
+        <p>Without using Lambdas</p>
+        <pre class="border bg-light p-3">
+  
+
+    public interface MyInterface{
+      public void m1();
+    }
+
+    public class MyApp implements MyInterface{
+   @Override
+    public void m1(){
+	System.out.println("Hello");
+    }
+      
+    public static void main(String... args){
+	    MyInterface mi = new MyApp();
+            mi.m1();
+    }    
+ }
+        </pre>
+    </section>
+
+    <section class="mb-4">
+        <p>Using Lambdas</p>
+        <pre class="border bg-light p-3">
+    public interface MyInterface{
+    public void m1();
+ }
+
+    public class MyApp{
+
+     public static void main(String... args){
+	    MyInterface i = ()  -> System.out.println("Hello");
+	     i.m1();
+     }
+  }
+        </pre>
+    </section>
+
+    <p class="fw-bold">Scenario - 1: Implementation classes for Interface</p>
+    <section class="mb-4">
+        <pre class="border bg-light p-3">
+ public interface Greeting {
+    public abstract void greet();
+ }
+ -----------------------------------------------------------------------------------------
+ public class EnglishGreeting implements Greeting {
+ 
+     @Override
+     public void greet() {
+         System.out.println("Hello, Good Morning..!!");
+     }
+ }
+ ---------------------------------------------------------------------------------------------
+  public class HindiGreeting implements Greeting {
+ 
+     @Override
+     public void greet() {
+         System.out.println("Namaskar...");
+     }
+ }
+ -------------------------------------------------------------------------------------------
+  public class WellWisher {
+ 
+     public static void wish(Greeting greeting) {
+         greeting.greet();
+     }
+ 
+     public static void main(String[] args) {
+         Greeting hindiGreeting = new HindiGreeting();
+         wish(hindiGreeting);
+ 
+         Greeting englishGreeting = new EnglishGreeting();
+         wish(englishGreeting);
+     }
+ }
+        </pre>
+        <ul class="list-unstyled">
+            <li>
+                <i class="fas fa-check-circle text-primary"></i>
+                In the above approach, we are creating a separate implementation class for every language. If we want to support 20 languages, we have to create 20 implementation classes. It is not recommended.
+            </li>
+            <li>
+                <i class="fas fa-check-circle text-primary"></i>
+                To avoid this problem, we can use Anonymous implementation.
+            </li>
+        </ul>
+        
+    </section>
+
+    <p class="fw-bold">Scenario-2: (Anonymous Implementation for Interface)</p>
+    <section class="mb-4">
+        <pre class="border bg-light p-3">
+ public interface Greeting {
+ 	public abstract void greet();
+ }
+----------------------------------------------------------------------------------------------
+ public class WellWisher {
+
+	public static void wish(Greeting greeting) {
+		greeting.greet();
+	}
+
+	public static void main(String[] args) {
+		wish(new Greeting() {
+			@Override
+			public void greet() {
+				System.out.println("Hello, Good Morning...!!");
+			}
+		});
+		wish(new Greeting() {
+			@Override
+			public void greet() {
+				System.out.println("Namaskar...!!");
+			}
+		});
+	}
+ }
+        </pre>
+    </section>
+
+    <p class="fw-bold">Scenario-3: Using Lambda Expressions</p>
+    <section class="mb-4">
+        <pre class="border bg-light p-3">
+ public class WellWisher {
+
+	public static void wish(Greeting greeting) {
+		greeting.greet();
+	}
+
+	public static void main(String[] args) {
+		wish(() -> System.out.println("Hello, Good Morning...!!"));
+	}
+ }
+---------------------------------------------------------------------------------------------
+ public class WellWisher {
+
+	public static void main(String[] args) {
+
+		Greeting hindi = () -> System.out.println("Namaskar...!!");
+		hindi.greet();
+
+		Greeting english = () -> System.out.println("Hello, Good Morning...!!");
+		english.greet();
+
+	}
+ }
+        </pre>
+    </section>
+
+    <section>
+        <p class="question">1. Write a program to print numbers using Thread</p>
+        <p>Without Lambda</p>
+        <pre class="coding">
+public class Demo1 implements Runnable {
+    @Override
+    public void run() {
+        for (int i = 1; i &lt;= 10; i++) {
+            System.out.println(i);
+        }
+    }
+    public static void main(String[] args) {
+        Demo1 demo = new Demo1();
+        Thread t = new Thread(demo);
+        t.start();
+    }
+}
+
+--------------------------------------------------------------------------------------------
+
+public class Demo2 {
+    public static void main(String[] args) {
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 11; i &lt;= 20; i++) {
+                    System.out.println(i);
+                }
+            }
+        };
+        Thread thread = new Thread(runnable);
+        thread.start();
+    }
+}
+        </pre>
+    </section>
+
+    <section>
+        <p>Using Lambda</p>
+        <pre class="coding">
+public class Demo3 {
+    public static void main(String[] args) {
+        Runnable runnable = () -&gt; {
+            for (int i = 21; i &lt;= 30; i++) {
+                System.out.println(i);
+            }
+        };
+        Thread thread = new Thread(runnable);
+        thread.start();
+    }
+}
+        </pre>
+    </section>
+
+    <section>
+        <p class="question">2. Write a program to sort the data using Comparator Interface</p>
+        <p>Without Lambda</p>
+        <pre class="coding">
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
+public class SortingDemo {
+    public static void main(String[] args) {
+        ArrayList&lt;Integer&gt; al = new ArrayList&lt;&gt;();
+        al.add(10);
+        al.add(21);
+        al.add(32);
+        al.add(5);
+        al.add(8);
+
+        System.out.println("Elements Before Sorting :: " + al);
+        Collections.sort(al, new ElementsSortingComparator());
+    }
+}
+
+class ElementsSortingComparator implements Comparator&lt;Integer&gt; {
+    @Override
+    public int compare(Integer o1, Integer o2) {
+        return (o1 &gt; o2) ? 1 : (o1 &lt; o2) ? -1 : 0; 
+    }
+}
+        </pre>
+
+        <p>With Lambda</p>
+        <pre class="coding">
+Collections.sort(al, (o1, o2) -&gt; {
+    return (o1 &gt; o2) ? 1 : (o1 &lt; o2) ? -1 : 0; 
+});
+System.out.println("Elements After Sorting :: " + al);
+        </pre>
+    </section>
+
+    <section>
+        <p class="question">3. Write a program for sorting Person objects using Comparator Interface</p>
+        <p>Without Lambda</p>
+        <pre class="coding">
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+public class SortingApproachOne {
+    public static void main(String[] args) {
+        Person p1 = new Person(101, "Nick", "nick@ashokit.in");
+        Person p2 = new Person(103, "Orlen", "orlen@ashokit.in");
+        Person p3 = new Person(102, "John", "john@ashokit.in");
+        Person p4 = new Person(104, "Charles", "charles@ashokit.in");
+
+        List&lt;Person&gt; persons = Arrays.asList(p1, p2, p3, p4);
+        System.out.println("===========Objects Before Sorting============");
+        for (Person p : persons) {
+            System.out.println(p);
+        }
+        Collections.sort(persons, new PersonComparator());
+        System.out.println("===========Objects After Sorting============");
+        for (Person p : persons) {
+            System.out.println(p);
+        }
+    }
+}
+
+class PersonComparator implements Comparator&lt;Person&gt; {
+    @Override
+    public int compare(Person p1, Person p2) {
+        return p1.getPname().compareTo(p2.getPname());
+    }
+}
+        </pre>
+    </section>
+
+    <section>
+        <p>With Lambda</p>
+        <pre class="coding">
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+public class SortingApproachThree {
+    public static void main(String[] args) {
+        Person p1 = new Person(101, "Nick", "nick@ashokit.in");
+        Person p2 = new Person(103, "Orlen", "orlen@ashokit.in");
+        Person p3 = new Person(102, "John", "john@ashokit.in");
+        Person p4 = new Person(104, "Charles", "charles@ashokit.in");
+
+        List&lt;Person&gt; persons = Arrays.asList(p1, p2, p3, p4);
+        System.out.println("===========Objects Before Sorting============");
+        for (Person p : persons) {
+            System.out.println(p);
+        }
+
+        Collections.sort(persons, (o1, o2) -&gt; o1.getPname().compareTo(o2.getPname()));
+        System.out.println("===========Objects After Sorting============");
+        for (Person p : persons) {
+            System.out.println(p);
+        }
+    }
+    
+}
+        </pre>
+    </section>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

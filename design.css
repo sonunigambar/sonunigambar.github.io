@@ -1,0 +1,104 @@
+iframe {
+    width: 100%;
+    height: 20vh; /* Full viewport height */
+    border: none;
+}
+/* Optional: for smaller screens, you can control the height */
+@media (max-width: 768px) {
+    iframe {
+        height: 50vh; /* Half viewport height on smaller devices */
+    }
+}
+/* Custom styles */
+body {
+    background-color: #f8f9fa; /* Light background */
+    padding: 20px; /* Padding for the body */
+    font-family: 'Arial', sans-serif; /* Font family */
+}
+h1 {
+    font-size: 1.75rem !important; /* Main title size */
+    color: #004080 !important; /* Darker shade for main title */
+    /* f9f9f9, 004080 */
+    margin-bottom: 1.5rem !important; /* Spacing below main title */
+    font-weight: 400 !important;
+}
+h2 {
+    font-size: 1.75rem !important; /* Increased size for h2 */
+    font-weight: 400 !important;
+    color: #007bff !important; /* Bootstrap primary color */
+    margin-top: 1.5rem !important; /* Top margin for spacing */
+    border-bottom: 2px solid #007bff !important; /* Bottom border */
+    padding-bottom: 0.5rem !important; /* Padding below heading */
+}
+h3 {
+    font-size: 1.5rem !important; /* Increased size for h3 */
+    font-weight: 400 !important; /* Normal font weight */
+    color: green !important; /* Darker shade for h3 */
+    margin-top: 1rem !important; /* Top margin for spacing */
+    margin-bottom: 0.5rem !important; /* Bottom margin for spacing */
+}
+pre {
+    background-color: #e9ecef; /* Light grey background for code blocks */
+    padding: 10px; /* Padding for code blocks */
+    border-radius: 5px; /* Rounded corners for code blocks */
+    overflow-x: auto; /* Allow horizontal scrolling for long lines */
+    font-family: 'Courier New', Courier, monospace; /* Monospace font for code */
+}
+p {
+    line-height: 1.6; /* Improved line height for readability */
+}
+/* table {
+    width: 100%;
+    border-collapse: collapse !important;
+    margin: 20px 0;
+}
+table, th, td {
+    border: 1px solid #333;
+    padding: 8px;
+    text-align: left;
+}
+th {
+    background-color: #f2f2f2;
+} */
+caption {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.question {
+    font-weight: bold;
+    color: red; /* Bootstrap primary color */
+    margin-top: 20px;
+}
+
+.example {
+    font-weight: bold;
+    font-style: italic;
+}
+
+.horizontal-container {
+    display: flex;
+    align-items: center; /* Aligns items vertically in the center */
+}
+
+.horizontal-container img {
+    margin-right: 10px; /* Adds space between the image and the list */
+}
+
+.horizontal-container ul {
+    list-style-type: circle;
+    margin: 0;
+    padding: 0;
+}
+
+.img-large {
+    max-width: 80%; /* Reduce the large image width */
+max-height: 400px; /* Set a specific max-height */
+padding: 15px;
+}
+
+.img-small {
+max-width: 30%; /* Reduce the small image width */
+max-height: 180px; /* Set a specific max-height */
+padding: 5px;
+
+}

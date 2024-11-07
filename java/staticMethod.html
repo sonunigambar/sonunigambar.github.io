@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Static Method</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+    <link rel="stylesheet" type="text/css" href="/design.css">
+</head>
+<body>
+        <div id="include-index"></div>
+
+        <script>
+            fetch('../codingcure.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('include-index').innerHTML = data;
+                });
+        </script>
+        <!-- Scroll to Top Button (initially hidden) -->
+<button id="scrollToTopBtn" class="btn btn-primary rounded-circle position-fixed" title="Go to top" style="bottom: 20px; right: 20px; display: none;">
+    <i class="fas fa-arrow-up"></i>
+</button>
+
+<script src="/scrollTop.js"></script>
+<div class="container mt-4">
+        <section class="mb-4">
+            <h2>Static Method in Interfaces</h2>
+            <p>
+                A static method in an interface is a method that is associated with the interface itself, rather than with any specific instance of a class that implements the interface. These methods are defined using the <code>static</code> keyword and can be called on the interface itself, without the need to create an instance of a class that implements the interface.
+            </p>
+            <pre class="bg-light p-3 rounded">
+                public interface Vehicle {<br>
+                &nbsp;&nbsp;&nbsp;static void fuelCheck() {<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println("Checking fuel....");<br>
+                &nbsp;&nbsp;&nbsp;}<br>
+                }<br>
+                <br>
+                class Car implements Vehicle {<br>
+                &nbsp;&nbsp;&nbsp;//Can't implement staticMethod()<br>
+                <br>
+                &nbsp;&nbsp;&nbsp;public static void main(String[] args) {<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//Call the method by using interface name<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vehicle.fuelCheck();<br>
+                &nbsp;&nbsp;&nbsp;}<br>
+                }<br>
+                <br>
+                Output: Checking fuel....<br>
+            </pre>
+        </section>
+
+        <section class="mb-4">
+            <h2>Why Static Methods?</h2>
+            <p>Do you know? Collection and Collections.</p>
+            <p>Collection is an interface and Collections is a utility class containing only static methods which operate on Collection objects.</p>
+            <p>Java API developers have followed this pattern of supplying a utility class along with an interface to perform basic operations on such objects. But from Java 8, they have broken this pattern by introducing static methods to interfaces.</p>
+            <p>With the introduction of static methods to interfaces, such utility classes will disappear and methods to perform basic operations will be kept as static methods in the interface itself.</p>
+        </section>
+
+        <h1>Static Method vs Default Method in Java</h1>
+        
+        <h2>Purpose</h2>
+        
+        <h3>Static Method:</h3>
+        <p><strong>Utility Functions:</strong> They are typically used for utility functions that don’t depend on instance variables. They provide common functionalities related to the interface.</p>
+        
+        <h3>Default Method:</h3>
+        <p><strong>Extensibility:</strong> They allow you to add new methods to interfaces without breaking existing implementations. Default methods provide a way to include behavior in an interface while maintaining backward compatibility.</p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

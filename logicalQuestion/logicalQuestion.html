@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Logical Question</title>
+          <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>design pattern</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link rel="stylesheet" type="text/css" href="../main.css">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/design.css">
+    </head>
+<body>
+    <div id="include-index"></div>
+
+    <script>
+        fetch('/codingcure.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('include-index').innerHTML = data;
+        });
+    </script>
+    <p></p>
+    <ul>
+        <li class="nav-item">
+            <a class="nav-link active" href="./displayCommonElement.html" target="_blank" onclick="setActive(this)">Display Common Element</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="./findAlphaNumeric.html" target="_blank" onclick="setActive(this)">Find Alpha Numeric</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="./findBiggestAndSmallest.html" target="_blank" onclick="setActive(this)">Find Biggest and Smallest</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="./findDupChar.html" target="_blank" onclick="setActive(this)">Find Duplicate characters</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="./findNumberOfCharInEachWord.html" target="_blank" onclick="setActive(this)">Find Number of character in each word</a>
+        </li>
+        <li class="nav-item" style="background-color: red;">
+            <a class="nav-link" href="./findMissingElement.html" target="_blank" onclick="setActive(this)">Find missing element</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="./mergeTwoArrays.html" target="_blank" onclick="setActive(this)">Merge Two Arrays</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="./mergeTwoArraysInZigZag.html" target="_blank" onclick="setActive(this)">Merge Two Arrays in zigzag</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="./occouranceOfEachCharacter.html" target="_blank" onclick="setActive(this)">Occurrence Of Each Character</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="./palindrome.html" target="_blank" onclick="setActive(this)">Palindrome</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="./removeDupCharacterFromString.html" target="_blank" onclick="setActive(this)">Remove Duplicate Characters From String</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="./reverseFullString.html" target="_blank" onclick="setActive(this)">Reverse Full String</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="./reverseStringWordByWord.html" target="_blank" onclick="setActive(this)">Reverse String Word By Word</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="./sortingString.html" target="_blank" onclick="setActive(this)">Sorting String</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="./sortingStringArray.html" target="_blank" onclick="setActive(this)">Sorting String Array</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="./swapTwoStringWitout3rdVariable.html" target="_blank" onclick="setActive(this)">Swap Two String Without Taking 3rd Variable</a>
+        </li>
+    </ul>
+    
+    <script src="/navbar.js"></script>
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

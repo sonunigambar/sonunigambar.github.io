@@ -1,0 +1,122 @@
+<html>
+<head>
+	<title>MapStruct</title>
+	 <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #fff;
+        }
+        .box {
+            width: 30%;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        .box h3 {
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            color: #333;
+        }
+        .box p {
+            font-size: 1em;
+            line-height: 1.5;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+	<div class="container">
+        <div class="box">
+            <h3>What is it?</h3>
+            <p>MapStruct is a code generator that greatly simplifies the implementation of mappings between Java bean types based on a convention over configuration approach.</p>
+            <p>The generated mapping code uses plain method invocations and thus is fast, type-safe, and easy to understand.</p>
+        </div>
+        <div class="box">
+            <h3>Why?</h3>
+            <p>Multi-layered applications often require to map between different object models (e.g. entities and DTOs). Writing such mapping code is a tedious and error-prone task. MapStruct aims at simplifying this work by automating it as much as possible.</p>
+            <p>In contrast to other mapping frameworks, MapStruct generates bean mappings at compile-time, ensuring high performance, fast developer feedback, and thorough error checking.</p>
+        </div>
+        <div class="box">
+            <h3>How?</h3>
+            <p>MapStruct is an annotation processor plugged into the Java compiler and can be used in command-line builds (Maven, Gradle, etc.) and from within your preferred IDE.</p>
+            <p>MapStruct uses sensible defaults but steps out of your way when it comes to configuring or implementing special behavior.</p>
+        </div>
+    </div>
+	<h5>MapStruct is a code generation library that simplifies the process of mapping between Java bean types. It is particularly useful in applications where you need to convert between different object representations, such as Data Transfer Objects (DTOs) and entity classes in a Spring Boot application.</h5>
+	<p>
+	<ul>
+    <li><strong>Reduce Boilerplate Code:</strong> By generating mapping code, MapStruct eliminates the need for manual mapping, reducing boilerplate code significantly.</li>
+    <li><strong>Performance:</strong> Since the mapping code is generated at compile time, it offers better performance than runtime mapping frameworks that rely on reflection.</li>
+    <li><strong>Maintainability:</strong> With a clear separation of concerns, your code becomes easier to maintain. DTOs and entities can evolve independently, and the mapping logic remains centralized.</li>
+    <li><strong>Type Safety:</strong> Compile-time checks ensure that your mappings are correct, reducing runtime errors related to type mismatches.</li>
+    <li><strong>Easier Refactoring:</strong> Since the mapping is done through defined interfaces and annotations, refactoring becomes less error-prone.</li>
+</ul>
+</p>
+<pre>
+	<code>
+&lt;dependency&gt;
+    &lt;groupId&gt;org.mapstruct&lt;/groupId&gt;
+    &lt;artifactId&gt;mapstruct&lt;/artifactId&gt;
+    &lt;version&gt;1.5.3.Final&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.mapstruct&lt;/groupId&gt;
+    &lt;artifactId&gt;mapstruct-processor&lt;/artifactId&gt;
+    &lt;version&gt;1.5.3.Final&lt;/version&gt;
+    &lt;scope&gt;provided&lt;/scope&gt;
+&lt;/dependency&gt;
+</code>
+</pre>
+<p>How to write Mapper:</p>
+<pre>
+	<code>
+       package com.example.demo;
+		import com.example.demo.model.EmployeeDto;
+		import com.example.demo.service.Address;
+		import com.example.demo.service.Employee;
+		import org.mapstruct.Mapper;
+		import org.mapstruct.Mapping;
+		import org.mapstruct.Named;
+		import org.mapstruct.factory.Mappers;
+
+		@Mapper(uses = AddressMapper.class)
+		public interface CustomMapper {
+		    CustomMapper INSTANCE = Mappers.getMapper(CustomMapper.class);
+
+		//    @Mapping(target = "empId", source = "emp.empId")
+		    @Mapping(target = "empName", source = "emp.name")
+		    @Mapping(target = "isEligibleForVoting", source = "emp.age", qualifiedByName = "isEligibleForVoting")
+		    @Mapping(target = "empAddress", source = "emp.addr")
+		    @Mapping(target = "creationDate", expression = "java(new java.util.Date())")
+		    @Mapping(target = "personDetails", expression = "java(calculateEmpDetails(emp,addr))")
+		    EmployeeDto getEmpDetails(Employee emp, Address addr);
+
+		    @Named("isEligibleForVoting")
+		    default boolean isEligibleForVoting(int age) {
+		        return age >= 18; // Assuming 18 is the voting age
+		    }
+
+		    default String calculateEmpDetails(Employee emp, Address addr) {
+		        return emp.getName()+":"+addr.getAddrNm();
+		    }
+		}
+	</code>
+
+</pre>
+
+
+</body>
+</html>

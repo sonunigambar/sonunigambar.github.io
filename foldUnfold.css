@@ -1,0 +1,13 @@
+<style>
+    /* Initially hide all sub-lists */
+    .sub-list {
+        display: none;
+        margin-left: 20px;
+    }
+
+    .toggle-icon {
+        cursor: pointer;
+        margin-right: 10px;
+        font-weight: bold;
+    }
+</style>

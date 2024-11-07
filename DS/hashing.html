@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hashing</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+    <link rel="stylesheet" type="text/css" href="/design.css">
+</head>
+<body>
+
+    <div id="include-index"></div>
+
+    <!-- Navigation fetch -->
+    <script>
+        fetch('../codingcure.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('include-index').innerHTML = data;
+            });
+    </script>
+ <!-- Scroll to Top Button (initially hidden) -->
+ <button id="scrollToTopBtn" class="btn btn-primary rounded-circle position-fixed" title="Go to top" style="bottom: 20px; right: 20px; display: none;">
+    <i class="fas fa-arrow-up"></i>
+</button>
+    <!-- Main Content -->
+    <div class="container my-4">
+        <div>
+            <div>
+                <h2>1:What is Hashing?</h2>
+                <p>Imagine you have a big box with many compartments, and you want to store some items (like names, numbers, or objects) in it. Instead of just randomly putting them anywhere, you have a clever way of figuring out exactly where each item should go, so you can find it quickly later. That clever way is called <strong>hashing</strong>.</p>
+
+                <h2>How Hashing Works (with an Example)</h2>
+                <ol>
+                    <li><strong>The Item (Key)</strong>: Let's say you want to store the name <strong>"Alice"</strong>.</li>
+                    <li><strong>The Hash Function (Magic Rule)</strong>: You use a special rule (called a hash function) to convert the name "Alice" into a number. For example, the rule might say, "Add up the number values of all the letters in the name." So:
+                        <ul>
+                            <li>A = 1</li>
+                            <li>L = 12</li>
+                            <li>I = 9</li>
+                            <li>C = 3</li>
+                            <li>E = 5</li>
+                            <li>Total = 1 + 12 + 9 + 3 + 5 = 30</li>
+                        </ul>
+                    </li>
+                    <li><strong>The Box (Hash Table)</strong>: You have a box (a hash table) with many compartments. The number 30 tells you exactly which compartment to store "Alice" in, so you can always find her quickly.</li>
+                </ol>
+
+                <h2>Why is Hashing Used?</h2>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>Fast Search</strong>: Imagine you're looking for "Alice" in a phonebook. Without hashing, you'd have to flip through every page until you find her name. With hashing, you jump straight to her section using the hash function.</li>
+                    <li class="list-group-item"><strong>Efficient Storage</strong>: You can store and retrieve data quickly without scanning through everything.</li>
+                    <li class="list-group-item"><strong>Organized Data</strong>: Hashing helps keep things organized and ensures you don’t have to search everywhere to find what you're looking for.</li>
+                </ul>
+
+                <h2 >Simple Real-Life Example</h2>
+                <p>Think of a library. Instead of placing books randomly on shelves, they use a system (like Dewey Decimal) that assigns a unique number to each book. When you want to find a book, you don’t search the entire library—you go straight to the shelf with the right number.</p>
+
+                <h2>Why Not Just Put Everything in One Place?</h2>
+                <p>Because it would be slow to search through! Imagine dumping all your socks in one drawer. Finding the right pair would take time. Hashing helps by organizing things so you can grab what you need in a snap!</p>
+
+                <p><strong>In short</strong>, <strong>hashing</strong> is like using a smart address system for data, so you can find things quickly and easily.</p>
+            </div>
+        </div>
+
+        <h2>2:Direct Addressing</h2>
+
+        <div>
+            <h2>Advantages:</h2>
+            <ul>
+                <li><strong>Fast Access:</strong> You can access the data in O(1) time (constant time), which is the fastest way to retrieve data.</li>
+                <li><strong>No Collisions:</strong> Since the keys are directly mapped to unique indexes, there are no collisions (unlike in hashing).</li>
+            </ul>
+        </div>
+    
+        <div>
+            <h2>Disadvantages:</h2>
+            <ul>
+                <li><strong>Wasted Space:</strong> Direct addressing can waste a lot of memory if the range of possible keys is large but only a few of them are used. For example, if you have keys ranging from 0 to 1000 but only store 5 elements, you would still need to allocate space for 1001 elements, leading to memory inefficiency.</li>
+            </ul>
+        </div>
+    
+        <div>
+            <h2>When to Use Direct Addressing:</h2>
+            <ul>
+                <li>When the number of possible keys is small or the key space is dense (most keys are used), direct addressing is efficient.</li>
+                <li>It’s not practical when the key space is large but sparsely populated because it leads to excessive memory usage.</li>
+            </ul>
+        </div>
+
+        <h2>3:Hash Function</h2>
+        <p>Hashing is done using a special function called a hash function. So suppose the key is a 5-digit number. Instead of storing the 5-digit number, we will convert this number to a shorter form.</p>
+        
+        <h3>Hash Function:</h3>
+        <p>Converting a key into an address.</p>
+    
+        <h4>Procedure for Storing and Retrieving Records Using Hash Functions:</h4>
+        <ul>
+            <li>First, we create an array <strong>A</strong> of size <strong>N</strong>.</li>
+            <li>Choose a hash function <strong>h</strong>, which maps keys into integers 0, 1, ..., N-1.</li>
+        </ul>
+    
+        <h4>To Insert a Record:</h4>
+        <ul>
+            <li>Generate an address by applying the hash function to the key.</li>
+            <li>Insert the record at that address.</li>
+        </ul>
+    
+        <h4>To Retrieve a Record:</h4>
+        <ul>
+            <li>Generate an address by applying the same hash function to the key.</li>
+            <li>Access the record at that address.</li>
+        </ul>
+    
+        <h4>Visual Representation:</h4>
+        <p><strong>Key</strong> ---> <strong>Hash Function</strong> ---> <strong>Hash Value</strong></p>
+    
+        <p><strong>h(k) = a</strong></p>
+
+        <h4>Common Hashing Algorithms:</h4>
+        <ul>
+            <li><strong>MD5 (Message Digest Algorithm)</strong></li>
+            <li><strong>SHA-256 (Secure Hash Algorithm)</strong></li>
+            <li><strong>CRC32 (Cyclic Redundancy Check)</strong></li>
+        </ul>
+        <h4>Collision Resolution:</h4>
+        <p>If a collision occurs, we need to resolve it. There are two ways to solve this problem:</p>
+        <ul>
+            <li><strong>Open Addressing:</strong> In this method, if a collision occurs, we look for the next available slot in the array to store the new record.</li>
+            <li><strong>Separate Addressing:</strong> In this method, each array index points to a linked list of records that hash to the same index, allowing multiple records to exist at that location.</li>
+        </ul>
+    </div>
+
+   
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/scrollTop.js"></script>
+</body>
+</html>

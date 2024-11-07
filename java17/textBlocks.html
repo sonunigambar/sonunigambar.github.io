@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Blocks</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+    <link rel="stylesheet" type="text/css" href="/design.css">
+</head>
+<body>
+    <div id="include-index"></div>
+
+    <script>
+        fetch('../codingcure.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('include-index').innerHTML = data;
+            });
+    </script>
+    <!-- Scroll to Top Button (initially hidden) -->
+<button id="scrollToTopBtn" class="btn btn-primary rounded-circle position-fixed" title="Go to top" style="bottom: 20px; right: 20px; display: none;">
+    <i class="fas fa-arrow-up"></i>
+</button>
+
+<script src="/scrollTop.js"></script>
+<div class="container mt-4">
+    <h1>Text Blocks in Java 17</h1>
+    <p>Text blocks were introduced in Java to make it easier to work with multi-line strings, especially when embedding longer chunks of text such as HTML, JSON, SQL, or XML in your code. A text block is a new way to represent strings that simplifies writing and formatting multi-line text, eliminating the need for excessive escape sequences and manual string concatenation.</p>
+
+    <h2>Problem before Java 17:</h2>
+    <p> Writing multi-line strings required lots of messy escape characters (<code>\n</code> for new lines, <code>\t</code> for tabs), making the code hard to read.</p>
+    <h2>What Is a Text Block?</h2>
+    <p>A text block is essentially a multi-line string that is wrapped in triple quotes (<code>"""</code>). It preserves the original formatting, making the code cleaner and easier to read.</p>
+
+    <h3>Syntax</h3>
+    <pre><code>String textBlock = """
+    This is a text block.
+    It can span multiple lines.
+    You don't need to escape special characters like " or '.
+    """;
+</code></pre>
+
+    <h2>Key Features of Text Blocks</h2>
+    <ul>
+        <li><strong>Multi-Line</strong>: Allows multi-line text to be written naturally, without string concatenation or escape characters.</li>
+        <li><strong>Preserves Formatting</strong>: The format of the string inside the block is preserved, including line breaks and indentation.</li>
+        <li><strong>Automatic Handling of Escape Characters</strong>: You don't need to escape quotes inside the text block, which makes it easier to include complex text.</li>
+    </ul>
+
+    <h2>Real-Time Example: SQL Query in a Banking Project</h2>
+
+    <h3>Without Text Blocks (Pre-Java 17)</h3>
+    <pre><code>String sql = "SELECT * FROM accounts WHERE balance > 1000 " +
+             "AND account_type = 'SAVINGS' " +
+             "ORDER BY balance DESC;";
+</code></pre>
+
+    <h3>With Text Blocks (Java 17)</h3>
+    <pre><code>String sql = """
+        SELECT * FROM accounts WHERE balance > 1000 AND account_type = 'SAVINGS' ORDER BY balance DESC;
+    """;
+</code></pre>
+
+    <h2>Example: JSON String</h2>
+
+    <h3>Without Text Blocks (Pre-Java 17)</h3>
+    <pre><code>String json = "{\n" +
+        "  \"name\": \"Alice\",\n" +
+        "  \"accountType\": \"SAVINGS\",\n" +
+        "  \"balance\": 5000.75\n" +
+        "}";
+
+</code></pre>
+
+    <h3>With Text Blocks (Java 17)</h3>
+    <pre><code>String json = """
+    {
+      "name": "Alice",
+      "accountType": "SAVINGS",
+      "balance": 5000.75
+    }
+    """;
+</code></pre>
+
+    <h2>Benefits of Using Text Blocks</h2>
+    <ul>
+        <li><strong>Improved Readability</strong>: Multi-line text (e.g., SQL, JSON, XML, HTML) is easier to read and maintain.</li>
+        <li><strong>Less Boilerplate Code</strong>: No need for string concatenation or escaping quotes.</li>
+        <li><strong>Preserved Formatting</strong>: The text block keeps its format, including indentation and line breaks, making the code cleaner.</li>
+        <li><strong>Easier Debugging</strong>: The text block format makes it easier to see the structure of multi-line strings without all the manual formatting that was necessary before.</li>
+    </ul>
+
+    <h2>Handling Special Characters</h2>
+    <p>You can still use escape sequences within text blocks if needed. For example:</p>
+    <ul>
+        <li><code>\n</code> for a new line (if you want to force one).</li>
+        <li><code>\"</code> to escape double quotes inside a text block (though it's often not needed since text blocks handle most cases without escaping).</li>
+    </ul>
+
+    <pre><code>String example = """
+    He said, "Hello!"
+    Welcome to the world of Java 17.
+    """;
+</code></pre>
+
+    <h2>Conclusion</h2>
+    <p>Text blocks in Java 17 simplify working with multi-line strings, reducing boilerplate code and improving readability. They are particularly useful in projects where large blocks of text, such as SQL, JSON, HTML, or XML, need to be embedded into the code. The feature helps make the code cleaner and less error-prone.</p>
+
+</div>
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

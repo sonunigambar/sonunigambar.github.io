@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Default Method</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+    <link rel="stylesheet" type="text/css" href="/design.css">
+</head>
+<body>
+    <div id="include-index"></div>
+
+    <script>
+        fetch('../codingcure.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('include-index').innerHTML = data;
+            });
+    </script>
+    <!-- Scroll to Top Button (initially hidden) -->
+<button id="scrollToTopBtn" class="btn btn-primary rounded-circle position-fixed" title="Go to top" style="bottom: 20px; right: 20px; display: none;">
+    <i class="fas fa-arrow-up"></i>
+</button>
+
+<script src="/scrollTop.js"></script>
+    <div class="container mt-4">
+<h1>What is a Default Method in Java 8?</h1>
+<p>A <strong>default method</strong> in Java 8 is a special type of method that you can define in an interface. It allows the interface to provide a default implementation (some code) for a method, which means that any class that implements the interface doesn't have to provide its own implementation unless it wants to.</p>
+
+<h2>Why Use Default Methods in Java 8?</h2>
+<p>Before Java 8, interfaces in Java could only have <strong>abstract methods</strong>—methods that didn’t have any code inside them. Any class implementing the interface had to provide code (an implementation) for all the methods in the interface. This caused a problem when Java wanted to update its interfaces.</p>
+
+<p>For example, when Java 8 introduced new features like <strong>streams</strong> and <strong>functional programming</strong>, the interfaces in older libraries (like <code>List</code> or <code>Collection</code>) needed new methods to support these features. However, adding new methods would break all the existing code that already used those interfaces, because every class that implemented those interfaces would now be required to implement the new methods.</p>
+
+<h2>Default Methods Solve This Problem</h2>
+<p>Default methods allow you to add new methods to an interface <strong>without breaking the code of existing classes</strong>. You provide a <strong>default implementation</strong> for these methods directly in the interface. Classes that implement the interface can use the default method as it is or override it with their own implementation if they want.</p>
+
+<h2>When to Use Default Methods?</h2>
+<ul class="list-unstyled">
+    <li class="mb-3">
+        <i class="fas fa-check-circle text-primary"></i>
+        <strong>Extending Existing Interfaces:</strong> If you are updating a library or adding new functionality to an interface that already has many implementations, you can use default methods to add new features without breaking the existing code.
+    </li>
+    <li class="mb-3">
+        <i class="fas fa-check-circle text-primary"></i>
+        <strong>Providing Optional Behavior:</strong> If most implementations of an interface can use the same logic for a method, but some may want to override it, default methods allow you to write the common logic once in the interface itself. Implementing classes can choose to use the default or override it.
+    </li>
+    <li>
+        <i class="fas fa-check-circle text-primary"></i>
+        <strong>Avoiding Utility Classes:</strong> Before Java 8, utility classes (like <code>Collections</code> or <code>Arrays</code>) were often created to provide helper methods for interfaces. Default methods let you move these helper methods into the interface itself, keeping things more organized.
+    </li>
+</ul>
+
+
+
+<h2>Easy Example:</h2>
+<p>Imagine you have an interface <code>Vehicle</code> that has a method <code>start()</code> that every vehicle (car, bike, etc.) needs to implement. Now, you also want every vehicle to have a <code>stop()</code> method. Instead of forcing every class to write its own <code>stop()</code> method, you can provide a default implementation.</p>
+
+<pre><code>interface Vehicle {
+    void start();  // Every vehicle needs to start differently
+
+    // Provide a default stop method
+    default void stop() {
+        System.out.println("Vehicle is stopping");
+    }
+}</code></pre>
+
+<p>Now, when a class like <code>Car</code> implements <code>Vehicle</code>, it doesn't need to write its own <code>stop()</code> method unless it wants to. If it doesn't, it will use the default <code>stop()</code> method from the interface.</p>
+
+<pre><code>class Car implements Vehicle {
+    @Override
+    public void start() {
+        System.out.println("Car is starting");
+    }
+    // No need to override stop() unless you want to
+}</code></pre>
+
+<p>If you run this:</p>
+
+<pre><code>public class Main {
+    public static void main(String[] args) {
+        Car car = new Car();
+        car.start();  // Outputs: Car is starting
+        car.stop();   // Outputs: Vehicle is stopping
+    }
+}</code></pre>
+
+<h2>Multiple Inheritance with Default Methods</h2>
+<p>If a class implements multiple interfaces that contain default methods with the same signature, the class must override the method to resolve the conflict.</p>
+
+<h2>Example Code:</h2>
+
+<pre><code>interface A {
+    default void show() {
+        System.out.println("A");
+    }
+}
+
+interface B {
+    default void show() {
+        System.out.println("B");
+    }
+}
+
+class C implements A, B {
+    @Override
+    public void show() {
+        // Resolve the conflict by explicitly calling one of the interfaces
+        A.super.show();
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        C obj = new C();
+        obj.show();  // Output: A
+    }
+}</code></pre>
+
+
+<h2>Summary:</h2>
+<ul class="list-unstyled">
+    <li class="mb-3">
+        <i class="fas fa-check-circle text-primary"></i>
+        <strong>Why use default methods?</strong> To add new features to an interface without breaking old code.
+    </li>
+    <li class="mb-3">
+        <i class="fas fa-check-circle text-primary"></i>
+        <strong>When to use them?</strong> When updating interfaces, providing common methods for many classes, or avoiding utility classes.
+    </li>
+    <li>
+        <i class="fas fa-check-circle text-primary"></i>
+        <strong>Benefit:</strong> You get flexibility—classes can use the default method as is or override it if needed.
+    </li>
+</ul>
+</div>
+</body>
+</html>

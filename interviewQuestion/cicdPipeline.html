@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CI/CD Pipeline</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+    <link rel="stylesheet" type="text/css" href="/design.css">
+</head>
+<body>
+    <div id="include-index"></div>
+
+    <script>
+        fetch('../codingcure.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('include-index').innerHTML = data;
+            });
+    </script>
+    <!-- Scroll to Top Button (initially hidden) -->
+<button id="scrollToTopBtn" class="btn btn-primary rounded-circle position-fixed" title="Go to top" style="bottom: 20px; right: 20px; display: none;">
+    <i class="fas fa-arrow-up"></i>
+</button>
+
+<script src="/scrollTop.js"></script>
+<h2>WorkFlow</h2>
+<img src="./dockerFlow.PNG" alt="">
+<h2>Github action file</h2>
+<pre>
+name: project cicd flow
+  on:
+  push:
+    branches:
+      - d15
+      - prod
+      - d13
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+      
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      
+      - name: Build Project
+        run: mvn clean install -DskipTests
+
+      - name: Login to Docker Hub
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build Docker image
+        run: docker build -t codingcure/springboot-example .
+
+      - name: Publish image to Docker Hub
+        run: docker push codingcure/springboot-example:latest
+
+  deploy:
+    needs: build
+    runs-on: [aws-ec2]
+    steps:
+      - name: Pull image from Docker Hub
+        run: docker pull codingcure/springboot-example:latest
+      
+      - name: Delete old container
+        run: docker rm -f springboot-example-container
+      
+      - name: Run Docker container
+        run: docker run -d -p 8080:8080 --name springboot-example-container codingcure/springboot-example:latest
+
+</pre>
+<p>We need to define one runner. we will use self hosted runner. we will register that runner on AWS EC2 instances.</p>
+<h2>How to register the Runners</h2>
+<ul>
+  <li>click on Github Project Settings --> Actions --> Runners</li>
+  <li>create a new self hosted runners</li>
+  <li>Then in download section some commands are there. Execute all the command on eby one on aws console.</li>
+  <li>After Runner successfully added run the runner in aws console by using the command <strong>./run.sh</strong></li>
+  <li>Now it will connect to Github</li>
+</ul>
+<h2>Configure Docker File</h2>
+<pre>
+    FROM eclipse-temurin:17-jdk-alpine
+
+    #Install Python
+    RUN apk add --no-cache python3 py3-pip
+
+    WORKDIR /app
+    COPY target/springboot-images-new.jar springboot-images-new.jar
+    EXPOSE 8080
+    ENTRYPOINT ["java","-jar","/springboot-images-new.jar"]
+</pre>
+<p>
+  <ul>
+    <li><span class="command"><code>apk add</code></span> installs the required packages.</li>
+    <li><span class="command"><code>--no-cache</code></span> ensures that no package cache is stored in the final image, keeping it lightweight.</li>
+    <li><span class="command"><code>python3</code></span> installs Python 3, and <span class="command"><code>py3-pip</code></span> installs <code>pip</code> (the Python package installer).</li>
+</ul>
+</p>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

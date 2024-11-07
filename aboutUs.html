@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+    <link rel="stylesheet" type="text/css" href="/design.css">
+   
+</head>
+<body>
+    <div id="include-index"></div>
+
+    <script>
+        fetch('/codingcure.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('include-index').innerHTML = data;
+        });
+    </script>
+    <div class="container mt-5">
+        <h1>About Us</h1>
+        <p>Welcome to <strong>CodingCure!</strong></p>
+
+        <p>At CodingCure, we believe that everyone has the potential to become a proficient coder and a problem solver. Our mission is to empower individuals with the skills they need to succeed in the fast-paced world of technology. Whether you are a beginner looking to learn the basics or an experienced professional seeking to enhance your expertise, we offer a comprehensive range of resources tailored to meet your learning needs.</p>
+
+        <h2>Our Offerings</h2>
+
+        <p>Our platform provides tutorials and courses covering a wide array of topics, including:</p>
+        <ul class="list-unstyled">
+            <li><i class="fas fa-check-circle text-success"></i> <strong>Programming Languages:</strong> Master Java, Scala, and more.</li>
+            <li><i class="fas fa-check-circle text-success"></i> <strong>Data Structures and Algorithms:</strong> Build a solid foundation in computer science principles.</li>
+            <li><i class="fas fa-check-circle text-success"></i> <strong>Interview Preparation:</strong> Equip yourself with the tools and techniques to ace technical interviews.</li>
+            <li><i class="fas fa-check-circle text-success"></i> <strong>Big Data Technologies:</strong> Dive into the world of Spark and AWS to harness the power of big data.</li>
+        </ul>
+
+        <h3>Interactive Learning</h3>
+        <p>We emphasize hands-on learning through interactive coding challenges, projects, and real-world applications. Our carefully designed curriculum not only teaches you the concepts but also helps you apply them effectively.</p>
+
+        <h3>Community Support</h3>
+        <p>Join a vibrant community of learners and professionals. Engage in discussions, share your insights, and collaborate with others on projects. Our forums and chat features allow you to connect with peers and mentors who can guide you on your learning journey.</p>
+
+        <h2>Our Vision</h2>
+        <p>At CodingCure, we aim to bridge the gap between theoretical knowledge and practical application. We strive to create a learning environment that is inclusive, engaging, and conducive to personal and professional growth.</p>
+
+        <p>Join us on this exciting journey to enhance your skills and unlock new opportunities in the tech industry. Together, let’s code our way to success!</p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</body>

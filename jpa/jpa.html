@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>JPA Design Patterns</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link rel="stylesheet" type="text/css" href="../main.css">
+        <link rel="stylesheet" type="text/css" href="/design.css">
+    </head>
+<body>
+    <div id="include-index"></div>
+
+    <script>
+        fetch('/codingcure.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('include-index').innerHTML = data;
+        });
+    </script>
+<!-- Scroll to Top Button (initially hidden) -->
+<button id="scrollToTopBtn" class="btn btn-primary rounded-circle position-fixed" title="Go to top" style="bottom: 20px; right: 20px; display: none;">
+    <i class="fas fa-arrow-up"></i>
+</button>
+
+<script src="/scrollTop.js"></script>
+
+
+
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">JPA Design Patterns</h1>
+
+        <!-- Navigation Links -->
+        <ul class="nav nav-pills justify-content-center mb-5">
+            <li class="nav-item">
+                <a class="nav-link active" href="#basics" onclick="setActive(this)">JPA Basics</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#one-to-one" onclick="setActive(this)">One-to-One Mapping</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#one-to-many" onclick="setActive(this)">One-to-Many Relationship</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#many-to-many" onclick="setActive(this)">Many-to-Many</a>
+            </li>
+        </ul>
+
+        <script src="/navbar.js"></script>
+<section id="basics">
+    <h2>What is Spring Data JPA?</h2>
+    <p>Spring Data JPA is a tool that makes it easier to work with databases in Java applications. It helps you manage data without writing a lot of boilerplate code. With Spring Data JPA, you can focus more on what your application does instead of how it accesses the database.</p>
+
+    <h2>Key Concepts</h2>
+    
+    <h3>Entities</h3>
+    <p>These are classes that represent the data you want to store in the database. Each entity usually corresponds to a table in the database.</p>
+    <p><strong>Example:</strong> A <code>Customer</code> entity might represent a customer in your application.</p>
+
+    <h3>Repositories</h3>
+    <p>These are interfaces that define methods for accessing the database. You create these interfaces, and Spring Data JPA automatically provides the implementation.</p>
+    <p><strong>Example:</strong> A <code>CustomerRepository</code> interface can have methods like <code>findAll()</code> or <code>findByLastName(String lastName)</code>.</p>
+
+    <h3>JPA (Java Persistence API)</h3>
+    <p>This is a standard for working with databases in Java. Spring Data JPA uses JPA to communicate with the database.</p>
+
+    <h2>Hierarchy of Interfaces</h2>
+    <pre>
+Repository&lt;T, ID&gt;
+   └── CrudRepository&lt;T, ID&gt;
+         └── PagingAndSortingRepository&lt;T, ID&gt;
+               └── JpaRepository&lt;T, ID&gt;
+    </pre>
+    
+    <h1>Using @Query Annotation in Spring Data JPA</h1>
+    
+    <p>The <code>@Query</code> annotation in Spring Data JPA allows you to define custom queries directly on your repository interfaces. You can use it to write JPQL (Java Persistence Query Language) or native SQL queries to retrieve data from your database.</p>
+    
+    <h2>How to Use @Query</h2>
+    
+    <p>Here's a step-by-step guide on how to use the <code>@Query</code> annotation in your Spring Data JPA application.</p>
+    
+    <h3>1. Basic Setup</h3>
+    <p>Let's assume you have a <code>Customer</code> entity and a <code>CustomerRepository</code>.</p>
+    
+    <h4>Example Entity</h4>
+    <pre><code>import javax.persistence.*;
+    
+    @Entity
+    public class Customer {
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long id;
+        private String name;
+        private String email;
+    
+        // Constructors, Getters, and Setters
+    }
+    </code></pre>
+    
+    <h4>Repository Interface</h4>
+    <pre><code>import org.springframework.data.jpa.repository.JpaRepository;
+    import org.springframework.data.jpa.repository.Query;
+    import org.springframework.data.repository.query.Param;
+    
+    import java.util.List;
+    
+    public interface CustomerRepository extends JpaRepository<Customer, Long> {
+        
+        // Custom query using JPQL
+        @Query("SELECT c FROM Customer c WHERE c.name = :name")
+        List&lt;Customer&gt; findByName(@Param("name") String name);
+        
+        // Custom query using native SQL
+        @Query(value = "SELECT * FROM customers WHERE email = ?1", nativeQuery = true)
+        Customer findByEmail(String email);
+    }
+    </code></pre>
+    
+    <h3>2. Explanation of the Example</h3>
+    <h4>JPQL Query</h4>
+    <p><strong>Syntax:</strong> <code>@Query("SELECT c FROM Customer c WHERE c.name = :name")</code></p>
+    <ul>
+        <li>This query retrieves all customers with a specific name.</li>
+        <li>The <code>:name</code> is a named parameter, which is bound to the method parameter using <code>@Param("name")</code>.</li>
+    </ul>
+    
+    <h4>Native SQL Query</h4>
+    <p><strong>Syntax:</strong> <code>@Query(value = "SELECT * FROM customers WHERE email = ?1", nativeQuery = true)</code></p>
+    <ul>
+        <li>This query uses native SQL to find a customer by email.</li>
+        <li><code>?1</code> refers to the first method parameter, which is email in this case.</li>
+    </ul>
+</section>
+
+        <!-- One-to-One Mapping -->
+        <section id="one-to-one" class="mb-5">
+            <h2 class="text-center">1: One-To-One Mapping</h2>
+            <div class="card mb-4">
+                <div class="card-header">User.java</div>
+                <div class="card-body">
+                    <pre>
+package com.example.demo.model;
+
+import javax.persistence.*;
+
+@Entity
+public class User {
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String username;
+    
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "profile_id", referencedColumnName = "id")
+    private Profile profile;
+
+    // Constructors, Getters, Setters
+}
+                    </pre>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header">Profile.java</div>
+                <div class="card-body">
+                    <pre>
+package com.example.demo.model;
+
+import javax.persistence.*;
+
+@Entity
+public class Profile {
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String bio;
+    private String website;
+
+    @OneToOne(mappedBy = "profile")
+    private User user;
+
+    // Constructors, Getters, Setters
+}
+                    </pre>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header">Repositories</div>
+                <div class="card-body">
+                    <h5>UserRepository.java</h5>
+                    <pre>
+package com.example.demo.repository;
+
+import com.example.demo.model.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface UserRepository extends JpaRepository<User, Long> {
+}
+                    </pre>
+
+                    <h5>ProfileRepository.java</h5>
+                    <pre>
+package com.example.demo.repository;
+
+import com.example.demo.model.Profile;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ProfileRepository extends JpaRepository<Profile, Long> {
+}
+                    </pre>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header">Database Tables Structure</div>
+                <div class="card-body">
+                    <h5>User Table</h5>
+                    <p>The User table will have a <code>profile_id</code> column, which is a foreign key that references the Profile table.</p>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Username</th>
+                                    <th>Profile ID</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>john_doe</td>
+                                    <td>1</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>jane_smith</td>
+                                    <td>2</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h5>Profile Table</h5>
+                    <p>The Profile table contains the details for the user's profile.</p>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Bio</th>
+                                    <th>Website</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Software Developer</td>
+                                    <td><a href="https://johndoe.com">https://johndoe.com</a></td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>Graphic Designer</td>
+                                    <td><a href="https://janesmith.com">https://janesmith.com</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- One-to-Many Mapping -->
+        <section id="one-to-many" class="mb-5">
+            <h2 class="text-center">One-to-Many Relationship</h2>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <p>In a one-to-many relationship, one entity can be associated with multiple instances of another entity.</p>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header">Unidirectional One-to-Many Relationship</div>
+                <div class="card-body">
+                    <h5>Customer Entity (Parent)</h5>
+                    <pre>
+@Entity
+public class Customer {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long customerId;
+    private String name;
+
+    @OneToMany
+    @JoinColumn(name = "customer_id")
+    private List&lt;Order&gt; orders;
+
+    // Constructors, Getters, and Setters
+}
+                    </pre>
+
+                    <h5>Order Entity (Child)</h5>
+                    <pre>
+@Entity
+public class Order {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long orderId;
+    private String product;
+
+    // No reference back to Customer
+
+    // Constructors, Getters, and Setters
+}
+                    </pre>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header">Bidirectional One-to-Many Relationship</div>
+                <div class="card-body">
+                    <h5>Customer Entity (Parent)</h5>
+                    <pre>
+@Entity
+public class Customer {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long customerId;
+    private String name;
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    private List&lt;Order&gt; orders;
+
+    // Constructors, Getters, and Setters
+}
+                    </pre>
+
+                    <h5>Order Entity (Child)</h5>
+                    <pre>
+@Entity
+public class Order {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long orderId;
+    private String product;
+
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
+
+    // Constructors, Getters, and Setters
+}
+                    </pre>
+                </div>
+            </div>
+        </section>
+
+       <!-- Many-to-Many Mapping -->
+<section id="many-to-many" class="mb-5">
+    <h2 class="text-center">Many-to-Many Relationship</h2>
+    <p class="text-center">In Java (Spring Data JPA), we can model a many-to-many relationship between students and courses like this:</p>
+
+    <div class="card mb-4">
+        <div class="card-header">Student Entity</div>
+        <div class="card-body">
+            <pre>
+@Entity
+public class Student {
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+
+    @ManyToMany
+    @JoinTable(
+        name = "student_course",
+        joinColumns = @JoinColumn(name = "student_id"),
+        inverseJoinColumns = @JoinColumn(name = "course_id")
+    )
+    private Set&lt;Course&gt; courses;
+
+    // Constructors, Getters, Setters
+}
+            </pre>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">Course Entity</div>
+        <div class="card-body">
+            <pre>
+@Entity
+public class Course {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String courseName;
+
+    @ManyToMany(mappedBy = "courses")
+    private Set&lt;Student&gt; students;
+
+    // Constructors, Getters, Setters
+}
+            </pre>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">Key Points in the Code</div>
+        <div class="card-body">
+            <ul>
+                <li><code>@ManyToMany</code>: Indicates the many-to-many relationship.</li>
+                <li><code>@JoinTable</code>: Specifies the join table that holds the relationship between <code>Student</code> and <code>Course</code>.</li>
+                <li><code>name</code>: The name of the join table (<code>student_course</code>).</li>
+                <li><code>joinColumns</code>: The foreign key that references the <code>Student</code>.</li>
+                <li><code>inverseJoinColumns</code>: The foreign key that references the <code>Course</code>.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">Why Use a Join Table?</div>
+        <div class="card-body">
+            <p>A join table helps manage relationships between two entities efficiently:</p>
+            <ul>
+                <li><strong>Simplifies Relationships</strong>: By using a join table, we avoid data duplication.</li>
+                <li><strong>Flexibility</strong>: Entities (students and courses) can be easily linked or unlinked.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">Real-World Analogy</div>
+        <div class="card-body">
+            <p>Think of a group project where:</p>
+            <ul>
+                <li>Many students can work on multiple group projects.</li>
+                <li>Each group project can have many different students working on it.</li>
+            </ul>
+            <p>The join table would track which students are part of which group projects.</p>
+        </div>
+    </div>
+</section>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
