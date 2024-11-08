@@ -30,28 +30,36 @@
 
   <section>
     <pre class="coding">
-      package com.array.Programming;
-      import java.util.Arrays;
+     import java.util.ArrayList;
+import java.util.List;
 
-      public class FindMissingelement {
+public class MissingElementsFinder {
 
-          public static void main(String[] args) {
-              int[] arr = {1, 3, 5, 7};
-              int n = arr[arr.length - 1];
-              int[] temp = new int[n + 1];
+    public static void main(String[] args) {
+        int[] arr = {1, 3, 5, 7, 9};  // Input array
+        List<Integer> missingElements = findMissingElements(arr, 2);  // Difference is 2
 
-              for (int i : arr) {
-                  temp[i] = 1;
-              }
-              System.out.println(Arrays.toString(temp));
-              for (int i = 1; i &lt; temp.length; i++) {
-                  if (temp[i] == 0) {
-                      System.out.print(i + " ");
-                  }
-              }
-          }
+        System.out.println("Missing elements: " + missingElements);
+    }
 
-      }
+    public static List<Integer> findMissingElements(int[] arr, int difference) {
+        List<Integer> missingElements = new ArrayList<>();
+
+        for (int i = 1; i < arr.length; i++) {
+            int current = arr[i - 1];
+            int next = arr[i];
+            
+            // Calculate the expected value in between if there's a gap
+            while (current + difference < next) {
+                current += difference;
+                missingElements.add(current);
+            }
+        }
+
+        return missingElements;
+    }
+}
+
     </pre>
   </section>
 </div>
