@@ -24,7 +24,54 @@
 
 <script src="../scrollTop.js"></script>
 <div class="container mt-4">
-    
+    <h2>Occourance of each character of a string</h2>
+    <section>
+        <p class="example">Solution-1:</p>
+    <pre class="coding">      package com.array.Programming;
+      public class CharacterOccurrence {
+
+    public static void main(String[] args) {
+        String str = "occurrence example"; // Example string
+        int[] freq = new int[256]; // Array to store frequency of each character
+
+        // Calculate frequency of each character
+        for (int i = 0; i < str.length(); i++) {
+            char ch = str.charAt(i);
+            if (ch != ' ') { // Ignore spaces
+                freq[ch]++;  // Increment frequency of character
+            }
+        }
+
+        // Print characters and their frequencies
+        System.out.println("Character occurrences:");
+        for (int i = 0; i < freq.length; i++) {
+            if (freq[i] > 0) {
+                System.out.println((char) i + ": " + freq[i]);
+            }
+        }
+    }
+}
+
+    </pre>
+  </section>
+            <section>
+                <p class="example">Solution-2:</p>
+                <pre class="coding">
+                    String s = "hello world";
+                    int[] arr = s.toCharArray();
+                    Arrays.sort(arr);
+                    for(int i =0; i<arr.length;i++){
+                        int count =1;
+                        for(int j = i; j<arr.length;j++){
+                            if(arr[i] == arr[j]){
+                                count= count+1;
+                                i=j;     
+                            }
+                         System.out.print(ch[i]+" "+count);               
+                        }
+                    }
+                </pre>
+            </section>
 </div>
  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 
