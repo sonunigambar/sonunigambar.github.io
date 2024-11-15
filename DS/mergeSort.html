@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merge Sort</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+    <div id="include-index"></div>
+
+    <script>
+        fetch('../codingcure.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('include-index').innerHTML = data;
+            });
+    </script>
+ <!-- Scroll to Top Button (initially hidden) -->
+ <button id="scrollToTopBtn" class="btn btn-primary rounded-circle position-fixed" title="Go to top" style="bottom: 20px; right: 20px; display: none;">
+    <i class="fas fa-arrow-up"></i>
+</button>
+    <!-- Main Content -->
+    <div class="container my-4">
+        <h2>Merge Sort</h2>
+        <p>A divide-and-conquer algorithm that splits the array into halves, recursively sorts each half, and merges the sorted halves.</p>
+            <ul>
+                <li>Divide it till last</li>
+                <li>Then Merge it</li>
+            </ul>
+        <h3>Code Example:</h3>
+        <pre>
+<code class="language-java">
+    public class MergeSort {
+
+        // Main function to sort an array using merge sort
+        public static void mergeSort(int[] arr, int left, int right) {
+            if (left < right) {
+                int mid = (left + right) / 2;
+    
+                // Split the array into two halves
+                mergeSort(arr, left, mid);    // Sort the first half
+                mergeSort(arr, mid + 1, right); // Sort the second half
+    
+                // Merge the sorted halves
+                merge(arr, left, mid, right);
+            }
+        }
+    
+        // Function to merge two sorted halves
+        private static void merge(int[] arr, int left, int mid, int right) {
+            int n1 = mid - left + 1;
+            int n2 = right - mid;
+    
+            // Create temporary arrays
+            int[] leftArray = new int[n1];
+            int[] rightArray = new int[n2];
+    
+            // Copy data to temporary arrays
+            for (int i = 0; i < n1; i++) {
+                leftArray[i] = arr[left + i];
+            }
+            for (int i = 0; i < n2; i++) {
+                rightArray[i] = arr[mid + 1 + i];
+            }
+    
+            // Merge the temporary arrays back into the original array
+            int i = 0, j = 0, k = left;
+    
+            while (i < n1 && j < n2) {
+                if (leftArray[i] <= rightArray[j]) {
+                    arr[k++] = leftArray[i++];
+                } else {
+                    arr[k++] = rightArray[j++];
+                }
+            }
+    
+            // Copy remaining elements of leftArray, if any
+            while (i < n1) {
+                arr[k++] = leftArray[i++];
+            }
+    
+            // Copy remaining elements of rightArray, if any
+            while (j < n2) {
+                arr[k++] = rightArray[j++];
+            }
+        }
+    
+        // Main method to test the sort
+        public static void main(String[] args) {
+            int[] arr = {6, 3, 8, 5, 2, 7, 4, 1};
+            mergeSort(arr, 0, arr.length - 1);
+    
+            // Print sorted array
+            System.out.println("Sorted array: ");
+            for (int num : arr) {
+                System.out.print(num + " ");
+            }
+        }
+    }
+    
+    
+</code>
+        </pre>
+               
+    </div>
+
+   
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../scrollTop.js"></script>
+</body>
+</html>

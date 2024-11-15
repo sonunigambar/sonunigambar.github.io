@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorting</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+    <div id="include-index"></div>
+
+    <!-- Navigation fetch -->
+    <script>
+        fetch('../codingcure.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('include-index').innerHTML = data;
+            });
+    </script>
+ <!-- Scroll to Top Button (initially hidden) -->
+ <button id="scrollToTopBtn" class="btn btn-primary rounded-circle position-fixed" title="Go to top" style="bottom: 20px; right: 20px; display: none;">
+    <i class="fas fa-arrow-up"></i>
+</button>
+    <!-- Main Content -->
+    <div class="container my-4">
+        <h2>Sorting and Types of Sorting</h2>
+        <p><strong>Sorting</strong> is the process of arranging data in a specific order, typically ascending or descending, based on certain criteria. It is a fundamental operation in computer science and is used to organize data efficiently for search, retrieval, and processing tasks.</p>
+    
+        <h2>Types of Sorting</h2>
+    
+        
+        <ul class="list-group">
+            <li class="list-group-item">
+                <a href="https://en.wikipedia.org/wiki/Bubble_sort" target="_blank" class="text-decoration-none">Bubble Sort</a>: Repeatedly swaps adjacent elements if they are in the wrong order.
+            </li>
+            <li class="list-group-item">
+                <a href="./selectionSort.html" target="_blank" class="text-decoration-none">Selection Sort</a>: Selects the smallest element and swaps it with the first unsorted element.
+            </li>
+            <li class="list-group-item">
+                <a href="" target="_blank" class="text-decoration-none">Insertion Sort</a>: Builds the sorted array one element at a time.
+            </li>
+            <li class="list-group-item">
+                <a href="./mergeSort.html" target="_blank" class="text-decoration-none">Merge Sort</a>: Divides the array into halves, sorts them, and merges the results.
+            </li>
+            <li class="list-group-item">
+                <a href="https://en.wikipedia.org/wiki/Quicksort" target="_blank" class="text-decoration-none">Quick Sort</a>: Divides the array using a pivot and recursively sorts partitions.
+            </li>
+            <li class="list-group-item">
+                <a href="https://en.wikipedia.org/wiki/Heapsort" target="_blank" class="text-decoration-none">Heap Sort</a>: Uses a heap data structure to find the largest element repeatedly.
+            </li>
+        </ul>
+               
+    </div>
+
+   
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../scrollTop.js"></script>
+</body>
+</html>
