@@ -1,1 +1,2 @@
 # newCodingCure
+# coding cure
