@@ -110,3 +110,18 @@ max-height: 180px; /* Set a specific max-height */
 padding: 5px;
 
 }
+footer ul {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        gap: 15px; 
+    }
+
+footer ul li {
+        display: inline;
+    }
+
+.footerUtil{
+    color: black !important;
+}
