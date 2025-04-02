@@ -21,7 +21,7 @@
     <p></p>
     <ul class="nav nav-pills justify-content-center mb-5">
        <li class="nav-item">
-        <a class="nav-link active" href="./microService_intro.html" target="_blank" onclick="setActive(this)">Microservice</a>
+        <a class="nav-link" href="./microService_intro.html" target="_blank" onclick="setActive(this)">Microservice</a>
        </li>
         <li class="nav-item">
             <a class="nav-link"  href="./microservice.pdf" target="_blank" onclick="setActive(this)">Micro Services Notes</a>
@@ -39,6 +39,44 @@
             <a class="nav-link"  href="./kubernate.html" target="_blank" onclick="setActive(this)">Kubernate</a>
         </li>
     </ul>
+    <div class="container mt-5">
+        <h1 class="text-center">Introduction to Microservices</h1>
+        <p>Microservices is an architectural style that structures an application as a collection of small, independent services. Each service runs in its own process and communicates with others using lightweight mechanisms, typically an HTTP-based API.</p>
+        
+        <h2>Key Features of Microservices</h2>
+        <ul>
+            <li><strong>Scalability:</strong> Each service can be scaled independently.</li>
+            <li><strong>Independent Deployment:</strong> Services can be deployed and updated without affecting others.</li>
+            <li><strong>Decentralized Data Management:</strong> Each service manages its own database.</li>
+            <li><strong>Resilience:</strong> Failure in one service does not impact the entire system.</li>
+            <li><strong>Technology Diversity:</strong> Different services can use different programming languages and databases.</li>
+        </ul>
+        
+        <h2>Benefits of Microservices</h2>
+        <ul>
+            <li>Faster development and deployment cycles.</li>
+            <li>Improved fault isolation and system stability.</li>
+            <li>Better maintainability and code organization.</li>
+            <li>Easy integration with cloud and DevOps practices.</li>
+        </ul>
+        
+        <h2>Challenges of Microservices</h2>
+        <ul>
+            <li>Increased complexity in managing multiple services.</li>
+            <li>Service discovery and inter-service communication.</li>
+            <li>Monitoring and debugging distributed systems.</li>
+        </ul>
+        
+        <h2>Common Tools and Frameworks</h2>
+        <ul>
+            <li><strong>Spring Boot & Spring Cloud:</strong> For Java-based microservices.</li>
+            <li><strong>Docker & Kubernetes:</strong> For containerization and orchestration.</li>
+            <li><strong>API Gateway:</strong> Zuul, Kong, or API Gateway for routing requests.</li>
+            <li><strong>Message Brokers:</strong> Kafka, RabbitMQ for async communication.</li>
+        </ul>
+        
+        <p class="text-center mt-4"><strong>Microservices help build scalable, flexible, and resilient applications!</strong></p>
+    </div>
     <script src="../navbar.js"></script>
      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
