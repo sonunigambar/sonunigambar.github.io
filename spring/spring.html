@@ -36,13 +36,54 @@
    <p></p>
    <ul class="nav nav-pills justify-content-center mb-5">
        <li class="nav-item">
-           <a class="nav-link active"  href="./springSecurity.html" onclick="setActive(this)">SpringSecurity</a>
+           <a class="nav-link"  href="./springSecurity.html" onclick="setActive(this)">SpringSecurity</a>
        </li>
        <li class="nav-item">
            <a class="nav-link" href="./springTransaction.html" onclick="setActive(this)">Spring Transaction</a>
        </li>
       
    </ul>
+	<div class="container mt-5">
+    <h2>What is Spring Boot?</h2>
+    <p>Spring Boot is a framework that simplifies the development of Java-based applications. It eliminates the need for complex configurations and provides a fast, reliable way to create standalone, production-ready Spring applications.</p>
+    
+    <h2>Key Features of Spring Boot</h2>
+    <ul>
+        <li><strong>Auto Configuration:</strong> Automatically configures Spring applications based on dependencies.</li>
+        <li><strong>Standalone:</strong> No need to deploy to an external server; comes with an embedded Tomcat/Jetty server.</li>
+        <li><strong>Microservices Ready:</strong> Ideal for building scalable microservices.</li>
+        <li><strong>Spring Boot Starter Packs:</strong> Pre-configured dependencies for common functionalities.</li>
+        <li><strong>Spring Boot CLI:</strong> Allows running Spring applications with minimal setup.</li>
+    </ul>
+    
+    <h2>Getting Started with Spring Boot</h2>
+    <p>Follow these steps to create a simple Spring Boot application:</p>
+    <ol>
+        <li>Install Java and Spring Boot.</li>
+        <li>Create a new Spring Boot project using <a href="https://start.spring.io/" target="_blank">Spring Initializr</a>.</li>
+        <li>Add dependencies like Spring Web, JPA, and MySQL (if needed).</li>
+        <li>Run the application using <code>mvn spring-boot:run</code> or <code>java -jar app.jar</code>.</li>
+    </ol>
+    
+    <h2>Example Code</h2>
+    <p>Here's a basic Spring Boot REST API example:</p>
+    <pre><code>@RestController
+@RequestMapping("/hello")
+public class HelloController {
+@GetMapping
+public String sayHello() {
+    return "Hello, Spring Boot!";
+}
+}</code></pre>
+    
+    <h2>Why Use Spring Boot?</h2>
+    <ul>
+        <li>Reduces boilerplate code.</li>
+        <li>Easy to configure and deploy.</li>
+        <li>Great for microservices and web applications.</li>
+        <li>Supported by a large community and ecosystem.</li>
+    </ul>
+</div>
    <script src="../navbar.js"></script>
 
 </body>
