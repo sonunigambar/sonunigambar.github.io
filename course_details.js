@@ -30,7 +30,6 @@
     `;
         }
         else if (courseName === "Spring Boot") {
-            alert(courseName)
             price = 5000;
             courseContent = `
                 <div class="highlight">
@@ -52,7 +51,6 @@
             `;
         }
             else if (courseName === "Interview Preparation") {
-                alert(courseName);
                 price = 6000;
                 courseContent = `
                     <div class="highlight">
