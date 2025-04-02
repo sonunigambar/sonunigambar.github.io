@@ -17,7 +17,7 @@
         </ul>
         <!-- Course Brochure Download Section -->
         <div class="text-center brochure-section">
-            <a href="./Core_Java_training.pdf" download class="btn btn-primary">
+            <a href="./Core_Java_Training.pdf" download class="btn btn-primary">
                 <i class="fas fa-download"></i> Download Course Brochure
             </a>
         </div>
