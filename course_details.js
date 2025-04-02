@@ -17,7 +17,7 @@
         </ul>
         <!-- Course Brochure Download Section -->
         <div class="text-center brochure-section">
-            <a href="./Appache kafka.pdf" download class="btn btn-primary">
+            <a href="./Core_Java_training.pdf" download class="btn btn-primary">
                 <i class="fas fa-download"></i> Download Course Brochure
             </a>
         </div>
@@ -36,7 +36,7 @@
                     <p><i class="fas fa-book-open"></i> <strong>Course Overview:</strong> Master Spring Boot, Microservices, and REST API development.</p>
                 </div>
                 <ul class="list-group mb-3">
-                    <li class="list-group-item"><i class="fas fa-clock"></i> <strong>Duration:</strong> 2 months</li>
+                    <li class="list-group-item"><i class="fas fa-clock"></i> <strong>Duration:</strong> 3 months</li>
                     <li class="list-group-item"><i class="fas fa-list"></i> <strong>Topics Covered:</strong> Spring Boot, REST APIs, Microservices, JPA, Hibernate</li>
                     <li class="list-group-item"><i class="fas fa-check-circle"></i> <strong>Prerequisites:</strong> Basic Java knowledge</li>
                     <li class="list-group-item"><i class="fas fa-users"></i> <strong>Who Should Enroll:</strong> Java Developers, Backend Engineers</li>
@@ -44,8 +44,8 @@
                 </ul>
                 <div class="refund-policy text-center">
                     <h4 class="text-dark"><i class="fas fa-gift text-warning"></i> <strong>Exclusive Offer!</strong></h4>
-                    <p class="text-dark"><i class="fas fa-check-circle text-success"></i> <strong>Get an 80% Refund!</strong></p>
-                    <p>📢 <strong>Complete the 2-month course, pass the final exam, and we will refund 80% of your course fee!</strong></p>
+                    <p class="text-dark"><i class="fas fa-check-circle text-success"></i> <strong>Get an 70% Refund!</strong></p>
+                    <p>📢 <strong>Complete the 2-month course, pass the final exam, and we will refund 70% of your course fee!</strong></p>
                     <p class="text-danger"><i class="fas fa-clock"></i> Hurry! Limited Time Offer</p>
                 </div>
             `;
@@ -65,8 +65,8 @@
                     </ul>
                     <div class="refund-policy text-center">
                         <h4 class="text-dark"><i class="fas fa-gift text-warning"></i> <strong>Exclusive Offer!</strong></h4>
-                        <p class="text-dark"><i class="fas fa-check-circle text-success"></i> <strong>Get an 80% Refund!</strong></p>
-                        <p>📢 <strong>Complete the course, pass mock interviews, and get an 80% refund on your fee!</strong></p>
+                        <p class="text-dark"><i class="fas fa-check-circle text-success"></i> <strong>Get an 60% Refund!</strong></p>
+                        <p>📢 <strong>Complete the course, pass mock interviews, and get an 60% refund on your fee!</strong></p>
                         <p class="text-danger"><i class="fas fa-clock"></i> Limited Slots Available – Enroll Now!</p>
                     </div>
                 `;
