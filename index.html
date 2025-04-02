@@ -17,7 +17,8 @@
     <meta property="og:url" content="https://codingcure.co.in">
     <meta property="og:type" content="website">
     <meta property="og:image" content="https://codingcure.co.in/codingCureLogo.jpeg"> <!-- Use an actual image URL -->
-    
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="course_details.js"></script>
     <!-- Twitter Card Meta -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="CodingCure - Learn Coding and Technical Skills">
@@ -39,12 +40,13 @@
             document.getElementById('include-index').innerHTML = data;
         });
     </script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 <div class="container mt-5">
     <header class="text-center">
         <h1>Unlock Your Coding Potential with CodingCure</h1>
         <p>Your journey to becoming a coding expert starts here!</p>
-        <a href="#courses" class="btn btn-primary btn-lg">Explore Courses</a>
+        <a href="#features" class="btn btn-primary btn-lg">Explore Courses</a>
     </header>
 
     <section id="features" class="mt-5">
@@ -55,16 +57,21 @@
                     <div class="card-body">
                         <h5 class="card-title">Java Programming</h5>
                         <p class="card-text">Master Java from the basics to advanced concepts with best coding practices.</p>
-                        <a href="#" class="btn btn-primary">Learn More</a>
+                        <a href="#" class="btn btn-primary" onclick="showCourseDetails('Java Programming')">Learn More</a>
+                        <!-- <button class="btn btn-success" onclick="openPaymentModal('Java Programming')">Enroll & Get 80% Refund 💰</button> -->
+                        <!-- <form><script src="https://checkout.razorpay.com/v1/payment-button.js" data-payment_button_id="pl_QE8pKXi9bpv8Zy" async> </script> </form> -->
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="card mb-4">
                     <div class="card-body">
-                        <h5 class="card-title">Data Structures</h5>
+                        <h5 class="card-title">Spring Boot</h5>
                         <p class="card-text">Build a solid foundation in data structures and algorithms.</p>
+                        <p class="card-text">Master modern web development with Spring Boot, from REST APIs to Microservices.🚀</p>
                         <a href="#" class="btn btn-primary">Learn More</a>
+                        <a href="#" class="btn btn-primary" onclick="showCourseDetails('Spring Boot')">Learn More</a>
+                        <!-- <button class="btn btn-success" onclick="openPaymentModal('Spring Boot')" disabled>Enroll & Get 70% Refund 💰</button> -->
                     </div>
                 </div>
             </div>
@@ -73,7 +80,8 @@
                     <div class="card-body">
                         <h5 class="card-title">Interview Preparation</h5>
                         <p class="card-text">Ace your technical interviews with our expert tips and practice.</p>
-                        <a href="#" class="btn btn-primary">Learn More</a>
+                        <a href="#" class="btn btn-primary" onclick="showCourseDetails('Interview Preparation')">Learn More</a>
+                        <!-- <button class="btn btn-success" onclick="openPaymentModal('Interview Preparation')" disabled>Enroll & Get 70% Refund 💰</button> -->
                     </div>
                 </div>
             </div>
@@ -124,8 +132,165 @@
             </ul>
         </div>
     </footer>
+    <!-- Bootstrap Modal -->
+<div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="paymentModalLabel">Enter Your Details
+            <i class="fas fa-info-circle text-primary text-white ms-2"
+               data-bs-toggle="tooltip" data-bs-placement="right"
+               title="Make sure your details are correct. Course access will be sent to this email.">
+            </i>
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="paymentForm">
+            <input type="text" id="userName" class="form-control mb-2" placeholder="Enter your name" required>
+            <input type="email" id="userEmail" class="form-control mb-2" placeholder="Enter your email" required>
+            <input type="tel" id="userContact" class="form-control mb-2" placeholder="Enter your phone number" required>
+            <button type="button" class="btn btn-primary w-100" id="proceedToPay">Proceed to Pay</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Course Details Modal -->
+<div class="modal fade" id="courseModal" tabindex="-1" aria-labelledby="courseModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="courseModalLabel"><i class="fas fa-graduation-cap"></i> <span id="modalCourseTitle"> Course</span></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="courseDetails">
+                <!-- Content will be injected dynamically -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success enroll-btn" onclick="enrollNow('Java Programming')">
+                    <i class="fas fa-credit-card"></i><span id="enroll-btn">Enroll</span>
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
-
+<script>
+let selectedAmount = 0;
+let selectedCourse = "";
+// Function to open the modal and store payment details
+function openPaymentModal(course) {
+    selectedCourse = course;
+    var paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
+    paymentModal.show();
+}
+// Handle the "Proceed to Pay" button click
+document.getElementById('proceedToPay').onclick = function() {
+    let name = document.getElementById('userName').value;
+    let email = document.getElementById('userEmail').value;
+    let contact = document.getElementById('userContact').value;
+    if (name && email && contact) {
+        alert("Make sure your details are correct. Course access will be sent to this email.")
+        createOrderAndOpenPayment(selectedCourse, name, email, contact);
+    } else {
+        alert("Please fill all details before proceeding.");
+    }
+};
+// ✅ Securely Fetch Order Details from Backend
+function createOrderAndOpenPayment(course, name, email, contact) {
+    fetch("https://codingcure-production.up.railway.app/api/payment/create-order/"+course, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+        // body: JSON.stringify({ course: course })  // ✅ Sending only course name
+    })
+    .then(response => response.json())
+    .then(orderData => {
+        if (orderData.id && orderData.amount) {
+            openRazorpayPayment(orderData.id, orderData.amount, course, name, email, contact);
+        } else {
+            alert("Error creating order. Please try again.");
+        }
+    })
+    .catch(error => console.error("Error:", error));
+}
+    // Razorpay Payment Function
+function openRazorpayPayment(orderId, amount, course, name, email, contact) {
+    var options = {
+        "key": "rzp_test_J6KLC9nTIQuYCx",  // Replace with your Razorpay Key ID
+        "amount": amount * 100,  // Convert to paise
+        "currency": "INR",
+        "name": "CodingCure",
+        "description": "Payment for " + course,
+        "image": "https://yourwebsite.com/logo.png",
+        "order_id": orderId,
+        "handler": function(response) {
+            verifyPayment(response);  // ✅ Call backend for verification
+            var paymentModal = bootstrap.Modal.getInstance(document.getElementById('paymentModal'));
+            if (paymentModal) {
+                paymentModal.hide();
+            }
+            // Optionally clear form inputs
+            document.getElementById('paymentForm').reset();
+        },
+        "prefill": {
+            "name": name,
+            "email": email,
+            "contact": contact
+        },
+        "theme": { "color": "#3399cc" },
+        "theme": { "color": "#3399cc" },
+        "modal": {
+            "ondismiss": function() {
+                console.log("Payment popup closed by user");
+                closePaymentModal();  // ✅ Close Bootstrap modal
+            }
+        }
+    };
+    var rzp1 = new Razorpay(options);
+    rzp1.on("payment.failed", function(response) {
+        console.log("Payment failed:", response.error.description);
+        alert("Payment failed! Please try again.");
+        closePaymentModal();  // ✅ Close modal on failure
+    });
+    rzp1.open();
+    }
+    // ✅ Verify Payment on Backend
+function verifyPayment(paymentResponse) {
+    fetch("https://codingcure-production.up.railway.app/api/payment/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(paymentResponse)
+    })
+    .then(res => res.text())
+    .then(data => {
+        alert(data);
+        var paymentModal = bootstrap.Modal.getInstance(document.getElementById('paymentModal'));
+        if (paymentModal) {
+            paymentModal.hide();
+        }
+        document.getElementById('paymentForm').reset(); // ✅ Clear form inputs
+    })
+    .catch(err => console.error("Verification Error:", err));
+}
+function enrollNow(courseName) {
+    // closeCourseModal();  // Close the course details modal
+    var courseModalEl = document.getElementById('courseModal');
+    var courseModal = bootstrap.Modal.getInstance(courseModalEl); // Get modal instance
+    courseModal.hide();
+    openPaymentModal(courseName); // Open the payment modal
+}
+function closePaymentModal() {
+    var paymentModal = bootstrap.Modal.getInstance(document.getElementById('paymentModal'));
+    if (paymentModal) {
+        paymentModal.hide();
+    }
+    document.getElementById('paymentForm').reset();
+}
+function closeCourseModal() {
+    alert("closing modal")
+    document.getElementById('courseModalContainer').style.display = 'none'; // Hide the course modal
+}
+</script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
