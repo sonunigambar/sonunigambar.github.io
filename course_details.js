@@ -2,9 +2,16 @@
     function showCourseDetails(courseName) {
         let courseContent = "";
         let price = "";
-
+        let paymentButtonId = ""; // Store different Razorpay button IDs
+        // Define payment button IDs for different courses
+    const coursePaymentMapping = {
+        "Java Programming": "pl_QE8pKXi9bpv8Zy",
+        "Spring Boot": "pl_QEOjsbvA7Tuw56",
+        "Interview Preparation": "pl_QEOl5NMJhsGAix"
+    };
         if (courseName === "Java Programming") {
             price = 4000;
+            paymentButtonId = coursePaymentMapping[courseName];
             courseContent = `
         <div class="highlight">
             <p><i class="fas fa-book-open"></i> <strong>Course Overview:</strong> This course covers Java from beginner to advanced level, including OOP, Collections, Streams, and Multithreading.</p>
@@ -27,10 +34,12 @@
             <p>📢 <strong>Complete the 2-month course, pass the final exam, and we will refund 80% of your course fee!</strong></p>
             <p class="text-danger"><i class="fas fa-clock"></i> Hurry! Limited Time Offer</p>
         </div>
+        <div id="razorpay-container"></div>
     `;
         }
         else if (courseName === "Spring Boot") {
             price = 5000;
+            paymentButtonId = coursePaymentMapping[courseName];
             courseContent = `
                 <div class="highlight">
                     <p><i class="fas fa-book-open"></i> <strong>Course Overview:</strong> Master Spring Boot, Microservices, and REST API development.</p>
@@ -48,10 +57,12 @@
                     <p>📢 <strong>Complete the 2-month course, pass the final exam, and we will refund 70% of your course fee!</strong></p>
                     <p class="text-danger"><i class="fas fa-clock"></i> Hurry! Limited Time Offer</p>
                 </div>
+                <div id="razorpay-container"></div>
             `;
         }
             else if (courseName === "Interview Preparation") {
                 price = 6000;
+                paymentButtonId = coursePaymentMapping[courseName];
                 courseContent = `
                     <div class="highlight">
                         <p><i class="fas fa-book-open"></i> <strong>Course Overview:</strong> Crack top product-based company interviews with hands-on Java, Spring Boot, REST API, and real-world projects.</p>
@@ -69,6 +80,7 @@
                         <p>📢 <strong>Complete the course, pass mock interviews, and get an 60% refund on your fee!</strong></p>
                         <p class="text-danger"><i class="fas fa-clock"></i> Limited Slots Available – Enroll Now!</p>
                     </div>
+                    <div id="razorpay-container"></div>
                 `;
             }
     
@@ -79,8 +91,27 @@
     // // ✅ Inject dynamic content inside the modal
     document.getElementById("courseDetails").innerHTML = courseContent;
 
-    document.getElementById("enroll-btn").innerHTML = " Enroll Now for ₹"+price+" & Unlock Your Refund!";
-    document.querySelector(".enroll-btn").setAttribute("onclick", `enrollNow('${courseName}')`);
+   // document.getElementById("enroll-btn").innerHTML = " Enroll Now for ₹"+price+" & Unlock Your Refund!";
+   // document.querySelector(".enroll-btn").setAttribute("onclick", `enrollNow('${courseName}')`);
+        // Load the appropriate Razorpay button
+    setTimeout(() => {
+        let container = document.getElementById("razorpay-container");
+        if (container) {
+            let form = document.createElement("form");  // ✅ Create a form element
+            form.style.display = "flex"; // ✅ Flexbox for centering
+            form.style.justifyContent = "center"; // ✅ Center horizontally
+            form.style.marginTop = "20px"; // ✅ Add some spacing
+            let script = document.createElement("script");
+            script.src = "https://checkout.razorpay.com/v1/payment-button.js";
+            script.setAttribute("data-payment_button_id", paymentButtonId);
+            script.async = true;
+    
+            form.appendChild(script); // ✅ Append script inside form
+            container.appendChild(form); // ✅ Append form to the container
+        } else {
+            console.error("Razorpay container not found.");
+        }
+    }, 500);
 
     // // ✅ Update the Enroll button dynamically
     // document.getElementById("enrollButton").setAttribute("onclick", `enrollNow('${courseName}')`);
