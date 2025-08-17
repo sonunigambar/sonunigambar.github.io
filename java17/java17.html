@@ -36,7 +36,7 @@
    <p></p>
    <ul class="nav nav-pills justify-content-center mb-5">
        <li class="nav-item">
-           <a class="nav-link active"  href="./sealedClass.html"   onclick="setActive(this)">Sealed Class</a>
+           <a class="nav-link"  href="./sealedClass.html"   onclick="setActive(this)">Sealed Class</a>
        </li>
        <li class="nav-item">
            <a class="nav-link" href="./patternMatch.html"   onclick="setActive(this)">PatternMatching</a>
@@ -57,6 +57,30 @@
         <a class="nav-link"  href="./supplier.html"   onclick="setActive(this)">Supplier</a>
     </li> -->
    </ul>
+	<div class="container mt-4">
+    <h2>Why Choose Java 17?</h2>
+    <p>Java 17 is the latest Long-Term Support (LTS) release, offering stability, security, and performance improvements.</p>
+
+    <h3>Key Features of Java 17</h3>
+    <ul class="list-group mb-4">
+        <li class="list-group-item"><strong>Sealed Classes:</strong> Restrict which classes can extend or implement them.</li>
+        <li class="list-group-item"><strong>Pattern Matching for Switch:</strong> More concise and readable switch statements.</li>
+        <li class="list-group-item"><strong>New Garbage Collector (G1 & ZGC):</strong> Improved performance and memory management.</li>
+        <li class="list-group-item"><strong>JEP 356: Enhanced Pseudo-Random Number Generators:</strong> More flexibility in random number generation.</li>
+        <li class="list-group-item"><strong>JEP 391: macOS/AArch64 Support:</strong> Better support for Apple Silicon (M1/M2 chips).</li>
+        <li class="list-group-item"><strong>Deprecated Security Manager:</strong> For improved application security.</li>
+    </ul>
+
+    <h3>Performance Enhancements</h3>
+    <p>Java 17 introduces optimizations that reduce memory usage and improve execution speed.</p>
+
+    <h3>Code Example (Sealed Classes)</h3>
+    <pre class="bg-light p-3 border rounded">
+        sealed class Shape permits Circle, Rectangle { }
+        final class Circle extends Shape { }
+        final class Rectangle extends Shape { }
+    </pre>
+</div>
    <script src="../navbar.js"></script>
 
 </body>

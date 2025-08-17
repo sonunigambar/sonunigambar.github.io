@@ -36,7 +36,7 @@
    <p></p>
    <ul class="nav nav-pills justify-content-center mb-5">
        <li class="nav-item">
-           <a class="nav-link active"  href="./hashing.html" target="_blank" onclick="setActive(this)">Hashing</a>
+           <a class="nav-link"  href="./hashing.html" target="_blank" onclick="setActive(this)">Hashing</a>
        </li>
        <li class="nav-item">
            <a class="nav-link" href="./linkedList.html" target="_blank" onclick="setActive(this)">LinkedList</a>
@@ -57,6 +57,55 @@
         <a class="nav-link"  href="./supplier.html" target="_blank" onclick="setActive(this)">Supplier</a>
     </li> --> 
    </ul>
+	<div class="container mt-5">
+    <h2 class="text-center text-primary">Introduction to Data Structures</h2>
+    <p class="text-center">Data structures help in organizing and managing data efficiently for various computational operations.</p>
+
+    <h3>What are Data Structures?</h3>
+    <p>Data structures are specialized formats for organizing, processing, retrieving, and storing data. They are essential for building efficient algorithms.</p>
+
+    <h3>Types of Data Structures</h3>
+    <ul>
+        <li><strong>Arrays</strong> - Fixed-size collection of similar data types.</li>
+        <li><strong>Linked List</strong> - Elements linked using pointers.</li>
+        <li><strong>Stack</strong> - LIFO (Last In, First Out) data structure.</li>
+        <li><strong>Queue</strong> - FIFO (First In, First Out) data structure.</li>
+        <li><strong>Hash Table</strong> - Key-value pairs for fast lookup.</li>
+        <li><strong>Trees</strong> - Hierarchical data structure (Binary Tree, BST, etc.).</li>
+        <li><strong>Graphs</strong> - Nodes and edges representing relationships.</li>
+    </ul>
+
+    <h3>Why are Data Structures Important?</h3>
+    <p>Data structures are crucial for:</p>
+    <ul>
+        <li>Efficient data access and modification.</li>
+        <li>Reducing complexity in algorithms.</li>
+        <li>Optimizing memory usage.</li>
+        <li>Handling large amounts of data efficiently.</li>
+    </ul>
+
+    <h3>Example: Implementing a Stack in Java</h3>
+    <pre>
+        <code>
+import java.util.Stack;
+
+public class StackExample {
+public static void main(String[] args) {
+    Stack<Integer> stack = new Stack<>();
+    stack.push(10);
+    stack.push(20);
+    stack.push(30);
+    System.out.println("Top Element: " + stack.peek());
+    stack.pop();
+    System.out.println("After Pop: " + stack);
+}
+}
+        </code>
+    </pre>
+
+    <h2>Conclusion</h2>
+    <p>Data structures are the backbone of programming. Mastering them will help you write efficient and scalable programs!</p>
+</div>
    <script src="../navbar.js"></script>
 
 </body>

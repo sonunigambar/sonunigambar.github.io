@@ -35,7 +35,7 @@
    <p></p>
    <ul class="nav nav-pills justify-content-center mb-5">
        <li class="nav-item">
-           <a class="nav-link active"  href="./lambda.html" target="_blank" onclick="setActive(this)">Lambda</a>
+           <a class="nav-link"  href="./lambda.html" target="_blank" onclick="setActive(this)">Lambda</a>
        </li>
        <li class="nav-item">
            <a class="nav-link" href="./staticMethod.html" target="_blank" onclick="setActive(this)">Static Method</a>
@@ -59,6 +59,41 @@
         <a class="nav-link"  href="./logicalQuestion.html" target="_blank" onclick="setActive(this)">LogicalQuestion</a>
     </li>
    </ul>
+	<div class="container mt-5">
+    <h2 class="text-center">Introduction to Java 8</h2>
+    <p>Java 8 is a major release of Java that introduced many powerful features to make development easier and more efficient.</p>
+    
+    <h3>Key Features of Java 8</h3>
+    <ul>
+        <li><strong>Lambda Expressions:</strong> Helps to write cleaner and more concise code.</li>
+        <li><strong>Streams API:</strong> Allows easy processing of collections using functional-style operations.</li>
+        <li><strong>Default Methods:</strong> Enables interfaces to have method implementations.</li>
+        <li><strong>Functional Interfaces:</strong> Introduces predefined interfaces like Predicate, Consumer, and Supplier.</li>
+        <li><strong>New Date and Time API:</strong> Provides better handling of date and time operations.</li>
+        <li><strong>Optional Class:</strong> Helps to avoid NullPointerException.</li>
+    </ul>
+
+    <h3>Example of Lambda Expression</h3>
+    <pre class="bg-light p-3">
+        <code>
+            // Using Lambda to print a list
+            List<String> names = Arrays.asList("Alice", "Bob", "Charlie");
+            names.forEach(name -> System.out.println(name));
+        </code>
+    </pre>
+
+    <h3>Example of Streams API</h3>
+    <pre class="bg-light p-3">
+        <code>
+            // Using Streams to filter and print names starting with 'A'
+            names.stream()
+                 .filter(name -> name.startsWith("A"))
+                 .forEach(System.out::println);
+        </code>
+    </pre>
+
+    <p class="text-center">Java 8 makes coding easier, cleaner, and more powerful. Start using it today!</p>
+</div>
    <script src="../navbar.js"></script>
 
 </body>
