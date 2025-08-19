@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>AWS</title>
+          <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+<body>
+    <div id="include-index"></div>
+
+    <script>
+        fetch('../codingcure.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('include-index').innerHTML = data;
+        });
+    </script>
+   <div class="container my-5">
+        <h1 class="text-center mb-4">AWS Questions</h1>
+        <p class="text-center mb-5">Click on a question to view the answer</p>
+
+        <div class="list-group">
+            <a href="EC2_create_step.html" class="list-group-item list-group-item-action" target="_blank">
+                Complete step-by-step instructions for creating a public EC2 instance with Docker
+            </a>
+            <a href="mysql_setup.html" class="list-group-item list-group-item-action">
+                How to setup MySQL in AWS
+            </a>
+            <a href="docker_setup.html" class="list-group-item list-group-item-action">
+                EC2 Docker Setup Guide
+            </a>
+            <!-- Add more questions here -->
+        </div>
+    </div>
+    
+    <script src="../navbar.js"></script>
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

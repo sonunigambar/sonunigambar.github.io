@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>MySQL RDS Setup Guide</title>
+          <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            
+    </head>
+<body>
+    <div id="include-index"></div>
+
+    <script>
+        fetch('../codingcure.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('include-index').innerHTML = data;
+        });
+    </script>
+   <div class="container my-5">
+        <h1 class="text-center mb-5">MySQL RDS Setup Guide</h1>
+
+        <div class="accordion" id="setupAccordion">
+
+            <!-- Step 1 -->
+            <div class="accordion-item">
+                <h3 class="accordion-header" id="heading1">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1">
+                        Step 1: Login to AWS Console
+                    </button>
+                </h3>
+                <div id="collapse1" class="accordion-collapse collapse show" data-bs-parent="#setupAccordion">
+                    <div class="accordion-body">
+                        <ul>
+                            <li>Go to <a href="https://aws.amazon.com/console/" target="_blank">AWS Management Console</a></li>
+                            <li>Navigate to <strong>RDS</strong> service.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="accordion-item">
+                <h3 class="accordion-header" id="heading2">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2">
+                        Step 2: Create Database
+                    </button>
+                </h3>
+                <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#setupAccordion">
+                    <div class="accordion-body">
+                        <ul>
+                            <li>Click <strong>Databases → Create database</strong></li>
+                            <li>Choose <strong>Standard Create</strong> for database creation method</li>
+                            <li>Select <strong>MySQL</strong> as engine type</li>
+                            <li>Select latest stable version (e.g., MySQL 8.0.x)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="accordion-item">
+                <h3 class="accordion-header" id="heading3">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3">
+                        Step 3: Specify DB Details
+                    </button>
+                </h3>
+                <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#setupAccordion">
+                    <div class="accordion-body">
+                        <ul>
+                            <li>DB instance identifier: e.g., <strong>MySQL-RDS-Instance</strong></li>
+                            <li>Master username: e.g., <strong>admin</strong></li>
+                            <li>Set a strong master password and confirm it</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="accordion-item">
+                <h3 class="accordion-header" id="heading4">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4">
+                        Step 4: Choose Instance Type
+                    </button>
+                </h3>
+                <div id="collapse4" class="accordion-collapse collapse" data-bs-parent="#setupAccordion">
+                    <div class="accordion-body">
+                        <ul>
+                            <li>Under DB instance class, select the size. Example: <strong>db.t3.micro</strong> for testing</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 5 -->
+            <div class="accordion-item">
+                <h3 class="accordion-header" id="heading5">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5">
+                        Step 5: Configure Storage
+                    </button>
+                </h3>
+                <div id="collapse5" class="accordion-collapse collapse" data-bs-parent="#setupAccordion">
+                    <div class="accordion-body">
+                        <ul>
+                            <li>Storage type: General Purpose (SSD) or Provisioned IOPS (SSD)</li>
+                            <li>Allocated storage: e.g., 20 GB</li>
+                            <li>Enable storage autoscaling if needed</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 6 -->
+            <div class="accordion-item">
+                <h3 class="accordion-header" id="heading6">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse6">
+                        Step 6: Configure Connectivity
+                    </button>
+                </h3>
+                <div id="collapse6" class="accordion-collapse collapse" data-bs-parent="#setupAccordion">
+                    <div class="accordion-body">
+                        <ul>
+                            <li>Select your VPC (e.g., <strong>MyVPC</strong>)</li>
+                            <li>Choose Subnet group (public/private as needed)</li>
+                            <li>Enable Public access if external connection is required</li>
+                            <li>Attach security group: allow port <strong>3306</strong> from EC2 or your IP</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 7 -->
+            <div class="accordion-item">
+                <h3 class="accordion-header" id="heading7">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse7">
+                        Step 7: Database Options
+                    </button>
+                </h3>
+                <div id="collapse7" class="accordion-collapse collapse" data-bs-parent="#setupAccordion">
+                    <div class="accordion-body">
+                        <ul>
+                            <li>DB parameter group: default unless custom settings needed</li>
+                            <li>Option group: default</li>
+                            <li>Enable automatic backups (recommended)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 8 -->
+            <div class="accordion-item">
+                <h3 class="accordion-header" id="heading8">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse8">
+                        Step 8: Monitoring & Maintenance
+                    </button>
+                </h3>
+                <div id="collapse8" class="accordion-collapse collapse" data-bs-parent="#setupAccordion">
+                    <div class="accordion-body">
+                        <ul>
+                            <li>Enable Enhanced monitoring if required</li>
+                            <li>Enable Auto minor version upgrade</li>
+                            <li>Set Maintenance window (optional)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 9 -->
+            <div class="accordion-item">
+                <h3 class="accordion-header" id="heading9">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse9">
+                        Step 9: Review and Create
+                    </button>
+                </h3>
+                <div id="collapse9" class="accordion-collapse collapse" data-bs-parent="#setupAccordion">
+                    <div class="accordion-body">
+                        <ul>
+                            <li>Review all settings carefully</li>
+                            <li>Click <strong>Create database</strong></li>
+                            <li>Wait until status becomes <strong>Available</strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 10 -->
+            <div class="accordion-item">
+                <h3 class="accordion-header" id="heading10">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse10">
+                        Step 10: Connect to MySQL
+                    </button>
+                </h3>
+                <div id="collapse10" class="accordion-collapse collapse" data-bs-parent="#setupAccordion">
+                    <div class="accordion-body">
+                        <ul>
+                            <li>Go to <strong>Databases → select your DB → Connectivity & security → Endpoint</strong></li>
+                            <li>Use this endpoint in MySQL Workbench or CLI:</li>
+                            <pre>mysql -h &lt;endpoint&gt; -P 3306 -u admin -p</pre>
+                            <li>Ensure security group allows connections from your EC2 or IP</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <a href="aws.html" class="btn btn-primary mt-4">Back to Questions</a>
+    </div>
+    
+    <script src="../navbar.js"></script>
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -46,7 +46,8 @@ h4 {
     margin-bottom: 0.5rem !important; /* Bottom margin for spacing */
 }
 pre {
-    background-color: #e9ecef; /* Light grey background for code blocks */
+    background-color: black; /* Light grey background for code blocks */
+    color: white;
     padding: 10px; /* Padding for code blocks */
     border-radius: 5px; /* Rounded corners for code blocks */
     overflow-x: auto; /* Allow horizontal scrolling for long lines */

@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CI/CD Pipeline</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div id="include-index"></div>
+
+    <script>
+        fetch('../codingcure.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('include-index').innerHTML = data;
+            });
+    </script>
+
+    <script>
+    // Enable all tooltips on the page
+    document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
+      new bootstrap.Tooltip(el);
+    });
+  </script>
+
+
+    <!-- Scroll to Top Button (initially hidden) -->
+<button id="scrollToTopBtn" class="btn btn-primary rounded-circle position-fixed" title="Go to top" style="bottom: 20px; right: 20px; display: none;">
+    <i class="fas fa-arrow-up"></i>
+</button>
+
+<script src="../scrollTop.js"></script>
+ <div class="container mt-5">
+<h1 class="text-center mb-4">Spring Boot Micro Service CI/CD Workflow</h1>
+<p class="lead text-center mb-4">
+  Continuous Integration and Continuous Deployment (CI/CD) is a modern software development practice that automates the building, testing, and deployment of applications. 
+  This pipeline ensures that code changes are validated and delivered to production efficiently, reliably, and with minimal manual intervention.
+</p>
+
+
+    <div class="accordion" id="workflowAccordion">
+      <img src="./image/cicd_ECR_EC2_adavanced.png" alt="CI/CD Diagram" class="img-fluid mx-auto d-block mb-4">
+      <!-- Step 1: Checkout Source -->
+      <div class="accordion-item">
+        <h3 class="accordion-header" id="headingOne">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+            1. Checkout Source
+          </button>
+        </h3>
+        <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#workflowAccordion">
+          <div class="accordion-body">
+            This step fetches the latest code from the <strong>any</strong> branch of your GitHub repository, ensuring that the workflow uses the most recent source code.
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2: Set up JDK 17 -->
+      <div class="accordion-item">
+        <h3 class="accordion-header" id="headingTwo">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+            2. Set up JDK 17
+          </button>
+        </h3>
+        <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#workflowAccordion">
+          <div class="accordion-body">
+            Installs Java Development Kit 17 (Temurin distribution) on the workflow runner. Required to build and run your Spring Boot project.
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: Build & Test -->
+      <div class="accordion-item">
+        <h3 class="accordion-header" id="headingThree">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
+            3. Build & Test
+          </button>
+        </h3>
+        <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#workflowAccordion">
+          <div class="accordion-body">
+            Runs <code>mvn clean verify</code> to build the project and execute tests. It also runs <code>sonar:sonar</code> to perform static code analysis using SonarCloud.
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4: Configure AWS Credentials -->
+      <div class="accordion-item">
+        <h3 class="accordion-header" id="headingFour">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour">
+            4. Configure AWS Credentials
+          </button>
+        </h3>
+        <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#workflowAccordion">
+          <div class="accordion-body">
+            Sets up AWS access keys and region, allowing the workflow to interact with AWS services like ECR and EC2.
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 5: Login to ECR -->
+      <div class="accordion-item">
+        <h3 class="accordion-header" id="headingFive">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive">
+            5. Login to Amazon ECR
+          </button>
+        </h3>
+        <div id="collapseFive" class="accordion-collapse collapse" data-bs-parent="#workflowAccordion">
+          <div class="accordion-body">
+            Authenticates Docker to your Amazon Elastic Container Registry (ECR), so that images can be pushed and pulled securely.
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 6: Build & Push Docker Image -->
+      <div class="accordion-item">
+        <h3 class="accordion-header" id="headingSix">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix">
+            6. Build, Tag & Push Docker Image
+          </button>
+        </h3>
+        <div id="collapseSix" class="accordion-collapse collapse" data-bs-parent="#workflowAccordion">
+          <div class="accordion-body">
+            Builds a Docker image from the Spring Boot project, tags it as <code>latest</code>, and pushes it to ECR for deployment.
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 7: Deploy to EC2 -->
+      <div class="accordion-item">
+        <h3 class="accordion-header" id="headingSeven">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSeven">
+            7. Deploy to EC2
+          </button>
+        </h3>
+        <div id="collapseSeven" class="accordion-collapse collapse" data-bs-parent="#workflowAccordion">
+          <div class="accordion-body">
+            Connects to the EC2 instance via SSH, logs into ECR, pulls the latest Docker image, stops any existing container, and runs the new container on port 80.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="text-center mt-5 mb-3">GitHub Actions Workflow (deploy.yml)
+    </h2>
+    <p>Need to create this file under <span class="badge bg-info">.github/workflows/deploy.yml</span></p>
+    <div>
+      <pre><code>
+name: Deploy Portfolio Service to AWS
+
+on:
+  push:
+    branches:
+      - main
+env:
+  AWS_REGION: ap-southeast-2                       # set this to your preferred AWS region, e.g. us-west-1
+  ECR_REPOSITORY: repoName    # set this to your Amazon ECR repository name
+  CONTAINER_NAME: containerName
+
+jobs:
+  build-test-sonar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Build & Test
+        run: mvn clean verify sonar:sonar -Dsonar.token=${{ secrets.SONAR_TOKEN }}
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build, tag, and push image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: latest
+        run: |
+          # Build a docker container and
+          # push it to ECR
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.EC2_HOST }}              # public IP/DNS of EC2
+          username: ec2-user                         # or ubuntu, depending on AMI
+          key: ${{ secrets.EC2_SSH_KEY }}            # your private key (.pem content)
+          script: |
+            aws ecr get-login-password --region ${{ env.AWS_REGION }} \
+              | docker login --username AWS --password-stdin ${{ steps.login-ecr.outputs.registry }}
+
+            # Pull latest image
+            docker pull ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:latest
+
+            # Stop old container (if running)
+            docker stop ${{ env.CONTAINER_NAME }} || true
+            docker rm ${{ env.CONTAINER_NAME }} || true
+
+            # Run new container
+            docker run -d \
+            -p 80:8080 \
+            --name ${{ env.CONTAINER_NAME }} \
+            ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:latest
+      </code></pre>
+    </div>
+
+    <h2 class="text-center mb-4">Required Additions in <code>pom.xml</code></h2>
+
+    <!-- Properties Section -->
+    <div class="card bg-dark border-light mb-4">
+      <div class="card-header border-light">
+        <h5 class="mb-0">1. Add these <code>&lt;properties&gt;</code></h5>
+      </div>
+      <div class="card-body">
+        <pre class="bg-black text-white p-3 rounded">
+&lt;properties&gt;
+    &lt;java.version&gt;17&lt;/java.version&gt;
+    &lt;jacoco.version&gt;0.8.11&lt;/jacoco.version&gt;
+    &lt;sonar.projectKey&gt;sonunigambar_portfolio-service&lt;/sonar.projectKey&gt;
+    &lt;sonar.organization&gt;portfolio-service&lt;/sonar.organization&gt;
+    &lt;sonar.host.url&gt;https://sonarcloud.io&lt;/sonar.host.url&gt;
+    &lt;sonar.java.binaries&gt;target/classes&lt;/sonar.java.binaries&gt;
+&lt;/properties&gt;
+        </pre>
+      </div>
+    </div>
+
+    <!-- Dependencies Section -->
+    <div class="card bg-dark border-light mb-4">
+      <div class="card-header border-light">
+        <h5 class="mb-0">2. Add this <code>&lt;dependency&gt;</code></h5>
+      </div>
+      <div class="card-body">
+        <pre class="bg-black text-white p-3 rounded">
+&lt;dependency&gt;
+    &lt;groupId&gt;org.jacoco&lt;/groupId&gt;
+    &lt;artifactId&gt;jacoco-maven-plugin&lt;/artifactId&gt;
+    &lt;version&gt;0.8.11&lt;/version&gt;
+&lt;/dependency&gt;
+        </pre>
+      </div>
+    </div>
+
+    <!-- Plugins Section -->
+    <div class="card bg-dark border-light">
+      <div class="card-header border-light">
+        <h5 class="mb-0">3. Add these <code>&lt;plugins&gt;</code> inside <code>&lt;build&gt;</code></h5>
+      </div>
+      <div class="card-body">
+        <pre class="bg-black text-white p-3 rounded">
+&lt;plugin&gt;
+    &lt;groupId&gt;org.jacoco&lt;/groupId&gt;
+    &lt;artifactId&gt;jacoco-maven-plugin&lt;/artifactId&gt;
+    &lt;version&gt;0.8.11&lt;/version&gt;
+    &lt;executions&gt;
+        &lt;execution&gt;
+            &lt;goals&gt;
+                &lt;goal&gt;prepare-agent&lt;/goal&gt;
+            &lt;/goals&gt;
+        &lt;/execution&gt;
+
+        &lt;execution&gt;
+            &lt;id&gt;report&lt;/id&gt;
+            &lt;phase&gt;test&lt;/phase&gt;
+            &lt;goals&gt;
+                &lt;goal&gt;report&lt;/goal&gt;
+            &lt;/goals&gt;
+        &lt;/execution&gt;
+    &lt;/executions&gt;
+&lt;/plugin&gt;
+
+&lt;plugin&gt;
+    &lt;groupId&gt;org.sonarsource.scanner.maven&lt;/groupId&gt;
+    &lt;artifactId&gt;sonar-maven-plugin&lt;/artifactId&gt;
+    &lt;version&gt;3.10.0.2594&lt;/version&gt;
+&lt;/plugin&gt;
+        </pre>
+      </div>
+    </div>
+
+    <h2 class="text-center mb-4">Explanation of Maven Plugins</h2>
+
+  <!-- Spring Boot Plugin -->
+  <div class="card shadow-sm mb-3">
+    <div class="card-body">
+      <h5 class="card-title text-primary">Spring Boot Maven Plugin</h5>
+      <p class="card-text">
+        <strong>GroupId:</strong> <code>org.springframework.boot</code><br>
+        <strong>ArtifactId:</strong> <code>spring-boot-maven-plugin</code>
+      </p>
+      <p>
+        This plugin is used to package and run Spring Boot applications.  
+        It provides goals like:
+      </p>
+      <ul>
+        <li><code>spring-boot:run</code> → Run the app directly from source.</li>
+        <li><code>spring-boot:repackage</code> → Create an executable JAR or WAR with embedded server (Tomcat, Jetty, Undertow).</li>
+      </ul>
+      <span class="badge bg-success">Helps in building runnable Spring Boot apps</span>
+    </div>
+  </div>
+
+  <!-- JaCoCo Plugin -->
+  <div class="card shadow-sm mb-3">
+    <div class="card-body">
+      <h5 class="card-title text-warning">JaCoCo Maven Plugin</h5>
+      <p class="card-text">
+        <strong>GroupId:</strong> <code>org.jacoco</code><br>
+        <strong>ArtifactId:</strong> <code>jacoco-maven-plugin</code>  
+        <strong>Version:</strong> <code>0.8.11</code>
+      </p>
+      <p>
+        JaCoCo is a <b>code coverage library</b> for Java.  
+        This plugin integrates JaCoCo with Maven builds:
+      </p>
+      <ul>
+        <li><code>prepare-agent</code> → Instruments the code before tests run.</li>
+        <li><code>report</code> → Generates coverage reports in HTML, XML, CSV.</li>
+      </ul>
+      <span class="badge bg-info">Ensures test coverage visibility</span>
+    </div>
+  </div>
+
+  <!-- SonarQube Plugin -->
+  <div class="card shadow-sm mb-3">
+    <div class="card-body">
+      <h5 class="card-title text-danger">SonarQube Maven Plugin</h5>
+      <p class="card-text">
+        <strong>GroupId:</strong> <code>org.sonarsource.scanner.maven</code><br>
+        <strong>ArtifactId:</strong> <code>sonar-maven-plugin</code><br>
+        <strong>Version:</strong> <code>3.10.0.2594</code>
+      </p>
+      <p>
+        The SonarQube Maven plugin is used to run <b>static code analysis</b> and send results to a SonarQube server.  
+        It checks:
+      </p>
+      <ul>
+        <li>Code quality (bugs, vulnerabilities, smells).</li>
+        <li>Test coverage integration with JaCoCo reports.</li>
+        <li>Follows coding standards & detects bad practices.</li>
+      </ul>
+      <span class="badge bg-danger">Ensures high code quality</span>
+    </div>
+  </div>
+
+  </div>
+    
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
