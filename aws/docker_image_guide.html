@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Docker Image Guide (Spring Boot)</title>
+          <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            
+    </head>
+<body>
+    <div id="include-index"></div>
+
+    <script>
+        fetch('../codingcure.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('include-index').innerHTML = data;
+        });
+    </script>
+  <div class="container">
+    <h1 class="text-center mb-4">Docker Image Guide for Spring Boot</h1>
+    <p class="text-muted text-center mb-4">
+      Build a lightweight, portable image for your Spring Boot app and understand each Dockerfile instruction.
+    </p>
+
+    <div class="accordion" id="dockerGuide">
+
+      <!-- Full Dockerfile -->
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingFile">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFile" aria-expanded="true" aria-controls="collapseFile">
+            Step 1: Dockerfile
+          </button>
+        </h2>
+        <div id="collapseFile" class="accordion-collapse collapse show" data-bs-parent="#dockerGuide">
+          <div class="accordion-body">
+            <div class="code-wrap">
+              <button class="btn btn-sm btn-outline-secondary copy-btn" data-copy-target="#dockerfileCode">Copy</button>
+              <pre id="dockerfileCode"><code># Base JDK image
+FROM eclipse-temurin:17-jdk-alpine
+
+# Set working directory
+WORKDIR /app
+
+# Copy the jar file
+COPY target/*.jar app.jar
+
+# Expose Spring Boot default port
+EXPOSE 8080
+
+# Run the jar
+ENTRYPOINT ["java", "-jar", "app.jar"]</code></pre>
+            </div>
+            <p class="mb-0"><strong>Tip:</strong> Place this file in your project root as <code>Dockerfile</code> (no extension).</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Line-by-line explanation -->
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingExplain">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExplain" aria-expanded="false" aria-controls="collapseExplain">
+            Step 2: What each line does
+          </button>
+        </h2>
+        <div id="collapseExplain" class="accordion-collapse collapse" data-bs-parent="#dockerGuide">
+          <div class="accordion-body">
+            <h5 class="mb-2">FROM eclipse-temurin:17-jdk-alpine</h5>
+            <p class="mb-3">Uses a small, secure Alpine-based JDK 17 image—perfect for running Spring Boot.</p>
+
+            <h5 class="mb-2">WORKDIR /app</h5>
+            <p class="mb-3">Sets the working directory inside the container to <code>/app</code>. If it doesn’t exist, Docker creates it. All next commands run from here.</p>
+
+            <h5 class="mb-2">COPY target/*.jar app.jar</h5>
+            <p class="mb-3">Copies your built JAR from your host’s <code>target/</code> folder into the image at <code>/app/app.jar</code>. Make sure you’ve built your project first (Maven/Gradle).</p>
+
+            <h5 class="mb-2">EXPOSE 8080</h5>
+            <p class="mb-3">Documents that the app listens on port <code>8080</code>. (It doesn’t publish the port; you map it at run.)</p>
+
+            <h5 class="mb-2">ENTRYPOINT ["java", "-jar", "app.jar"]</h5>
+            <p class="mb-0">Defines the container’s start command—runs your Spring Boot app when the container starts.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Build -->
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingBuild">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBuild" aria-expanded="false" aria-controls="collapseBuild">
+            Step 3: Build the JAR & the Docker image
+          </button>
+        </h2>
+        <div id="collapseBuild" class="accordion-collapse collapse" data-bs-parent="#dockerGuide">
+          <div class="accordion-body">
+            <p class="mb-2"><strong>1) Build your app JAR (Maven example):</strong></p>
+            <pre><code>mvn clean package -DskipTests</code></pre>
+
+            <p class="mb-2"><strong>2) Build the Docker image:</strong></p>
+            <pre><code>docker build -t portfolio-controller:latest .</code></pre>
+            <p class="mb-0"><em>Explanation:</em> <code>-t</code> tags the image name:version. The final dot means “use current folder as build context”.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Run -->
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingRun">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRun" aria-expanded="false" aria-controls="collapseRun">
+            Step 4: Run & verify the container
+          </button>
+        </h2>
+        <div id="collapseRun" class="accordion-collapse collapse" data-bs-parent="#dockerGuide">
+          <div class="accordion-body">
+            <p class="mb-2"><strong>Run locally (map host 8080 → container 8080):</strong></p>
+            <pre><code>docker run -d --name portfolio-controller -p 8080:8080 portfolio-controller:latest</code></pre>
+
+            <p class="mb-2"><strong>Check it’s running:</strong></p>
+            <pre><code>docker ps</code></pre>
+
+            <p class="mb-2"><strong>Follow logs:</strong></p>
+            <pre><code>docker logs -f portfolio-controller</code></pre>
+
+            <p class="mb-2"><strong>Confirm the working directory exists:</strong></p>
+            <pre><code>docker exec -it portfolio-controller sh
+ls -l /app
+exit</code></pre>
+
+            <p class="mb-0"><strong>Stop / Remove:</strong></p>
+            <pre><code>docker stop portfolio-controller
+docker rm portfolio-controller</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- ECR (optional) -->
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingEcr">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEcr" aria-expanded="false" aria-controls="collapseEcr">
+            Optional: Push to Amazon ECR
+          </button>
+        </h2>
+        <div id="collapseEcr" class="accordion-collapse collapse" data-bs-parent="#dockerGuide">
+          <div class="accordion-body">
+            <p class="mb-2"><strong>Login to ECR:</strong></p>
+            <pre><code>aws ecr get-login-password --region ap-southeast-2 \
+| docker login --username AWS --password-stdin &lt;account_id&gt;.dkr.ecr.ap-southeast-2.amazonaws.com</code></pre>
+
+            <p class="mb-2"><strong>Tag & Push:</strong></p>
+            <pre><code>docker tag portfolio-controller:latest &lt;account_id&gt;.dkr.ecr.ap-southeast-2.amazonaws.com/codingcure/portfolio-service:latest
+docker push &lt;account_id&gt;.dkr.ecr.ap-southeast-2.amazonaws.com/codingcure/portfolio-service:latest</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Troubleshooting -->
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingTroubleshoot">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTroubleshoot" aria-expanded="false" aria-controls="collapseTroubleshoot">
+            Troubleshooting & Tips
+          </button>
+        </h2>
+        <div id="collapseTroubleshoot" class="accordion-collapse collapse" data-bs-parent="#dockerGuide">
+          <div class="accordion-body">
+            <ul class="mb-3">
+              <li><strong>Port not reachable?</strong> Ensure you map <code>-p host:container</code> correctly and security groups/firewall allow it.</li>
+              <li><strong>Alpine has no bash:</strong> Use <code>sh</code> (e.g., <code>docker exec -it &lt;name&gt; sh</code>).</li>
+              <li><strong>Jar not found?</strong> Make sure you built the JAR and the path matches <code>target/*.jar</code>.</li>
+              <li><strong>Multi-stage build (smaller image)?</strong> Build in Maven/Gradle image, then copy only the final JAR into a JRE base.</li>
+            </ul>
+            <p class="mb-0"><strong>Example health check:</strong> expose an actuator endpoint and verify with <code>curl http://localhost:8080/actuator/health</code> (if enabled).</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+        <a href="aws.html" class="btn btn-primary mt-4">Back to Questions</a>
+    </div>
+
+    <script>
+    // Copy-to-clipboard for code blocks
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = document.querySelector(btn.getAttribute('data-copy-target'));
+        if (!target) return;
+        const text = target.innerText;
+        navigator.clipboard.writeText(text).then(() => {
+          const original = btn.textContent;
+          btn.textContent = 'Copied!';
+          setTimeout(() => btn.textContent = original, 1200);
+        });
+      });
+    });
+  </script>
+    
+    <script src="../navbar.js"></script>
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
