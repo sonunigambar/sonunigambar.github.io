@@ -36,13 +36,13 @@
         </section>
         
         <section>
-            <pre class="bg-light p-3 rounded">
+            <pre class="p-3 rounded">
               Syntax:<br>
               interface Consumer {<br>
                   &nbsp;&nbsp;&nbsp;void accept(T t);<br>
               }
             </pre>
-            <pre class="bg-light p-3 rounded">
+            <pre class="p-3 rounded">
               public class ConsumerDemo {<br>
                   &nbsp;&nbsp;&nbsp;public static void main(String[] args) {<br>
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Consumer<String> consumer1 = (name) -> System.out.println(name + ", Good Mrng..!!");<br>
@@ -61,7 +61,7 @@
             </ul>
             
             <p>Syntax:</p>
-            <pre class="bg-light p-3 rounded">
+            <pre class="p-3 rounded">
               interface BiConsumer<T, U> {<br>
                   &nbsp;&nbsp;&nbsp;void accept(T t, U u);<br>
               }<br>
@@ -79,7 +79,7 @@
         </section>
         
         <section>
-            <pre class="bg-light p-3 rounded">
+            <pre class="p-3 rounded">
               public class BiConsumerDemo {<br>
                   &nbsp;&nbsp;&nbsp;public static void main(String[] args) {<br>
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BiConsumer<String, Integer> printLength = (s, i) -> System.out.println(s + " has length " + i);<br>
