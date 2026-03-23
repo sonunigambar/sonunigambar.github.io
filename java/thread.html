@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thread Concept</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div id="include-index"></div>
+
+    <script>
+        fetch('../codingcure.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('include-index').innerHTML = data;
+            });
+    </script>
+    <!-- Scroll to Top Button (initially hidden) -->
+<button id="scrollToTopBtn" class="btn btn-primary rounded-circle position-fixed" title="Go to top" style="bottom: 20px; right: 20px; display: none;">
+    <i class="fas fa-arrow-up"></i>
+</button>
+
+<script src="../scrollTop.js"></script>
+
+<div class="container mt-4">
+    <ul>
+        <li>Thread Concept</li>
+        <li>Runnable vs Callable</li>
+        <li>Executor Service & Future</li>
+        <li>CompletableFuture & Async</li>
+        <li><a href="../restAPI/webClient.html" target="_blank">Reactive Programming Using WebClient</a></li>
+    </ul>
+        <div class="card section-card p-4">
+       <h3 class="text-primary">Part 1: From Scratch – Thread & Runnable</h3>
+
+<h5>What is a Thread?</h5>
+<p>A thread is like a worker in your application—it executes a sequence of instructions.</p>
+<ul>
+<li>The main thread starts your program.</li>
+<li>You can create additional threads to perform tasks in parallel.</li>
+</ul>
+
+<hr>
+
+<h5>Runnable (task) vs Thread (worker)</h5>
+<ul>
+<li><b>Runnable</b> → defines what to do (the task)</li>
+<li><b>Thread</b> → defines who does it (the worker)</li>
+</ul>
+
+<pre><code>
+    // Runnable → the work
+Runnable task = () -> {
+    System.out.println("I am working in: " + Thread.currentThread().getName());
+};
+
+// Thread → the worker
+Thread t = new Thread(task);
+t.start(); // runs task asynchronously
+</code></pre>
+
+<hr>
+
+<h5 class="text-success">Good things about raw Threads</h5>
+<ul>
+<li>Easy to understand</li>
+<li>True parallelism (across CPU cores)</li>
+<li>Great for simple, one-off async tasks</li>
+</ul>
+
+<hr>
+
+<h5 class="text-danger">Problems with raw Threads</h5>
+<ul>
+<li>Creation overhead: new Thread() is expensive (memory + OS resources)</li>
+<li>No pooling: Threads are created/destroyed repeatedly → wasteful</li>
+<li>No queuing/backpressure: 10,000 requests = 10,000 threads ❌</li>
+<li>No lifecycle control: Hard to shut down gracefully</li>
+<li>Error handling is messy: Exceptions inside threads are easy to miss</li>
+<li>Coordination is painful: Waiting for multiple threads → manual join() chaos</li>
+</ul>
+
+<div class="alert alert-info mt-3">
+👉 Takeaway: We need a manager of threads → <b>ExecutorService</b>
+</div>
+</div>
+
+<!-- PART 2 -->
+<div class="card section-card p-4">
+<h3 class="text-primary">Part 2: ExecutorService (Thread Manager)</h3>
+
+<h5>Idea</h5>
+<ul>
+<li>Put tasks in a queue</li>
+<li>A pool of threads executes them</li>
+</ul>
+
+<pre><code>
+    ExecutorService pool = Executors.newFixedThreadPool(5);
+
+for (int i = 0; i < 10; i++) {
+    int id = i;
+
+    pool.submit(() -> {
+        System.out.println("Task " + id + " by " + Thread.currentThread().getName());
+    });
+}
+
+pool.shutdown();
+</code></pre>
+
+<hr>
+
+<h5 class="text-success">What problems it solves</h5>
+<ul>
+<li>Thread reuse (pooling) → faster, cheaper</li>
+<li>Queuing → tasks wait instead of creating too many threads</li>
+<li>Sizing control → limit max concurrency</li>
+<li>Lifecycle management → shutdown(), awaitTermination()</li>
+</ul>
+
+<hr>
+
+<h5>Problems / Behaviors</h5>
+
+<h6>A) execute(Runnable)</h6>
+<ul>
+<li>No Future is returned</li>
+</ul>
+
+<pre><code>
+    pool.execute(() -> {
+    throw new RuntimeException("Boom in execute()");
+});
+</code></pre>
+
+
+<ul>
+<li>If an exception occurs:</li>
+<li>It goes to the thread’s UncaughtExceptionHandler</li>
+<li>You will see a stack trace in logs/console (default behavior)</li>
+</ul>
+
+<hr>
+
+<h6>B) submit(Runnable/Callable)</h6>
+<ul>
+<li>Returns a Future</li>
+</ul>
+
+<pre><code>
+    Future<?> f = pool.submit(() -> {
+    throw new RuntimeException("Boom in submit()");
+});
+
+try {
+    f.get(); // <-- Exception appears here
+} catch (ExecutionException e) {
+    e.getCause().printStackTrace();
+}
+</code></pre>
+
+<ul>
+<li>If an exception occurs:</li>
+<li>It is captured inside the Future</li>
+<li>Nothing is shown unless you call get()</li>
+</ul>
+
+<hr>
+
+<h5>Why this happens</h5>
+<ul>
+<li>submit() is designed for deferred error reporting via Future</li>
+<li>If you don’t call get(), the error is invisible</li>
+</ul>
+
+<hr>
+
+<h5 class="text-danger">Why this is a real problem in production</h5>
+<ul>
+<li>Teams often use submit() in fire-and-forget style</li>
+<li>They don’t store the Future</li>
+<li>Exceptions never appear in logs</li>
+<li>System looks “fine” but tasks silently fail</li>
+</ul>
+
+<ul>
+<li>Missed notifications</li>
+<li>Partial processing</li>
+<li>Data inconsistency</li>
+</ul>
+
+<div class="alert alert-warning">
+This is called the <b>Error Visibility Problem</b>
+</div>
+
+<hr>
+
+<h5>Other limitations</h5>
+<ul>
+<li>No method chaining</li>
+<li>Difficult to trigger next task after completion</li>
+<li>Mixing async + blocking (get()) makes it inefficient</li>
+</ul>
+</div>
+
+<!-- PART 3 -->
+<div class="card section-card p-4">
+<h3 class="text-primary">Part 3: CompletableFuture (Modern Async Pipelines)</h3>
+
+<h5>Idea</h5>
+<p>A Future that you can complete, chain, and handle without blocking</p>
+
+<hr>
+
+<h5>Two ways to start tasks</h5>
+
+<pre><code>
+    // Fire-and-forget (no return value)
+CompletableFuture&lt;Void&gt; r =
+    CompletableFuture.runAsync(() -> sendEmail());
+
+// Compute-and-return (with value)
+CompletableFuture&lt;String&gt; f =
+    CompletableFuture.supplyAsync(() -> fetchUser());
+</code></pre>
+
+<hr>
+
+<h5>Chaining (no blocking)</h5>
+
+<pre><code>
+    CompletableFuture.supplyAsync(() -> fetchUser())
+    .thenApply(user -> enrich(user))
+    .thenCompose(u -> saveAsync(u))
+    .thenAccept(saved -> System.out.println(saved))
+    .exceptionally(ex -> {
+        log.error("Failed", ex);
+        return null;
+    });
+</code></pre>
+
+
+<hr>
+
+<h5>Parallel composition (real speed-up)</h5>
+<p>Call multiple services in parallel and combine results:</p>
+
+<pre><code>
+    CompletableFuture&lt;Product&gt; p =
+    CompletableFuture.supplyAsync(() -> getProduct());
+
+CompletableFuture&lt;Pricing&gt; pr =
+    CompletableFuture.supplyAsync(() -> getPricing());
+
+CompletableFuture&lt;Reviews&gt; r =
+    CompletableFuture.supplyAsync(() -> getReviews());
+
+CompletableFuture&lt;Combined&gt; result =
+    p.thenCombine(pr, (pp, price) -> new Pair&lt;&gt;(pp, price))
+     .thenCombine(r, (pair, rev) ->
+         new Combined(pair.first, pair.second, rev));
+
+Combined value = result.join();
+</code></pre>
+
+<hr>
+
+<h5 class="text-success">What problems it solves vs ExecutorService + Future</h5>
+<ul>
+<li>No need to call get() early → keeps flow async</li>
+<li>Supports chaining: thenApply, thenCompose, thenCombine</li>
+<li>Clean error handling: exceptionally, handle, whenComplete</li>
+<li>Better for microservice composition</li>
+</ul>
+
+<hr>
+
+<h5 class="text-warning">Still not perfect (honest reality)</h5>
+<ul>
+<li>If you use blocking calls (e.g., JDBC, RestTemplate) inside supplyAsync:</li>
+<li>Thread is still blocked</li>
+<li>This becomes Async + Blocking</li>
+<li>Overusing join() / get() makes it synchronous again</li>
+<li>Carefully size thread pools</li>
+<li>Separate CPU vs I/O pools</li>
+</ul>
+
+<hr>
+
+<h5>Final Note</h5>
+<p>For extreme concurrency + resource efficiency, move to Reactive Programming (WebClient / Project Reactor):</p>
+<ul>
+<li>Uses non-blocking I/O</li>
+<li>Uses event loops instead of threads</li>
+</ul>
+</div>
+<!-- REAL-TIME SCENARIO -->
+<div class="card section-card p-4">
+<h3 class="text-primary">Real-Time Banking Scenario: Multi-Threading</h3>
+
+<h5>Money Transfer (NEFT / IMPS / RTGS) – Parallel Validations</h5>
+
+<h6>Scenario</h6>
+<p>A customer transfers ₹50,000 from Account A to Account B.</p>
+<p>Before money moves, bank must do multiple checks:</p>
+
+<ul>
+<li>Balance check</li>
+<li>Fraud check</li>
+<li>Account status check</li>
+<li>Daily limit check</li>
+</ul>
+
+<hr>
+
+<h5 class="text-danger">Without Multi-Threading (Sequential)</h5>
+<ul>
+<li>Balance check → 100 ms</li>
+<li>Fraud check → 200 ms</li>
+<li>Account status → 100 ms</li>
+<li>Limit check → 100 ms</li>
+</ul>
+
+<p><b>Total = 500 ms</b></p>
+<p class="text-danger">User feels delay ❌</p>
+
+<hr>
+
+<h5 class="text-success">With Multi-Threading (Parallel)</h5>
+<p>All checks are independent, so run in parallel:</p>
+
+<ul>
+<li>Balance check</li>
+<li>Fraud check</li>
+<li>Account status</li>
+<li>Limit check</li>
+</ul>
+
+<p><b>Total time = max(200 ms)</b></p>
+<p class="text-success">Fast response ⚡</p>
+
+<div class="alert alert-info mt-3">
+💡 Insight: Parallel execution reduces latency dramatically in banking systems.
+</div>
+
+</div>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
