@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kafka Internals</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+   
+</head>
+<body>
+    <div id="include-index"></div>
+
+    <script>
+        fetch('../codingcure.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('include-index').innerHTML = data;
+        });
+    </script>
+
+     <script>
+    // Enable all tooltips on the page
+    document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
+      new bootstrap.Tooltip(el);
+    });
+  </script>
+
+  <button id="scrollToTopBtn" class="btn btn-primary rounded-circle position-fixed" title="Go to top" style="bottom: 20px; right: 20px; display: none;">
+    <i class="fas fa-arrow-up"></i>
+</button>
+
+<script src="../scrollTop.js"></script>
+
+    <div class="card p-4 mb-5 shadow" style="border-radius:15px;">
+
+        <h3 class="text-center mb-4">📚 Kafka Topics Navigation</h3>
+
+        <div class="row text-center">
+
+            <div class="col-md-4 mb-2">
+                <a href="#bad-architecture" class="btn btn-outline-danger w-100">❌ Bad Architecture</a>
+            </div>
+
+            <div class="col-md-4 mb-2">
+                <a href="#good-architecture" class="btn btn-outline-success w-100">✅ Good Architecture</a>
+            </div>
+
+            <div class="col-md-4 mb-2">
+                <a href="#messaging-types" class="btn btn-outline-primary w-100">📩 Messaging Types</a>
+            </div>
+
+            <div class="col-md-4 mb-2">
+                <a href="#kafka-installation" class="btn btn-outline-warning w-100">🚀 Kafka Setup</a>
+            </div>
+
+            <div class="col-md-4 mb-2">
+                <a href="#kafka-zookeeper" class="btn btn-outline-info w-100">🍔 Kafka & Zookeeper</a>
+            </div>
+
+            <div class="col-md-4 mb-2">
+                <a href="#kafka-events" class="btn btn-outline-dark w-100">📊 Kafka Events</a>
+            </div>
+
+            <div class="col-md-4 mb-2">
+                <a href="#topic-partition" class="btn btn-outline-success w-100">📂 Topic & Partition</a>
+            </div>
+
+            <div class="col-md-4 mb-2">
+                <a href="#partition-log" class="btn btn-outline-secondary w-100">📊 Partition Log</a>
+            </div>
+
+            <div class="col-md-4 mb-2">
+                <a href="#leader-follower" class="btn btn-outline-primary w-100">👑 Leader & Follower</a>
+            </div>
+
+        </div>
+
+    </div>
+
+    
+   <!-- <div class="container py-5"> -->
+
+    <!-- IMAGE 2 SECTION -->
+
+    <div id="bad-architecture" class="card bad p-4 mb-5">
+
+        <h2 class="text-danger section-title">❌ Without Messaging System (Bad Architecture)</h2>
+
+        <p>
+
+            In this architecture, every service directly communicates with every other system.
+
+            This creates a highly complex and tightly coupled system.
+
+        </p>
+
+       <div class="accordion" id="workflowAccordion">
+
+            <img src="../image/kafka-1.png" 
+
+                alt="Kafka Diagram"
+
+                class="img-fluid d-block mx-auto custom-img"
+                style="width:70%; height:auto; max-height:300px; object-fit:contain;">
+
+        </div>
+
+        <hr>
+
+        <h5 class="text-danger mt-3">🚨 Problems:</h5>
+
+        <ul>
+
+            <li>Tight coupling between services</li>
+
+            <li>Too many connections (N × M problem)</li>
+
+            <li>Hard to maintain and scale</li>
+
+            <li>No fault tolerance (data loss risk)</li>
+
+            <li>Every new service requires changes everywhere</li>
+
+        </ul>
+
+    </div>
+
+    <!-- IMAGE 1 SECTION -->
+
+    <div id="good-architecture" class="card good p-4">
+
+        <h2 class="text-success section-title">✅ With Messaging System (Good Architecture)</h2>
+
+        <p>
+
+            Here, all services communicate through a central messaging system.
+
+            This removes direct dependencies and enables scalable, event-driven architecture.
+
+        </p>
+
+        <div class="accordion" id="workflowAccordion">
+
+            <img src="../image/kafka-2.png" 
+
+            alt="Kafka Diagram" width="100%" height="400px"
+
+                class="img-fluid d-block mx-auto custom-img"
+                style="width:70%; height:auto; max-height:300px; object-fit:contain;">
+
+        </div>
+
+        <hr>
+
+        <h5 class="text-success mt-3">🔥 Advantages:</h5>
+
+        <ul>
+
+            <li>Loose coupling between services</li>
+
+            <li>Supports multiple consumers (Pub/Sub model)</li>
+
+            <li>Highly scalable and flexible</li>
+
+            <li>Fault tolerant (messages are stored)</li>
+
+            <li>Easy to add new services without changing existing ones</li>
+
+        </ul>
+
+    </div>
+
+    <h2 class="text-center mb-5">📩 Types of Messaging Systems</h2>
+
+    <div class="row">
+
+        <!-- Point to Point -->
+
+        <div id="messaging-types" class="col-md-6 mb-4">
+
+            <div class="card p-4 shadow" style="border-left:5px solid #dc3545; border-radius:15px;">
+
+                
+
+                <h4 class="text-danger">❌ Point-to-Point Messaging</h4>
+
+                <p>
+
+                    In this model, a message is sent to a queue and only one consumer receives it.
+
+                </p>
+
+                <div class="text-center my-3">
+
+                    <strong>Producer → Queue → One Consumer</strong>
+
+                </div>
+
+                <h6>Key Points:</h6>
+
+                <ul>
+
+                    <li>One message → One consumer</li>
+
+                    <li>Used for task processing</li>
+
+                    <li>Load is distributed</li>
+
+                </ul>
+
+                <h6>Limitation:</h6>
+
+                <ul>
+
+                    <li>Cannot send message to multiple services</li>
+
+                </ul>
+                <div class="accordion" id="workflowAccordion">
+
+                    <img src="../image/kafka-3.png" 
+
+                        alt="Kafka Diagram"
+
+                        class="img-fluid d-block mx-auto custom-img"
+                        style="width:100%; height:auto; max-height:400px; object-fit:contain;">
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Pub Sub -->
+
+        <div class="col-md-6 mb-4">
+
+            <div class="card p-4 shadow" style="border-left:5px solid #28a745; border-radius:15px;">
+
+                
+
+                <h4 class="text-success">✅ Publish-Subscribe (Pub/Sub)</h4>
+
+                <p>
+
+                    In this model, a message is sent to a topic and multiple consumers receive it.
+
+                </p>
+
+                <div class="text-center my-3">
+
+                    <strong>Producer → Topic → Multiple Consumers</strong>
+
+                </div>
+
+                <h6>Key Points:</h6>
+
+                <ul>
+
+                    <li>One message → Many consumers</li>
+
+                    <li>Event-driven architecture</li>
+
+                    <li>Highly scalable</li>
+
+                </ul>
+
+                <h6>Advantages:</h6>
+
+                <ul>
+
+                    <li>Loose coupling</li>
+
+                    <li>Easy to add new services</li>
+
+                    <li>Supports real-time processing</li>
+
+                </ul>
+                <div class="accordion" id="workflowAccordion">
+
+                    <img src="../image/kafka-4.png" 
+
+                        alt="Kafka Diagram"
+
+                        class="img-fluid d-block mx-auto custom-img"
+                        style="width:100%; height:200px; max-height:300px; object-fit:contain;">
+
+                </div>
+
+            </div>
+
+        </div>
+
+    <div class="accordion" id="workflowAccordion">
+        Basic Architecture of Kafka
+
+                    <img src="../image/kafka-5.png" 
+
+                        alt="Kafka Diagram"
+
+                        class="img-fluid d-block mx-auto custom-img"
+                        style="width:100%; height:auto; max-height:400px; object-fit:contain;">
+
+                </div>
+
+</div>
+
+<div id="kafka-installation" >
+
+    <h2 class="text-center mb-5">🚀 Kafka Installation & Usage Guide</h2>
+
+    <!-- INSTALL -->
+
+    <div class="card p-4 mb-4 shadow" style="border-left:5px solid #0d6efd;">
+
+        <h4>📥 Install Kafka</h4>
+
+        <p><strong>Download & Extract:</strong></p>
+        <p>👉 Kafka Download : <a href="https://kafka.apache.org/downloads" target="_blank"> https://kafka.apache.org/downloads</a></p>
+
+        <pre style="background:#000;color:#0f0;padding:10px;">
+
+tar -xvf kafka_2.13-3.7.0.tgz
+
+cd kafka_2.13-3.7.0
+
+        </pre>
+
+        <p><strong>Mac (Homebrew):</strong></p>
+
+        <pre style="background:#000;color:#0f0;padding:10px;">
+
+brew install kafka
+
+        </pre>
+
+    </div>
+
+    <!-- START SERVICES -->
+
+    <div class="card p-4 mb-4 shadow" style="border-left:5px solid #dc3545;">
+
+        <h4>⚙️ Start Zookeeper & Kafka</h4>
+
+        <p>Zookeeper:</p>
+
+        <pre style="background:#000;color:#0f0;padding:10px;">
+
+bin/zookeeper-server-start.sh config/zookeeper.properties
+
+        </pre>
+
+        <p>Kafka Server:</p>
+
+        <pre style="background:#000;color:#0f0;padding:10px;">
+
+bin/kafka-server-start.sh config/server.properties
+
+        </pre>
+
+    </div>
+
+    <!-- CREATE TOPIC -->
+
+    <div class="card p-4 mb-4 shadow" style="border-left:5px solid #ffc107;">
+
+        <h4>📌 Create Topic</h4>
+
+        <pre style="background:#000;color:#0f0;padding:10px;">
+
+bin/kafka-topics.sh --create \
+
+--topic myLog \
+
+--bootstrap-server localhost:9092 \
+
+--partitions 3 \
+
+--replication-factor 1
+
+        </pre>
+
+    </div>
+    <!-- List All TOPIC -->
+
+    <div class="card p-4 mb-4 shadow" style="border-left:5px solid #07b5ffd1;">
+
+        <h4>📌 List Out All The Topic</h4>
+
+        <pre style="background:#000000;color:#0f0;padding:10px;">
+
+bin/kafka-topics.sh --list --bootstrap-server localhost:9092
+        </pre>
+
+    </div>
+
+    <!-- PRODUCER -->
+
+    <div class="card p-4 mb-4 shadow" style="border-left:5px solid #20c997;">
+
+        <h4>📤 Kafka Producer</h4>
+
+        <pre style="background:#000;color:#0f0;padding:10px;">
+
+bin/kafka-console-producer.sh \
+
+--topic myLog \
+
+--bootstrap-server localhost:9092
+
+        </pre>
+
+        <p>Example messages:</p>
+
+        <pre style="background:#222;color:#fff;padding:10px;">
+
+Hello Kafka
+
+Learning Messaging System
+
+        </pre>
+
+    </div>
+
+    <!-- CONSUMER -->
+
+    <div class="card p-4 shadow" style="border-left:5px solid #6f42c1;">
+
+        <h4>📥 Kafka Consumer</h4>
+
+        <pre style="background:#000;color:#0f0;padding:10px;">
+
+bin/kafka-console-consumer.sh \
+
+--topic myLog \
+
+--from-beginning \
+
+--bootstrap-server localhost:9092
+
+        </pre>
+
+    </div>
+
+</div>
+<div id="kafka-zookeeper" class="card p-4 mt-5 shadow" style="border-left:5px solid #ff9800; border-radius:15px;">
+
+    <h3 class="mb-4 text-center">🍔 Kafka & Zookeeper Analogy (McDonald's Example)</h3>
+
+    <p class="text-center">
+        Understanding Kafka becomes easier with a real-world analogy.
+    </p>
+
+    <hr>
+
+    <!-- Outlets -->
+    <h5>🏬 McDonald's Company has many outlets</h5>
+
+    <h6 class="mt-3">Each McDonald's outlet:</h6>
+    <ul>
+        <li>Takes customer orders 🍔</li>
+        <li>Prepares and stores the food</li>
+        <li>Delivers the food to customers 🍟</li>
+        <li>Each outlet knows only about its own kitchen</li>
+    </ul>
+
+    <hr>
+
+    <!-- Headquarters -->
+    <h6>🏢 McDonald's Headquarters:</h6>
+    <ul>
+        <li>Keeps a list of all working outlets 🏪</li>
+        <li>If an outlet goes down, it reassigns work to others</li>
+        <li>Helps coordinate food delivery and team management</li>
+    </ul>
+
+    <hr>
+    <h5 class="text-primary">⚙️ What is Zookeeper?</h5>
+
+    <p>
+
+        Zookeeper acts like the headquarters of the system. It manages and coordinates all Kafka brokers.
+
+    </p>
+
+    <ul>
+
+        <li>Keeps track of all active Kafka brokers</li>
+
+        <li>Performs leader election for partitions</li>
+
+        <li>Handles broker failures and recovery</li>
+
+        <li>Maintains cluster metadata</li>
+
+    </ul>
+
+    <p>
+
+        Just like McDonald's headquarters ensures all outlets are working properly and assigns work when one fails,
+
+        Zookeeper ensures Kafka cluster stays healthy and consistent.
+
+    </p>
+
+    <hr>
+
+    <!-- Mapping -->
+    <h5 class="mt-3 text-success">🔁 Kafka Mapping</h5>
+
+    <ul>
+        <li><strong>Outlets → Kafka Brokers</strong></li>
+        <li><strong>Orders → Messages</strong></li>
+        <li><strong>Customers → Producers / Consumers</strong></li>
+        <li><strong>Headquarters → Zookeeper</strong></li>
+    </ul>
+
+</div>
+<div id="kafka-events" class="card p-4 mt-5 shadow" style="border-left:5px solid #0dcaf0; border-radius:15px;">
+
+    <h3 class="mb-4 text-center">📩 Kafka Events (Key, Value, Timestamp)</h3>
+
+    <p>
+        In Kafka, we don't just send simple messages. Instead, we send <strong>events</strong>.
+        An event represents something that happened in the system.
+    </p>
+
+    <hr>
+
+    <h5>📌 What is an Event?</h5>
+    <p>An event in Kafka contains the following:</p>
+
+    <ul>
+        <li><strong>Key:</strong> Identifies the event (used for partitioning)</li>
+        <li><strong>Value:</strong> Actual data (business information)</li>
+        <li><strong>Timestamp:</strong> When the event occurred</li>
+    </ul>
+
+    <hr>
+
+    <h5>🧠 Example Event</h5>
+
+    <pre style="background:#000;color:#0f0;padding:10px;">
+Key: order-123
+Value: Order Created with amount ₹500
+Timestamp: 2026-05-03T22:30:00
+    </pre>
+
+    <hr>
+
+    <h5 class="text-danger">🔥 Why Key is Important?</h5>
+
+    <p>
+
+        Kafka uses the <strong>key</strong> to decide which partition the event will go to.
+
+        All events with the same key go to the <strong>same partition</strong>, which ensures <strong>ordering</strong>.
+
+    </p>
+
+    <h6>👨‍💼 Real Example (Employee Processing)</h6>
+
+    <p>
+
+        Suppose employee events are coming continuously, and you want to process them
+
+        <strong>department-wise in order</strong>.
+
+    </p>
+
+    <pre style="background:#000;color:#0f0;padding:10px;">
+
+HR: Employee A joined
+
+HR: Employee B promoted
+
+IT: Employee C joined
+
+IT: Employee D resigned
+
+    </pre>
+
+    <p>
+
+        If you use <strong>department as key</strong>:
+
+    </p>
+
+    <ul>
+
+        <li>All <strong>HR</strong> events go to same partition → processed in order ✅</li>
+
+        <li>All <strong>IT</strong> events go to another partition → processed in order ✅</li>
+
+    </ul>
+
+    <p class="text-success">
+
+        ✔️ This ensures correct sequencing within each department.
+
+    </p>
+
+    <p class="text-danger">
+
+        ❌ Without key → events may go to different partitions → order can break.
+
+    </p>
+
+    <hr>
+
+    <h5>📤 Sending Event (Producer)</h5>
+
+    <pre style="background:#000;color:#0f0;padding:10px;">
+
+bin/kafka-console-producer.sh \
+
+--topic myLog \
+
+--bootstrap-server localhost:9092 \
+
+--property "parse.key=true" \
+
+--property "key.separator=:"
+
+    </pre>
+
+    <p>Send events:</p>
+
+    <pre style="background:#222;color:#fff;padding:10px;">
+
+HR:Employee A joined
+
+HR:Employee B promoted
+
+IT:Employee C joined
+
+    </pre>
+
+    <hr>
+
+    <h5>📥 Consume with Key & Timestamp</h5>
+
+    <pre style="background:#000;color:#0f0;padding:10px;">
+
+bin/kafka-console-consumer.sh \
+
+--topic myLog \
+
+--from-beginning \
+
+--bootstrap-server localhost:9092 \
+
+--property print.key=true \
+
+--property print.timestamp=true
+
+    </pre>
+
+    <hr>
+
+    <h5>🔍 Output Example</h5>
+
+    <pre style="background:#222;color:#fff;padding:10px;">
+
+CreateTime:1714755600000    HR    Employee A joined
+
+CreateTime:1714755602000    HR    Employee B promoted
+
+CreateTime:1714755604000    IT    Employee C joined
+
+    </pre>
+
+</div>
+<div id="topic-partition" class="card p-4 mt-5 shadow" style="border-left:5px solid #198754; border-radius:15px;">
+
+    <h3 class="mb-4 text-center">📂 Kafka Topic, Partition & Offset (Simple Explanation)</h3>
+
+    <p>
+        Let's understand Kafka concepts using a simple folder analogy.
+    </p>
+
+    <hr>
+
+    <!-- Topic -->
+    <h5>📁 Topic (Folder)</h5>
+    <p>
+        A <strong>topic</strong> is like a folder where all related messages (events) are stored.
+    </p>
+
+    <!-- Partition -->
+    <h5>📂 Partition (Subfolder)</h5>
+    <p>
+        Each topic is divided into multiple partitions (subfolders).
+    </p>
+    <ul>
+        <li>Each partition stores part of the data</li>
+        <li>Helps in parallel processing</li>
+        <li>Improves scalability</li>
+    </ul>
+
+    <!-- Messages -->
+    <h5>📄 Messages (Files)</h5>
+    <p>
+        Messages inside partitions are like files inside subfolders.
+    </p>
+
+    <!-- Offset -->
+    <h5>🔢 Offset (File Number)</h5>
+    <p>
+        Each message has a unique offset (ID) within a partition.
+    </p>
+
+    <pre style="background:#000;color:#0f0;padding:10px;">
+Offset 0 → Message 1
+Offset 1 → Message 2
+Offset 2 → Message 3
+    </pre>
+
+    <hr>
+
+    <!-- Partition Logic -->
+    <h5>⚙️ Partition Assignment Logic</h5>
+    <ul>
+        <li>If key is present → same key goes to same partition</li>
+        <li>If no key → messages distributed evenly (round-robin)</li>
+    </ul>
+
+    <hr>
+
+    <!-- Leader Follower -->
+    <h5>👑 Leader & Follower</h5>
+    <ul>
+        <li><strong>Leader:</strong> Handles all reads and writes</li>
+        <li><strong>Followers:</strong> Replicate data for reliability</li>
+        <li>If leader fails → follower becomes leader</li>
+    </ul>
+
+    <hr>
+
+    <!-- Important Note -->
+    <p class="text-danger">
+        ❗ Ordering is guaranteed only within a partition, not across the entire topic.
+    </p>
+
+</div>
+
+<div id="partition-log" class="card p-4 mt-5 shadow" style="border-left:5px solid #6f42c1; border-radius:15px;">
+
+    <h3 class="text-center mb-4">📊 Kafka Partition, Log & Segment (Based on Diagram)</h3>
+
+    <!-- Image -->
+    <img src="../image/kafka-7.png" 
+         alt="Kafka Partition Diagram"
+         class="img-fluid d-block mx-auto"
+         style="max-height:350px; object-fit:contain;">
+
+    <hr>
+
+    <!-- Explanation -->
+    <h5>📌 Topic & Partitions</h5>
+    <p>
+        A Kafka topic is divided into multiple partitions (P0, P1, P2).
+        Each partition works independently and allows parallel processing.
+    </p>
+
+    <hr>
+
+    <!-- Log -->
+    <h5>📂 Inside Partition (Log Structure)</h5>
+    <p>
+        Each partition stores data as an <strong>append-only log</strong>.
+    </p>
+
+    <pre style="background:#000;color:#0f0;padding:10px;">
+Partition → Log → Segments → Messages
+    </pre>
+
+    <ul>
+        <li>Partition contains a log</li>
+        <li>Log is divided into segments</li>
+        <li>Segments store messages (events)</li>
+    </ul>
+
+    <p>
+        Kafka creates new segments based on size or time.
+    </p>
+
+    <hr>
+    <h5>🔢 Offset (Message Position)</h5>
+
+    <p>
+
+        Each message in a partition has a unique offset (position).
+
+    </p>
+
+    <pre style="background:#000;color:#0f0;padding:10px;">
+
+Offset 0 → Employee A joined  
+
+Offset 1 → Employee B promoted  
+
+Offset 2 → Employee C resigned  
+
+    </pre>
+
+    <ul>
+
+        <li>Offset starts from 0 and increases</li>
+
+        <li>Unique only within a partition</li>
+
+        <li>Used by consumers to track progress</li>
+
+    </ul>
+
+    <p class="text-success">
+
+        ✔️ Consumer reads messages using offset and can resume from last position
+
+    </p>
+
+    <hr>
+
+    <!-- Partition Logic -->
+    <h5>⚙️ Partition Selection Logic</h5>
+
+    <p>
+        Kafka calculates partition using the message key:
+    </p>
+
+    <pre style="background:#000;color:#0f0;padding:10px;">
+partition = hash(key) % number_of_partitions
+    </pre>
+
+    <hr>
+
+    <!-- Example -->
+    <h5>🧠 Example</h5>
+
+    <table class="table table-bordered text-center">
+        <thead class="table-dark">
+            <tr>
+                <th>Key</th>
+                <th>Hash % 3</th>
+                <th>Partition</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>HR</td>
+                <td>0</td>
+                <td>P0</td>
+            </tr>
+            <tr>
+                <td>IT</td>
+                <td>1</td>
+                <td>P1</td>
+            </tr>
+            <tr>
+                <td>HR</td>
+                <td>0</td>
+                <td>P0 ✅</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p class="text-success">
+        ✔️ Same key always goes to same partition → maintains ordering
+    </p>
+
+    <p class="text-danger">
+        ❗ Without key → messages distributed round-robin way → ordering not guaranteed
+    </p>
+
+</div>
+<div id="leader-follower" class="card p-4 mt-5 shadow" style="border-left:5px solid #0d6efd; border-radius:15px;">
+
+    <h3 class="text-center mb-4">📊 Kafka Leader, Follower & Replication Factor</h3>
+
+    <!-- Image -->
+    <img src="../image/kafka-8.png"
+         alt="Kafka Leader Follower Diagram"
+         class="img-fluid d-block mx-auto"
+         style="max-height:350px; object-fit:contain;">
+
+    <hr>
+
+    <!-- Command -->
+    <h5>📌 Topic Creation</h5>
+
+    <pre style="background:#000;color:#0f0;padding:10px;">
+bin/kafka-topics.sh --create \
+--topic myLog \
+--bootstrap-server localhost:9092 \
+--partitions 3 \
+--replication-factor 3
+    </pre>
+
+    <p>
+        Here we created a topic <strong>myLog</strong> with:
+    </p>
+
+    <ul>
+        <li>3 Partitions → P0, P1, P2</li>
+        <li>Replication Factor = 3 → Each partition has 3 copies</li>
+    </ul>
+
+    <hr>
+
+    <!-- Replication -->
+    <h5>🔁 Replication Factor</h5>
+
+    <p>
+        Replication factor means how many copies of each partition are stored across brokers.
+    </p>
+
+    <p class="text-success">
+        ✔️ More replicas → More reliability and fault tolerance
+    </p>
+
+    <hr>
+
+    <!-- Leader & Follower -->
+    <h5>👑 Leader & Follower</h5>
+
+    <p>
+        Each partition has:
+    </p>
+
+    <ul>
+        <li><strong>1 Leader</strong> → Handles all read and write operations</li>
+        <li><strong>Followers</strong> → Copy data from leader</li>
+    </ul>
+
+    <p>
+        Example:
+    </p>
+
+    <ul>
+        <li>P0 → Broker-101 (Leader)</li>
+        <li>P0 → Broker-102 (Follower)</li>
+        <li>P0 → Broker-103 (Follower)</li>
+    </ul>
+
+    <hr>
+
+    <!-- Flow -->
+    <h5>🔄 How It Works</h5>
+
+    <ul>
+        <li>1️⃣ Producer always sends data to the <strong>Leader</strong></li>
+        <li>2️⃣ Followers replicate data from the Leader</li>
+        <li>3️⃣ Consumer reads data from the Leader</li>
+    </ul>
+
+    <hr>
+
+    <!-- Failover -->
+    <h5>⚠️ What Happens if Leader Fails?</h5>
+
+    <p>
+        If the leader goes down:
+    </p>
+
+    <ul>
+        <li>One follower becomes the new leader</li>
+        <li>System continues without data loss</li>
+    </ul>
+
+    <p class="text-success">
+        ✔️ This is why Kafka is highly available
+    </p>
+
+    <hr>
+
+    <!-- Important -->
+    <p class="text-danger">
+        ❗ Clients always write to leader, followers never accept direct writes
+    </p>
+
+</div>
+<!-- </div> -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
