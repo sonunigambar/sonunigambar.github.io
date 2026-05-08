@@ -25,15 +25,172 @@
 
 <script src="../scrollTop.js"></script>
     <h1>What is WebClient in Spring Boot?</h1>
+
     <p>
-        <code>WebClient</code> is like a helper tool in Spring Boot that helps you make HTTP requests to other web services or APIs. 
-        Imagine you want your application to talk to another website or service to get some data, like weather information or user details. 
-        <code>WebClient</code> helps you do that efficiently, especially if you want to handle multiple requests at the same time.
+        <code>WebClient</code> is like a helper tool in Spring Boot that helps you make HTTP requests
+        to other web services or APIs.
     </p>
     <p>
-        It’s <strong>non-blocking</strong>, meaning it doesn’t make your application wait for a response. 
-        This makes it faster and better for high-performance apps that need to make many requests at once.
+        It’s <strong>non-blocking</strong>, meaning it doesn’t make your application wait for a response.
+        This makes it faster and better for high-performance apps.
     </p>
+    <hr>
+    <h1>How Event Loop Knows API Response is Completed (WITHOUT Waiting Thread)</h1>
+    <div class="flow-box">
+        <h3>🧠 First Simple Idea</h3>
+        <p>
+            👉 Thread doesn’t wait → OS tells when response comes
+        </p>
+
+    </div>
+
+    <h2>🧩 Full Diagram + Flow</h2>
+    <div class="text-center mt-4 mb-4">
+        <img src="../image/web-client.png"
+            alt="Event Loop Flow Diagram"
+            class="img-fluid rounded shadow">
+    </div>
+    <h2>✅ Step-by-Step Explanation</h2>
+    <div class="step-card">
+        <div class="step-title">1️⃣ Request Comes</div>
+        <p>
+            EventLoop thread picks the request.
+        </p>
+<pre><code>eventLoop-1 handles request</code></pre>
+    </div>
+    <div class="step-card">
+        <div class="step-title">2️⃣ 3 Services Called in Parallel</div>
+        <p>
+            Requests are sent to all services.
+        </p>
+        <ul>
+            <li>Requests are sent ✅</li>
+            <li>Thread does NOT wait ❌</li>
+        </ul>
+        <p>
+            Instead, it says:
+        </p>
+<pre><code>"OS, please inform me when response comes"</code></pre>
+    </div>
+    <div class="step-card">
+        <div class="step-title">3️⃣ Thread Becomes FREE</div>
+        <p>
+            This is the magic of non-blocking programming.
+        </p>
+<pre><code>eventLoop-1 → now free to handle other requests</code></pre>
+        <ul>
+            <li>No blocking</li>
+            <li>No waiting</li>
+            <li>No sleeping</li>
+        </ul>
+    </div>
+    <div class="step-card">
+        <div class="step-title">4️⃣ OS Watches Everything</div>
+        <p>
+            OS continuously checks sockets using:
+        </p>
+<pre><code>epoll (Linux)
+kqueue (Mac)</code></pre>
+        <p>
+            OS checks:
+        </p>
+<pre><code>"Which socket got data?"</code></pre>
+    </div>
+    <div class="step-card">
+        <div class="step-title">5️⃣ Service2 Responds First</div>
+        <p>
+            Suppose Service2 sends response first.
+        </p>
+<pre><code>Service2 socket → READY ✅</code></pre>
+        <p>
+            OS sends notification to Event Loop.
+        </p>
+    </div>
+    <div class="step-card">
+        <div class="step-title">6️⃣ Event Loop Reacts</div>
+<pre><code>eventLoop-1:
+"Oh Service2 response came!"</code></pre>
+        <p>
+            Event loop executes callback logic.
+        </p>
+    </div>
+    <div class="step-card">
+        <div class="step-title">7️⃣ Same Process for Other Services</div>
+        <ul>
+            <li>Service1 done → event loop processes</li>
+            <li>Service3 done → event loop processes</li>
+        </ul>
+    </div>
+
+    <div class="step-card">
+
+        <div class="step-title">8️⃣ Mono.zip Combines Everything</div>
+
+        <p>
+
+            Important:
+
+        </p>
+
+        <ul>
+
+            <li>Not thread waiting</li>
+
+            <li>Logical waiting</li>
+
+        </ul>
+
+<pre><code>Need all responses:
+
+service1 ✅
+
+service2 ✅
+
+service3 ✅</code></pre>
+
+        <p>
+
+            When all responses complete:
+
+        </p>
+
+<pre><code>Combine → Send final response to client ✅</code></pre>
+
+    </div>
+
+    <h2>🔥 Important Interview Point</h2>
+
+    <div class="flow-box">
+
+        <p>
+
+            <strong>Thread is NOT continuously checking responses.</strong>
+
+        </p>
+
+        <p>
+
+            OS notifies the Event Loop whenever socket data becomes available.
+
+        </p>
+
+        <p>
+
+            This is called:
+
+        </p>
+
+        <ul>
+
+            <li>Event-driven architecture</li>
+
+            <li>Non-blocking I/O</li>
+
+            <li>Reactive programming</li>
+
+        </ul>
+
+    </div>
 
     <h2>How to Use and Configure WebClient</h2>
 
