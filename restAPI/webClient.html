@@ -24,6 +24,501 @@
 </button>
 
 <script src="../scrollTop.js"></script>
+<div class="main-container">
+    <div class="hero-section text-center">
+
+        <h1>RestTemplate vs WebClient</h1>
+
+        <p>
+
+            Understanding Blocking vs Non-Blocking Communication in Spring Boot Microservices
+
+        </p>
+
+    </div>
+
+    <!-- INTRO -->
+
+    <h2 class="section-title">What is the Main Difference?</h2>
+
+    <div class="row g-4">
+
+        <div class="col-md-6">
+
+            <div class="custom-card">
+
+                <h3>RestTemplate</h3>
+
+                <p>
+
+                    <code>RestTemplate</code> is a traditional synchronous HTTP client in Spring Boot.
+
+                </p>
+
+                <div class="blocking-box">
+
+                    <h5>Blocking Nature ❌</h5>
+
+                    <p>
+
+                        When a thread sends a request, it waits until the response comes back.
+
+                    </p>
+
+                    <p>
+
+                        During waiting time:
+
+                    </p>
+
+                    <ul>
+
+                        <li>Thread becomes busy</li>
+
+                        <li>Cannot handle other requests</li>
+
+                        <li>Wastes server resources</li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-6">
+
+            <div class="custom-card">
+
+                <h3>WebClient</h3>
+
+                <p>
+
+                    <code>WebClient</code> is a reactive non-blocking HTTP client introduced in Spring WebFlux.
+
+                </p>
+
+                <div class="nonblocking-box">
+
+                    <h5>Non-Blocking Nature ✅</h5>
+
+                    <p>
+
+                        Thread sends request and immediately becomes FREE.
+
+                    </p>
+
+                    <p>
+
+                        It does NOT wait for response.
+
+                    </p>
+
+                    <ul>
+
+                        <li>Better scalability</li>
+
+                        <li>Less thread usage</li>
+
+                        <li>High performance</li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- REST TEMPLATE FLOW -->
+
+    <h2 class="section-title">Problem with RestTemplate</h2>
+
+    <div class="custom-card">
+
+        <p>
+
+            Suppose:
+
+        </p>
+
+        <ul>
+
+            <li>Client sends 1 request</li>
+
+            <li>Your API internally calls 3 microservices</li>
+
+        </ul>
+
+        <p>
+
+            If you use <code>RestTemplate</code>, the main thread waits for all responses.
+
+        </p>
+
+        <h4 class="mt-4">Normal RestTemplate Flow</h4>
+
+<pre><code>Client Request
+
+      |
+
+      v
+
+ Main Thread
+
+      |
+
+      |-----> Service1 (WAITING)
+
+      |
+
+      |-----> Service2 (WAITING)
+
+      |
+
+      |-----> Service3 (WAITING)
+
+      |
+
+      v
+
+ Return Response</code></pre>
+
+        <div class="blocking-box">
+
+            <h5>Problem ❌</h5>
+
+            <p>
+
+                Main thread is blocked while waiting for APIs.
+
+            </p>
+
+            <p>
+
+                If thousands of users come:
+
+            </p>
+
+            <ul>
+
+                <li>Huge thread consumption</li>
+
+                <li>Memory increases</li>
+
+                <li>CPU context switching increases</li>
+
+                <li>Server becomes slow</li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+    <!-- COMPLETABLE FUTURE -->
+
+    <h2 class="section-title">Can CompletableFuture Solve This?</h2>
+
+    <div class="custom-card">
+
+        <p>
+
+            Yes, partially.
+
+        </p>
+
+        <p>
+
+            We can call APIs in parallel using:
+
+        </p>
+
+<pre><code>CompletableFuture.supplyAsync()</code></pre>
+
+        <h4 class="mt-4">Parallel Flow Using CompletableFuture</h4>
+
+<pre><code>Client Request
+
+      |
+
+      v
+
+ Main Thread
+
+      |
+
+      |-----> Thread-1 -> Service1
+
+      |
+
+      |-----> Thread-2 -> Service2
+
+      |
+
+      |-----> Thread-3 -> Service3
+
+      |
+
+      v
+
+ Combine Result</code></pre>
+
+        <div class="thread-box">
+
+            <h5>Still There is a Problem ⚠️</h5>
+
+            <p>
+
+                Even though APIs are parallel:
+
+            </p>
+
+            <ul>
+
+                <li>Main thread still exists</li>
+
+                <li>3 additional worker threads created</li>
+
+            </ul>
+
+            <p>
+
+                Total threads used:
+
+            </p>
+
+<pre><code>1 Main Thread
+
++ 3 Worker Threads
+
+-------------------
+
+4 Threads Reserved</code></pre>
+
+            <p>
+
+                If 10,000 requests come:
+
+            </p>
+
+<pre><code>10,000 × 4 = 40,000 threads</code></pre>
+
+            <p>
+
+                Huge scalability problem.
+
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- WEBCLIENT -->
+
+    <h2 class="section-title">How WebClient Solves This</h2>
+
+    <div class="custom-card">
+
+        <p>
+
+            WebClient uses:
+
+        </p>
+
+        <ul>
+
+            <li>Event Loop</li>
+
+            <li>Reactive Streams</li>
+
+            <li>Non-Blocking I/O</li>
+
+            <li>OS-level socket notification</li>
+
+        </ul>
+
+        <div class="nonblocking-box">
+
+            <h5>What Happens Internally ✅</h5>
+
+            <ul>
+
+                <li>Thread sends request</li>
+
+                <li>Thread becomes FREE immediately</li>
+
+                <li>OS watches sockets using epoll/kqueue</li>
+
+                <li>OS informs event loop when response comes</li>
+
+                <li>Event loop executes callback</li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+    <!-- WHY WEBCLIENT FAST -->
+
+    <h2 class="section-title">Why WebClient is Faster?</h2>
+
+    <div class="row g-4">
+
+        <div class="col-md-4">
+
+            <div class="custom-card text-center">
+
+                <h3>Less Threads</h3>
+
+                <p>
+
+                    Few event-loop threads can handle thousands of requests.
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="custom-card text-center">
+
+                <h3>No Blocking</h3>
+
+                <p>
+
+                    Threads are never stuck waiting for API responses.
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="custom-card text-center">
+
+                <h3>High Scalability</h3>
+
+                <p>
+
+                    Perfect for microservices and high traffic systems.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- COMPARISON TABLE -->
+
+    <h2 class="section-title">RestTemplate vs WebClient Comparison</h2>
+
+    <div class="table-responsive comparison-table">
+
+        <table class="table table-bordered mb-0">
+
+            <thead>
+
+                <tr>
+
+                    <th>Feature</th>
+
+                    <th>RestTemplate</th>
+
+                    <th>WebClient</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr>
+
+                    <td>Programming Style</td>
+
+                    <td>Synchronous</td>
+
+                    <td>Reactive</td>
+
+                </tr>
+
+                <tr>
+
+                    <td>Blocking</td>
+
+                    <td>Yes ❌</td>
+
+                    <td>No ✅</td>
+
+                </tr>
+
+                <tr>
+
+                    <td>Thread Waiting</td>
+
+                    <td>Yes</td>
+
+                    <td>No</td>
+
+                </tr>
+
+                <tr>
+
+                    <td>Scalability</td>
+
+                    <td>Low</td>
+
+                    <td>Very High</td>
+
+                </tr>
+
+                <tr>
+
+                    <td>Performance</td>
+
+                    <td>Medium</td>
+
+                    <td>High</td>
+
+                </tr>
+
+                <tr>
+
+                    <td>Thread Usage</td>
+
+                    <td>More</td>
+
+                    <td>Very Less</td>
+
+                </tr>
+
+                <tr>
+
+                    <td>Best For</td>
+
+                    <td>Simple Applications</td>
+
+                    <td>High Traffic Systems</td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+</div>
     <h1>What is WebClient in Spring Boot?</h1>
 
     <p>
@@ -48,7 +543,8 @@
     <div class="text-center mt-4 mb-4">
         <img src="../image/web-client.png"
             alt="Event Loop Flow Diagram"
-            class="img-fluid rounded shadow">
+            class="img-fluid rounded shadow"
+            style="width: 400px; max-width: 100%; height: auto;">
     </div>
     <h2>✅ Step-by-Step Explanation</h2>
     <div class="step-card">
