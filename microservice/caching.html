@@ -1,0 +1,1373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cache</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+   
+</head>
+<body>
+    <div id="include-index"></div>
+
+    <script>
+        fetch('../codingcure.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('include-index').innerHTML = data;
+        });
+    </script>
+
+    <button id="scrollToTopBtn" class="btn btn-primary rounded-circle position-fixed" title="Go to top" style="bottom: 20px; right: 20px; display: none;">
+    <i class="fas fa-arrow-up"></i>
+</button>
+
+<script src="../scrollTop.js"></script>
+
+   <!-- HERO SECTION -->
+
+    <div class="hero-section text-center">
+
+        <div class="container">
+
+            <h1 class="display-4 fw-bold">
+
+                <i class="bi bi-lightning-charge-fill"></i>
+
+                Caching in Spring Boot
+
+            </h1>
+
+        </div>
+<div class="card p-4 mb-5 shadow" style="border-radius:15px;">
+
+            <div class="row text-center">
+
+                <div class="col-md-4 mb-2">
+
+                    <a href="#what-is-caching"
+
+                    class="btn btn-outline-primary w-100">
+
+                    ⚡ What is Caching
+
+                    </a>
+
+                </div>
+
+                <div class="col-md-4 mb-2">
+
+                    <a href="#why-cache"
+
+                    class="btn btn-outline-success w-100">
+
+                    🚀 Why Use Cache
+
+                    </a>
+
+                </div>
+
+                <div class="col-md-4 mb-2">
+
+                    <a href="#real-life-cache"
+
+                    class="btn btn-outline-danger w-100">
+
+                    🌍 Real-Life Examples
+
+                    </a>
+
+                </div>
+
+                <div class="col-md-4 mb-2">
+
+                    <a href="#cache-types"
+
+                    class="btn btn-outline-warning w-100">
+
+                    🧠 Types of Cache
+
+                    </a>
+
+                </div>
+
+                <div class="col-md-4 mb-2">
+
+                    <a href="#simple-cache"
+
+                    class="btn btn-outline-success w-100">
+
+                    💾 In-memory Cache With Spring Boot
+
+                    </a>
+
+                </div>
+
+                <div class="col-md-4 mb-2">
+
+                    <a href="#redis-setup"
+
+                    class="btn btn-outline-primary w-100">
+
+                    🟥 Redis Setup
+
+                    </a>
+
+                </div>
+
+                <div class="col-md-4 mb-2">
+
+                    <a href="#redis-server"
+
+                    class="btn btn-outline-info w-100">
+
+                    🖥️ Start Redis Server
+
+                    </a>
+
+                </div>
+                 <div class="col-md-4 mb-2">
+
+                    <a href="#redis-implementation"
+
+                    class="btn  btn-outline-success w-100">
+
+                    💻 Redis Cache Implementation in Spring Boot
+
+                    </a>
+
+                </div>
+
+                <div class="col-md-4 mb-2">
+
+                    <a href="#redis-commands"
+
+                    class="btn btn-outline-info w-100">
+
+                    💻 Redis Commands
+
+                    </a>
+
+                </div>
+
+                <div class="col-md-4 mb-2">
+
+                    <a href="#redis-benefits"
+
+                    class="btn btn-outline-dark w-100">
+
+                    ⭐ Redis Benefits
+
+                    </a>
+
+                </div>
+
+            </div>
+
+    </div>
+    </div>
+    
+
+    <div class="container my-5">
+
+        <!-- WHAT IS CACHING -->
+
+        <div class="section-card" id="what-is-caching">
+
+            <h2 class="section-title">
+
+                <i class="bi bi-database-fill-check"></i>
+
+                What is Caching?
+
+            </h2>
+
+            <p>
+
+                Caching is a technique used to store frequently accessed data temporarily
+
+                in a faster storage layer so that future requests can be served quickly.
+
+            </p>
+
+            <div class="flow-box mt-4">
+
+                Client → Application → Cache → Database
+
+            </div>
+
+        </div>
+
+        <!-- WHY USE CACHE -->
+
+        <div class="section-card" id="why-cache">
+
+            <h2 class="section-title">
+
+                <i class="bi bi-speedometer2"></i>
+
+                Why We Use Caching
+
+            </h2>
+
+            <div class="row g-4 mt-2">
+
+                <div class="col-md-3">
+
+                    <div class="feature-box bg-soft-primary">
+
+                        <i class="bi bi-lightning-charge fs-1 text-primary"></i>
+
+                        <h5 class="mt-3">Fast Response</h5>
+
+                        <p>Returns data quickly from memory.</p>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <div class="feature-box bg-soft-success">
+
+                        <i class="bi bi-server fs-1 text-success"></i>
+
+                        <h5 class="mt-3">Less DB Load</h5>
+
+                        <p>Reduces unnecessary database hits.</p>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <div class="feature-box bg-soft-warning">
+
+                        <i class="bi bi-graph-up-arrow fs-1 text-warning"></i>
+
+                        <h5 class="mt-3">Scalability</h5>
+
+                        <p>Handles high traffic efficiently.</p>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <div class="feature-box bg-soft-danger">
+
+                        <i class="bi bi-emoji-smile fs-1 text-danger"></i>
+
+                        <h5 class="mt-3">Better UX</h5>
+
+                        <p>Improves user experience.</p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- REAL LIFE EXAMPLE -->
+<div class="section-card" id="real-life-cache">
+
+    <h2 class="section-title">
+
+        <i class="bi bi-globe2"></i>
+
+        Real-Life Examples of Caching
+
+    </h2>
+
+    <div class="row g-4">
+
+        <!-- E-COMMERCE -->
+
+        <div class="col-md-6">
+
+            <div class="p-4 border rounded-4 h-100 shadow-sm">
+
+                <h4 class="text-primary">
+
+                    <i class="bi bi-cart-fill"></i>
+
+                    E-Commerce Website
+
+                </h4>
+
+                <p>
+
+                    Suppose 10 lakh users open the same product page
+
+                    during a sale.
+
+                </p>
+
+                <div class="flow-box">
+
+Without Cache:
+
+Every request hits Database
+
+With Cache:
+
+First request hits DB
+
+Remaining requests served from Cache
+
+                </div>
+
+                <p class="mt-3">
+
+                    Example:
+
+                    Product details, offers, ratings, images.
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- YOUTUBE -->
+
+        <div class="col-md-6">
+
+            <div class="p-4 border rounded-4 h-100 shadow-sm">
+
+                <h4 class="text-danger">
+
+                    <i class="bi bi-youtube"></i>
+
+                    YouTube / OTT Platform
+
+                </h4>
+
+                <p>
+
+                    Frequently watched videos are cached closer
+
+                    to users using CDN cache.
+
+                </p>
+
+                <div class="flow-box">
+
+User opens Video
+
+        ↓
+
+Video fetched from nearby CDN Cache
+
+        ↓
+
+Faster streaming experience
+
+                </div>
+
+                <p class="mt-3">
+
+                    Example:
+
+                    Thumbnails, trending videos, subtitles.
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- GOOGLE -->
+
+        <div class="col-md-6">
+
+            <div class="p-4 border rounded-4 h-100 shadow-sm">
+
+                <h4 class="text-success">
+
+                    <i class="bi bi-search"></i>
+
+                    Google Search
+
+                </h4>
+
+                <p>
+
+                    Popular search results are cached because millions
+
+                    of users search the same keywords repeatedly.
+
+                </p>
+
+                <div class="flow-box">
+
+Search Query
+
+    ↓
+
+Check Cached Results
+
+    ↓
+
+Return Faster Response
+
+                </div>
+
+                <p class="mt-3">
+
+                    Example:
+
+                    Trending searches, suggestions, maps data.
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- BANKING -->
+
+        <div class="col-md-6">
+
+            <div class="p-4 border rounded-4 h-100 shadow-sm">
+
+                <h4 class="text-warning">
+
+                    <i class="bi bi-bank"></i>
+
+                    Banking Application
+
+                </h4>
+
+                <p>
+
+                    Some data is cached carefully to reduce DB load.
+
+                </p>
+
+                <div class="flow-box">
+
+Frequently Read Data:
+
+- Branch Details
+
+- IFSC Codes
+
+- Currency Rates
+
+                </div>
+
+                <p class="mt-3 text-danger">
+
+                    Note:
+
+                    Sensitive live balance data is usually NOT cached.
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- FOOD DELIVERY -->
+
+        <div class="col-md-6">
+
+            <div class="p-4 border rounded-4 h-100 shadow-sm">
+
+                <h4 style="color:#ff6b00;">
+
+                    <i class="bi bi-bag-fill"></i>
+
+                    Food Delivery Apps
+
+                </h4>
+
+                <p>
+
+                    Restaurant lists and menus are cached because
+
+                    users request them repeatedly.
+
+                </p>
+
+                <div class="flow-box">
+
+User Opens App
+
+    ↓
+
+Nearby Restaurants Loaded from Cache
+
+    ↓
+
+Fast UI Loading
+
+                </div>
+
+                <p class="mt-3">
+
+                    Example:
+
+                    Menus, banners, restaurant ratings.
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- WEATHER -->
+
+        <div class="col-md-6">
+
+            <div class="p-4 border rounded-4 h-100 shadow-sm">
+
+                <h4 class="text-info">
+
+                    <i class="bi bi-cloud-sun-fill"></i>
+
+                    Weather Application
+
+                </h4>
+
+                <p>
+
+                    Weather APIs are expensive and rate limited,
+
+                    so responses are cached for a few minutes.
+
+                </p>
+
+                <div class="flow-box">
+
+First API Call
+
+    ↓
+
+Weather API Response
+
+    ↓
+
+Store in Cache (5 mins)
+
+    ↓
+
+Next users get cached response
+
+                </div>
+
+                <p class="mt-3">
+
+                    Saves API cost and improves speed.
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- SOCIAL MEDIA -->
+
+        <div class="col-md-6">
+
+            <div class="p-4 border rounded-4 h-100 shadow-sm">
+
+                <h4 style="color:#6f42c1;">
+
+                    <i class="bi bi-instagram"></i>
+
+                    Social Media Platforms
+
+                </h4>
+
+                <p>
+
+                    News feed and user profile data are cached
+
+                    for faster scrolling experience.
+
+                </p>
+
+                <div class="flow-box">
+
+Open Feed
+
+    ↓
+
+Fetch Cached Posts
+
+    ↓
+
+Smooth User Experience
+
+                </div>
+
+                <p class="mt-3">
+
+                    Example:
+
+                    Profile images, stories, reels metadata.
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- GAMING -->
+
+        <div class="col-md-6">
+
+            <div class="p-4 border rounded-4 h-100 shadow-sm">
+
+                <h4 style="color:#198754;">
+
+                    <i class="bi bi-controller"></i>
+
+                    Online Gaming
+
+                </h4>
+
+                <p>
+
+                    Game configuration and leaderboard data
+
+                    are cached for quick access.
+
+                </p>
+
+                <div class="flow-box">
+
+            Player Opens Game
+
+                ↓
+
+            Load Cached Configurations
+
+                ↓
+
+            Reduce Server Processing
+
+                </div>
+
+                <p class="mt-3">
+
+                    Example:
+
+                    Rankings, rewards, settings.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+        <!-- WHEN TO USE -->
+
+        <div class="section-card">
+
+            <h2 class="section-title">
+
+                <i class="bi bi-check-circle-fill"></i>
+
+                When We Use Caching
+
+            </h2>
+
+            <ul>
+
+                <li>Frequently accessed data</li>
+
+                <li>Rarely changing data</li>
+
+                <li>Heavy database queries</li>
+
+                <li>External API responses</li>
+
+                <li>Product catalog data</li>
+
+            </ul>
+
+        </div>
+
+        <!-- TYPES OF CACHE -->
+
+        <div class="section-card" id="cache-types">
+
+            <h2 class="section-title">
+
+                <i class="bi bi-diagram-3-fill"></i>
+
+                Types of Caching
+
+            </h2>
+
+            <div class="row g-4">
+
+                <div class="col-md-6">
+
+                    <div class="p-4 border rounded-4 h-100">
+
+                        <h4>1. In-Memory Cache</h4>
+
+                        <p>Stored inside JVM memory (RAM).</p>
+
+                        <div class="code-box">
+
+spring.cache.type=simple
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="p-4 border rounded-4 h-100">
+
+                        <h4>2. Distributed Cache</h4>
+
+                        <p>Shared across multiple servers.</p>
+
+                        <ul>
+
+                            <li>Redis</li>
+
+                            <li>Memcached</li>
+
+                        </ul>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+     <!-- STEP 1 -->
+<div class="mb-5" id="simple-cache">
+    <h4 class="text-primary">
+        Step 1: Add Cache Dependency
+    </h4>
+
+    <p>
+        Add Spring Boot Cache dependency inside
+        <strong>pom.xml</strong>
+    </p>
+
+    <pre><code>
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-cache&lt;/artifactId&gt;
+&lt;/dependency&gt;
+    </code></pre>
+</div>
+
+<!-- STEP 2 -->
+<div class="mb-5">
+    <h4 class="text-primary">
+        Step 2: Enable Simple In-Memory Cache
+    </h4>
+
+    <p>
+        Add below property inside
+        <strong>application.properties</strong>
+    </p>
+
+    <pre><code>
+spring.cache.type=simple
+    </code></pre>
+
+    <p class="mt-3">
+        This creates an in-memory cache inside JVM memory.
+    </p>
+</div>
+
+<!-- STEP 3 -->
+<div class="mb-5">
+    <h4 class="text-primary">
+        Step 3: Create Cache Configuration Class
+    </h4>
+
+    <p>
+        Create a cache manager configuration.
+    </p>
+
+    <pre><code>
+package com.codingcure.config;
+
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class CachingConfig {
+
+    @Bean
+    public CacheManager cacheManager() {
+        return new ConcurrentMapCacheManager("fund");
+    }
+
+}
+    </code></pre>
+</div>
+
+<!-- STEP 4 -->
+<div class="mb-5">
+    <h4 class="text-primary">
+        Step 4: Use @Cacheable
+    </h4>
+
+    <p>
+        Fetch data from cache if already available.
+    </p>
+
+    <pre><code>
+@Service
+public class FundService {
+
+    @Cacheable(
+        value = "fund",
+        key = "#fundId",
+        condition = "#fundId > 1"
+    )
+    public Fund getFund(int fundId) {
+
+        Fund fundInfo = null;
+
+        Optional&lt;Fund&gt; fund =
+                fundRepo.findById(fundId);
+
+        if (fund.isPresent()) {
+            fundInfo = fund.get();
+        }
+
+        return fundInfo;
+    }
+}
+    </code></pre>
+</div>
+
+<!-- STEP 5 -->
+<div class="mb-5">
+    <h4 style="color:#6610f2;">
+        Step 5: Use @CachePut
+    </h4>
+
+    <p>
+        Update database and cache together.
+    </p>
+
+    <pre><code>
+@CachePut(
+    value = "fund",
+    key = "#fund.fundId"
+)
+public Fund updatefund(Fund fund) {
+
+    Fund updatedFund =
+            fundRepo.save(fund);
+
+    return updatedFund;
+}
+    </code></pre>
+</div>
+
+
+<!-- STEP 6 -->
+<div class="mb-5">
+    <h4 style="color:#dc3545;">
+        Step 6: Use @CacheEvict
+    </h4>
+
+    <p>
+        Remove data from cache when deleting records.
+    </p>
+
+    <pre><code>
+@CacheEvict(
+    value = "fund",
+    key = "#fundId"
+)
+public String deletefund(int fundId) {
+
+    String deletedMsg = null;
+
+    Optional&lt;Fund&gt; existingFund =
+            fundRepo.findById(fundId);
+
+    if (existingFund.isPresent()) {
+
+        fundRepo.deleteById(fundId);
+
+        deletedMsg =
+                "Deleted successfully of Id: "
+                        + fundId;
+
+    } else {
+
+        deletedMsg =
+                "fund id is not available";
+    }
+
+    return deletedMsg;
+}
+    </code></pre>
+</div>
+<!-- REDIS CACHE IMPLEMENTATION -->
+<div class="section-card" id="redis-implementation">
+
+    <h2 class="section-title">
+        <i class="bi bi-database-fill"></i>
+        Redis Cache Implementation in Spring Boot
+    </h2>
+
+    <p class="mb-4">
+        Redis is a distributed in-memory cache used in production-level
+        microservices applications for high performance and scalability.
+    </p>
+
+    <!-- STEP 1 -->
+    <div class="mb-5">
+
+        <h4 class="text-primary">
+            Step 1: Add Redis Dependencies
+        </h4>
+
+        <p>
+            Add below dependencies inside
+            <strong>pom.xml</strong>
+        </p>
+
+        <pre><code>
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.data&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-data-redis&lt;/artifactId&gt;
+    &lt;version&gt;3.4.4&lt;/version&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+    &lt;groupId&gt;redis.clients&lt;/groupId&gt;
+    &lt;artifactId&gt;jedis&lt;/artifactId&gt;
+    &lt;version&gt;5.2.0&lt;/version&gt;
+&lt;/dependency&gt;
+        </code></pre>
+
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="mb-5">
+
+        <h4 class="text-success">
+            Step 2: Configure Redis Properties
+        </h4>
+
+        <p>
+            Add below properties inside
+            <strong>application.properties</strong>
+        </p>
+
+        <pre><code>
+spring.cache.type=redis
+
+spring.data.redis.host=localhost
+spring.data.redis.port=6379
+spring.data.redis.database=1
+        </code></pre>
+
+        <ul class="mt-3">
+            <li>
+                <strong>host</strong> → Redis server host
+            </li>
+
+            <li>
+                <strong>port</strong> → Redis default port
+            </li>
+
+            <li>
+                <strong>database=1</strong> → Redis logical DB
+            </li>
+        </ul>
+
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="mb-5">
+
+        <h4 class="text-warning">
+            Step 3: Create Redis Cache Configuration
+        </h4>
+
+        <p>
+            Configure Redis Cache Manager with TTL and Serialization.
+        </p>
+
+        <pre><code>
+@Configuration
+public class CachingConfig {
+
+    @Bean
+    public RedisCacheManager redisCacheManager(
+            RedisConnectionFactory redisConnectionFactory) {
+
+        RedisCacheConfiguration redisCacheConfiguration =
+                RedisCacheConfiguration.defaultCacheConfig()
+                .entryTtl(Duration.ofSeconds(30))
+                .disableCachingNullValues()
+                .serializeValuesWith(
+                        RedisSerializationContext
+                        .SerializationPair
+                        .fromSerializer(
+                            new GenericJackson2JsonRedisSerializer()
+                        )
+                );
+
+        return RedisCacheManager
+                .builder(redisConnectionFactory)
+                .cacheDefaults(redisCacheConfiguration)
+                .build();
+    }
+
+    @Bean
+    RedisConnectionFactory redisConnectionFactory() {
+        return new JedisConnectionFactory();
+    }
+
+}
+        </code></pre>
+
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="mb-5">
+
+        <h4 class="text-danger">
+            Step 4: Understanding Redis Configuration
+        </h4>
+
+        <div class="row g-4 mt-2">
+
+            <div class="col-md-6">
+                <div class="p-4 border rounded-4 h-100">
+
+                    <h5 class="text-primary">
+                        entryTtl(Duration.ofSeconds(30))
+                    </h5>
+
+                    <p>
+                        Cache data automatically expires after 30 seconds.
+                    </p>
+
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="p-4 border rounded-4 h-100">
+
+                    <h5 class="text-success">
+                        disableCachingNullValues()
+                    </h5>
+
+                    <p>
+                        Prevents storing null values inside Redis cache.
+                    </p>
+
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="p-4 border rounded-4 h-100">
+
+                    <h5 class="text-warning">
+                        GenericJackson2JsonRedisSerializer
+                    </h5>
+
+                    <p>
+                        Converts Java objects into JSON format before storing.
+                    </p>
+
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="p-4 border rounded-4 h-100">
+
+                    <h5 class="text-danger">
+                        JedisConnectionFactory
+                    </h5>
+
+                    <p>
+                        Creates Redis connection using Jedis client.
+                    </p>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- STEP 5 -->
+    <div class="mb-5">
+
+        <h4 style="color:#6610f2;">
+            Step 5: Use Cache Annotations
+        </h4>
+
+        <p>
+            Same cache annotations work with Redis also.
+        </p>
+
+        <pre><code>
+@Cacheable(
+    value = "fund",
+    key = "#fundId"
+)
+public Fund getFund(int fundId) {
+
+    return fundRepo.findById(fundId).get();
+}
+        </code></pre>
+
+        <p class="mt-3">
+            Flow:
+        </p>
+
+        <div class="flow-box">
+First Request
+    ↓
+Fetch From Database
+    ↓
+Store Inside Redis
+    ↓
+Return Response
+
+Second Request
+    ↓
+Fetch Directly From Redis
+        </div>
+
+    </div>
+    <!-- STEP 6 -->
+<div class="mb-5" id="redis-setup">
+
+    <h4 style="color:#0d6efd;">
+        Step 6: Install Redis
+    </h4>
+
+    <p class="mb-3">
+        Download and install Redis Server from below link.
+    </p>
+
+    <a href="https://redis.io/docs/latest/operate/oss_and_stack/install/install-redis/"
+       target="_blank"
+       class="btn btn-danger rounded-pill px-4">
+        <i class="bi bi-download"></i>
+        Install Redis
+    </a>
+
+</div>
+
+    <!-- STEP 6 -->
+    <div class="mb-5" id="redis-server">
+
+        <h4 style="color:#198754;">
+            Step 7: Start Redis Server
+        </h4>
+
+        <p>
+            Redis server must be running before starting Spring Boot application.
+        </p>
+
+        <pre><code>
+redis-server
+        </code></pre>
+
+    </div>
+
+    <!-- STEP 7 -->
+    <div class="mb-5" id="redis-commands">
+
+    <h4 class="text-danger">
+        Step 8: Important Redis Commands
+    </h4>
+
+    <div class="row g-4 mt-2">
+
+        <!-- COMMAND 1 -->
+        <div class="col-md-6">
+            <div class="p-4 border rounded-4 h-100 shadow-sm">
+
+                <h5 class="text-primary">
+                    redis-cli
+                </h5>
+
+                <p>
+                    Opens Redis Command Line Interface.
+                </p>
+
+            </div>
+        </div>
+
+        <!-- COMMAND 2 -->
+        <div class="col-md-6">
+            <div class="p-4 border rounded-4 h-100 shadow-sm">
+
+                <h5 class="text-success">
+                    keys *
+                </h5>
+
+                <p>
+                    Displays all keys available inside Redis database.
+                </p>
+
+            </div>
+        </div>
+
+        <!-- COMMAND 3 -->
+        <div class="col-md-6">
+            <div class="p-4 border rounded-4 h-100 shadow-sm">
+
+                <h5 class="text-warning">
+                    get "fund::1"
+                </h5>
+
+                <p>
+                    Fetches cached value for fundId = 1.
+                </p>
+
+            </div>
+        </div>
+
+        <!-- COMMAND 4 -->
+        <div class="col-md-6">
+            <div class="p-4 border rounded-4 h-100 shadow-sm">
+
+                <h5 class="text-danger">
+                    info keyspace
+                </h5>
+
+                <p>
+                    Displays Redis database statistics and key information.
+                </p>
+
+            </div>
+        </div>
+
+        <!-- COMMAND 5 -->
+        <div class="col-md-6">
+            <div class="p-4 border rounded-4 h-100 shadow-sm">
+
+                <h5 style="color:#6610f2;">
+                    config get databases
+                </h5>
+
+                <p>
+                    Shows total logical databases configured in Redis.
+                </p>
+
+            </div>
+        </div>
+
+        <!-- COMMAND 6 -->
+        <div class="col-md-6">
+            <div class="p-4 border rounded-4 h-100 shadow-sm">
+
+                <h5 style="color:#198754;">
+                    select 1
+                </h5>
+
+                <p>
+                    Switches Redis connection to database number 1.
+                </p>
+
+            </div>
+        </div>
+
+        <!-- COMMAND 7 -->
+        <div class="col-md-6">
+            <div class="p-4 border rounded-4 h-100 shadow-sm">
+
+                <h5 style="color:#fd7e14;">
+                    ttl "fund::1"
+                </h5>
+
+                <p>
+                    Displays remaining expiration time of cache key.
+                </p>
+
+            </div>
+        </div>
+
+        <!-- COMMAND 8 -->
+        <div class="col-md-6">
+            <div class="p-4 border rounded-4 h-100 shadow-sm">
+
+                <h5 style="color:#0d6efd;">
+                    del "fund::1"
+                </h5>
+
+                <p>
+                    Deletes specific cache key manually from Redis.
+                </p>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+    <!-- BENEFITS -->
+    <div class="alert alert-primary rounded-4 mt-4" id="redis-benefits">
+
+        <h5>
+            <i class="bi bi-lightning-charge-fill"></i>
+            Why Redis is Better Than Simple Cache?
+        </h5>
+
+        <ul class="mb-0 mt-3">
+
+            <li>
+                Shared across multiple microservices instances
+            </li>
+
+            <li>
+                Extremely fast in-memory operations
+            </li>
+
+            <li>
+                Supports TTL (automatic expiration)
+            </li>
+
+            <li>
+                Works even after application restart
+            </li>
+
+            <li>
+                Production-ready distributed caching solution
+            </li>
+
+        </ul>
+
+    </div>
+
+</div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

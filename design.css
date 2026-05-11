@@ -45,13 +45,57 @@ h4 {
     margin-top: 1rem !important; /* Top margin for spacing */
     margin-bottom: 0.5rem !important; /* Bottom margin for spacing */
 }
+
 pre {
-    background-color: black; /* Light grey background for code blocks */
-    color: white;
-    padding: 10px; /* Padding for code blocks */
-    border-radius: 5px; /* Rounded corners for code blocks */
-    overflow-x: auto; /* Allow horizontal scrolling for long lines */
-    font-family: 'Courier New', Courier, monospace; /* Monospace font for code */
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: #f8fafc;
+    padding: 22px;
+    border-radius: 16px;
+    overflow-x: auto;
+    font-family: 'Fira Code', 'Courier New', monospace;
+    font-size: 15px;
+    line-height: 1.7;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow:
+        0 10px 25px rgba(0, 0, 0, 0.25),
+        0 0 0 1px rgba(255, 255, 255, 0.03);
+    margin-top: 15px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+pre::before {
+    content: "CODE";
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: #94a3b8;
+    font-weight: bold;
+}
+
+pre code {
+    color: #e2e8f0;
+    white-space: pre-wrap;
+}
+
+pre::-webkit-scrollbar {
+    height: 8px;
+}
+
+pre::-webkit-scrollbar-track {
+    background: #1e293b;
+    border-radius: 10px;
+}
+
+pre::-webkit-scrollbar-thumb {
+    background: #475569;
+    border-radius: 10px;
+}
+
+pre::-webkit-scrollbar-thumb:hover {
+    background: #64748b;
 }
 p {
     line-height: 1.6; /* Improved line height for readability */
