@@ -1,0 +1,107 @@
+package streamAPI;
+
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+public class ImportantInterviewQuestions {
+    public static void main(String[] args) {
+       String str = "HelloWorld";
+        String collect = str.chars()
+                .filter(ch -> !"aeiouAEIOU".contains(String.valueOf((char) ch)))
+                .mapToObj(ch -> String.valueOf((char) ch))
+                .collect(Collectors.joining());
+        System.out.println(collect);
+//        convert a list of string to uppercase
+        List<String> nameList = Arrays.asList("Ram", "shyam", "herry", "sachin");
+        List<String> uppperList = nameList.stream()
+                .map(String::toUpperCase)
+                .toList();
+        System.out.println(uppperList);
+//        count the frequency of words in a given string
+        String st = "java python java html";
+        Map<String, Long> collect1 = Arrays.stream(st.split(" "))
+                .collect(Collectors.groupingBy(word -> word, Collectors.counting()));
+        System.out.println(collect1);
+
+//        occurance of each charcter
+        String s = "welcome to my coding cure";
+        Map<Character, Long> collect2 = s.chars()
+                .mapToObj(ch -> (char) ch)
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+        System.out.println(collect2);
+//        length of each word in a string
+        String str1 = "welcome to my coding cure welcome";
+        /*LinkedHashMap<String, Integer> collect3 = Arrays.stream(str1.split(" "))
+                .collect(Collectors.toMap(word -> word, String::length))
+                .entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByKey())
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (e1, e2) -> e1,
+                        LinkedHashMap::new
+                ));
+
+        System.out.println(collect3);*/
+
+        LinkedHashMap<String, Integer> insertionOrder = Arrays.stream(str1.split(" "))
+                .collect(Collectors.toMap(Function.identity(), String::length, (oldVal, newVal) -> oldVal, LinkedHashMap::new));
+
+        System.out.println("============");
+
+        System.out.println(insertionOrder);
+
+//        Find the first non-repeating character in a string
+        String str3 = "cbadbdc";
+        Optional<Map.Entry<Character, Long>> firstNonRepeatedChar = str3.chars()
+                .mapToObj(ch -> (char) (char) ch)
+                .collect(Collectors.groupingBy(Function.identity(),LinkedHashMap::new, Collectors.counting()))
+                .entrySet()
+                .stream()
+                .filter(entry -> entry.getValue() == 1)
+                .findFirst();
+        System.out.println("firstNonRepeatedChar: "+firstNonRepeatedChar.get());
+
+        int[] freq = new int[256]; // ASCII size
+
+
+//        Find the first repeating character in a string
+//        write a program to find the second highest element
+
+        int[] x = {1, 2, 5, 6,6, 3, 8,8,8,7,7};
+        Optional<Integer> secondHighestElement = Arrays.stream(x)
+                .boxed()
+                .sorted(Comparator.reverseOrder())
+                .distinct()
+                .skip(1)
+                .findFirst();
+        System.out.println(secondHighestElement.get());
+
+//        Longest String in an Array of Strings
+String str4 = "welcome to my coding cure abcdedfhgjkhffg";
+        Optional<String> longestString = Arrays.stream(str4.split(" "))
+                .max(Comparator.comparingInt(String::length));
+        System.out.println(longestString.get());
+
+//        calculate sum
+      int num = 12345;
+        int sum = String.valueOf(num).chars()
+                .map(ch -> ch - '0')
+                .sum();
+        System.out.println(sum);
+
+//        Find Total no of count of particular word from a list
+
+        List<String> list = Arrays.asList("java python java html", "java java css html", "hadoop spark java");
+        long count = list.stream()
+                .flatMap(word -> Arrays.stream(word.split(" ")))
+                .filter(word -> word.equalsIgnoreCase("java"))
+                .count();
+        System.out.println(count);
+
+
+    }
+}
