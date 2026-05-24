@@ -47,12 +47,7 @@
   <lastmod>2026-03-22T11:29:05+00:00</lastmod>
   <priority>0.80</priority>
 </url>
-      <url>
-  <loc>https://codingcure.co.in/refundPolicy.html</loc>
-  <lastmod>2026-03-22T11:29:05+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-      <url>
+<url>
   <loc>https://codingcure.co.in/contactUs.html</loc>
   <lastmod>2026-03-22T11:29:05+00:00</lastmod>
   <priority>0.80</priority>
@@ -74,6 +69,16 @@
 </url>
       <url>
   <loc>https://codingcure.co.in/restAPI/restAPI.html</loc>
+  <lastmod>2026-03-22T11:29:05+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://codingcure.co.in/microservice/microservice.html</loc>
+  <lastmod>2026-03-22T11:29:05+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://codingcure.co.in/java/thread.html</loc>
   <lastmod>2026-03-22T11:29:05+00:00</lastmod>
   <priority>0.80</priority>
 </url>
