@@ -123,12 +123,31 @@ public class BankingApplication {
         }
     }
 }</code></pre>
+<h2>Problem with Old Approach</h2>
+<pre><code>
+    if (account instanceof SavingsAccount) {
+
+    SavingsAccount savings = (SavingsAccount) account;
+
+    savings.displayAccountDetails();
+
+    System.out.println(
+
+            "Annual Interest: "
+
+            + (savings.getBalance() * savings.interestRate / 100));
+
+}
+</code></pre>
+<p>Java checks the type and then we manually cast.</p>
+<p>boilerplate code</p>
 
     <h2>Benefits of Pattern Matching in This Example</h2>
     <ul>
         <li><strong>Conciseness:</strong> Less boilerplate code is needed for type checking and casting.</li>
         <li><strong>Readability:</strong> The code is easier to read and understand.</li>
         <li><strong>Safety:</strong> The risk of <code>ClassCastException</code> is eliminated.</li>
+        <li><strong>Boiler Plate</strong> reduces boilerplate code, improves readability, and avoids unnecessary explicit casting.</li>
     </ul>
 
     <h2>Conclusion</h2>

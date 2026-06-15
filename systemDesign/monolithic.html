@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Monolithic Architecture Tutorial</title>
+
+    <meta name="description"
+        content="Learn Monolithic Architecture with real-time examples, advantages, disadvantages, banking examples, interview questions, and comparison with Microservices.">
+
+    <link rel="canonical"
+        href="https://codingcure.co.in/microservice/monolithic.html">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../css/SectionCards.css">
+
+</head>
+
+<body>
+
+<div id="include-index"></div>
+
+<script>
+    fetch('../codingcure.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('include-index').innerHTML = data;
+        });
+</script>
+
+<button id="scrollToTopBtn"
+        class="btn btn-primary rounded-circle position-fixed"
+        title="Go to top"
+        style="bottom:20px; right:20px; display:none;">
+
+    <i class="fas fa-arrow-up"></i>
+
+</button>
+
+<script src="../scrollTop.js"></script>
+
+<div class="container py-4">
+
+    <!-- HERO SECTION -->
+
+    <div class="hero-section text-center mb-5">
+
+        <h1 class="display-4 fw-bold">
+            Monolithic Architecture
+        </h1>
+
+        <p class="lead mt-4">
+            Learn Monolithic Architecture from basics to advanced with
+            real-time examples, advantages, disadvantages,
+            banking scenarios, and Microservices comparison.
+        </p>
+
+    </div>
+
+    <!-- INTRODUCTION -->
+
+    <div class="card section-card p-4">
+
+        <h2 class="text-primary mb-4">
+            What is Monolithic Architecture?
+        </h2>
+
+        <p>
+            A Monolithic Architecture is a software architecture where the entire
+            application is built as a single unit.
+        </p>
+
+        <p>
+            All modules such as:
+        </p>
+
+        <ul>
+            <li>Authentication</li>
+            <li>Payment</li>
+            <li>Order Management</li>
+            <li>Notification</li>
+            <li>Inventory</li>
+            <li>Security</li>
+        </ul>
+
+        <p>
+            exist inside one application and are deployed together.
+        </p>
+
+        <div class="alert alert-primary mt-4">
+
+            <strong>Simple Definition:</strong>
+
+            Entire application = ONE project + ONE deployment.
+
+        </div>
+
+    </div>
+
+    <!-- SHOPPING APP EXAMPLE -->
+
+    <div class="card section-card p-4">
+
+        <h2 class="text-success mb-4">
+            Real-Time Shopping Application Example
+        </h2>
+
+        <p>
+            Suppose we build an Online Shopping Application.
+        </p>
+
+        <div class="row mt-4">
+
+            <div class="col-md-4">
+                <div class="module-box">Login Module</div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="module-box">Product Module</div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="module-box">Cart Module</div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="module-box">Payment Module</div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="module-box">Order Module</div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="module-box">Notification Module</div>
+            </div>
+
+        </div>
+
+        <div class="alert alert-info mt-4">
+
+            All these modules run together as ONE application.
+
+        </div>
+
+    </div>
+
+    <!-- SPRING BOOT STRUCTURE -->
+
+    <div class="card section-card p-4">
+
+        <h2 class="text-primary mb-3">
+            Spring Boot Monolithic Project Structure
+        </h2>
+
+<pre><code>
+shopping-app
+ ├── controller
+ ├── service
+ ├── repository
+ ├── security
+ ├── payment
+ ├── order
+ ├── inventory
+ ├── notification
+ └── config
+</code></pre>
+
+        <p class="mt-3">
+            Everything exists inside one Spring Boot project.
+        </p>
+
+    </div>
+
+    <!-- BENEFITS -->
+
+    <div class="card section-card p-4">
+
+        <h2 class="text-success mb-5">
+            Benefits of Monolithic Architecture
+        </h2>
+
+        <div class="row">
+
+            <div class="col-md-6 mb-4">
+
+                <div class="icon-circle benefit-icon">
+                    <i class="fas fa-code"></i>
+                </div>
+
+                <h4>1. Easy Development</h4>
+
+                <p>
+                    Monolithic Architecture is easy to develop because:
+                </p>
+
+                <ul>
+                    <li>Single project</li>
+                    <li>Single codebase</li>
+                    <li>Single deployment</li>
+                    <li>Simple architecture</li>
+                </ul>
+
+                <p>
+                    Very useful for:
+                </p>
+
+                <ul>
+                    <li>Beginners</li>
+                    <li>College projects</li>
+                    <li>Startups</li>
+                </ul>
+
+            </div>
+
+            <div class="col-md-6 mb-4">
+
+                <div class="icon-circle benefit-icon">
+                    <i class="fas fa-bug"></i>
+                </div>
+
+                <h4>2. Easy Debugging</h4>
+
+                <p>
+                    Entire application runs in same runtime.
+                </p>
+
+                <p>
+                    Debugging becomes easier because:
+                </p>
+
+<pre><code>
+Controller
+   ↓
+Service
+   ↓
+Repository
+</code></pre>
+
+                <p>
+                    Everything exists inside same application.
+                </p>
+
+            </div>
+
+            <div class="col-md-6 mb-4">
+
+                <div class="icon-circle benefit-icon">
+                    <i class="fas fa-rocket"></i>
+                </div>
+
+                <h4>3. Easy Deployment</h4>
+
+                <p>
+                    Only one application needs deployment.
+                </p>
+
+<pre><code>
+java -jar app.jar
+</code></pre>
+
+                <p>
+                    Deployment becomes simple.
+                </p>
+
+            </div>
+
+            <div class="col-md-6 mb-4">
+
+                <div class="icon-circle benefit-icon">
+                    <i class="fas fa-database"></i>
+                </div>
+
+                <h4>4. Easier Transaction Management</h4>
+
+                <p>
+                    Database transactions become easier because
+                    all modules share same application and database.
+                </p>
+
+<pre><code>
+@Transactional
+public void placeOrder() {
+
+    payment();
+
+    saveOrder();
+
+}
+</code></pre>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- PROBLEMS -->
+
+    <div class="card section-card p-4">
+
+        <h2 class="text-danger mb-5">
+            Problems with Monolithic Architecture
+        </h2>
+
+        <div class="row">
+
+            <div class="col-md-6 mb-4">
+
+                <div class="icon-circle problem-icon">
+                    <i class="fas fa-layer-group"></i>
+                </div>
+
+                <h4>1. Huge Codebase</h4>
+
+                <p>
+                    As business grows:
+                </p>
+
+                <ul>
+                    <li>Thousands of APIs</li>
+                    <li>Hundreds of modules</li>
+                    <li>Large teams</li>
+                </ul>
+
+                <p>
+                    Managing huge codebase becomes difficult.
+                </p>
+
+            </div>
+
+            <div class="col-md-6 mb-4">
+
+                <div class="icon-circle problem-icon">
+                    <i class="fas fa-sync"></i>
+                </div>
+
+                <h4>2. Full Application Deployment</h4>
+
+                <p>
+                    Even a small change requires redeploying
+                    entire application.
+                </p>
+
+                <div class="alert alert-danger">
+
+                    Notification bug fix →
+                    Entire application redeployment required.
+
+                </div>
+
+            </div>
+
+            <div class="col-md-6 mb-4">
+
+                <div class="icon-circle problem-icon">
+                    <i class="fas fa-server"></i>
+                </div>
+
+                <h4>3. Scaling Problem</h4>
+
+                <p>
+                    Suppose Payment API receives heavy traffic.
+                </p>
+
+                <p>
+                    In Monolith:
+                </p>
+
+                <div class="alert alert-warning">
+
+                    Entire application must be scaled.
+
+                </div>
+
+                <p>
+                    This wastes server resources.
+                </p>
+
+            </div>
+
+            <div class="col-md-6 mb-4">
+
+                <div class="icon-circle problem-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+
+                <h4>4. Difficult for Large Teams</h4>
+
+                <p>
+                    Large teams working on same codebase create:
+                </p>
+
+                <ul>
+                    <li>Merge conflicts</li>
+                    <li>Dependency issues</li>
+                    <li>Coordination problems</li>
+                </ul>
+
+            </div>
+
+            <div class="col-md-6 mb-4">
+
+                <div class="icon-circle problem-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+
+                <h4>5. Slow Build Time</h4>
+
+<pre><code>
+mvn clean install
+</code></pre>
+
+                <p>
+                    becomes slower as project grows.
+                </p>
+
+            </div>
+
+            <div class="col-md-6 mb-4">
+
+                <div class="icon-circle problem-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+
+                <h4>6. Single Point of Failure</h4>
+
+                <p>
+                    If one module crashes:
+                </p>
+
+<pre><code>
+OutOfMemoryError
+</code></pre>
+
+                <p>
+                    entire application may go down.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- BANKING EXAMPLE -->
+
+    <div class="card section-card p-4">
+
+        <h2 class="text-primary mb-4">
+            Real-Time Banking Example
+        </h2>
+
+        <p>
+            Suppose a Banking Application contains:
+        </p>
+
+        <ul>
+            <li>Customer Module</li>
+            <li>Loan Module</li>
+            <li>Payment Module</li>
+            <li>Account Module</li>
+            <li>Notification Module</li>
+        </ul>
+
+        <p>
+            In Monolithic Architecture,
+            all modules run inside same application.
+        </p>
+
+        <div class="alert alert-danger">
+
+            If Loan Module becomes slow due to heavy traffic,
+            entire banking application performance may degrade.
+
+        </div>
+
+    </div>
+    
+
+    <!-- WHY MICROSERVICES -->
+
+    <div class="card section-card p-4">
+
+        <h2 class="text-primary mb-4">
+            Why Companies Moved to Microservices?
+        </h2>
+
+        <p>
+            To solve Monolithic problems:
+        </p>
+
+        <ul>
+            <li>Independent deployment</li>
+            <li>Independent scaling</li>
+            <li>Fault isolation</li>
+            <li>Smaller codebases</li>
+            <li>Technology flexibility</li>
+        </ul>
+
+        <div class="important-note mt-4">
+
+            <strong>Important Industry Point:</strong>
+
+            Most companies START with Monolith
+            and later gradually move to Microservices.
+
+        </div>
+
+    </div>
+
+    <!-- COMPARISON -->
+
+    <div class="card section-card p-4">
+
+        <h2 class="text-primary mb-4">
+            Monolithic vs Microservices
+        </h2>
+
+        <div class="table-responsive">
+
+            <table class="table table-bordered table-hover">
+
+                <thead class="table-dark">
+
+                <tr>
+                    <th>Monolithic</th>
+                    <th>Microservices</th>
+                </tr>
+
+                </thead>
+
+                <tbody>
+
+                <tr>
+                    <td>Single Application</td>
+                    <td>Multiple Services</td>
+                </tr>
+
+                <tr>
+                    <td>Easy Initially</td>
+                    <td>Complex Initially</td>
+                </tr>
+
+                <tr>
+                    <td>Difficult Scaling</td>
+                    <td>Independent Scaling</td>
+                </tr>
+
+                <tr>
+                    <td>Single Deployment</td>
+                    <td>Independent Deployment</td>
+                </tr>
+
+                <tr>
+                    <td>Tightly Coupled</td>
+                    <td>Loosely Coupled</td>
+                </tr>
+
+                <tr>
+                    <td>Easy Transactions</td>
+                    <td>Distributed Transactions</td>
+                </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <!-- INTERVIEW QUESTIONS -->
+
+    <div class="card section-card p-4">
+
+        <h2 class="text-dark mb-4">
+            Important Interview Points
+        </h2>
+
+        <div class="interview-box">
+
+            <ul>
+
+                <li>
+                    Monolithic Architecture means entire application
+                    exists as single deployable unit.
+                </li>
+
+                <li>
+                    Easy initially but difficult as business grows.
+                </li>
+
+                <li>
+                    Main problems:
+                    scaling, deployment, maintainability.
+                </li>
+
+                <li>
+                    Most companies start with Monolith.
+                </li>
+
+                <li>
+                    Microservices solve many Monolith problems
+                    but add distributed system complexity.
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+    <!-- FINAL NOTE -->
+
+    <div class="alert alert-success text-center p-4">
+
+        <h3>
+            Final Takeaway
+        </h3>
+
+        <p class="mb-0">
+
+            Monolithic Architecture is not bad.
+            It is simple, fast to build, and perfect for small applications.
+            But as application and team size grow,
+            scalability and maintenance become challenging.
+
+        </p>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

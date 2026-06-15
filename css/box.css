@@ -1,0 +1,56 @@
+.common-box{
+        padding:20px;
+        border-radius:10px;
+    }
+
+    .heap-box{
+
+        background:#212529;
+
+        color:white;
+
+        padding:25px;
+
+        text-align:center;
+
+        font-size:24px;
+
+        font-weight:bold;
+
+        overflow-x:auto;
+
+        letter-spacing:2px;
+
+    }
+
+    .step-box{
+
+        background:#f8f9fa;
+
+        border-left:5px solid #0d6efd;
+        margin-top:20px;
+
+    }
+
+    .pros-box{
+
+        background:#ecfff1;
+
+        border-left:5px solid green;
+    }
+
+    .cons-box{
+
+        background:#fff4f4;
+
+        border-left:5px solid red;
+
+    }
+
+    .used-box{
+
+        background:#eef4ff;
+
+        border-left:5px solid #0d6efd;
+
+    }

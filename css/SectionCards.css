@@ -1,0 +1,431 @@
+/* =========================================================
+
+   SECTION / TOPIC CARDS
+
+========================================================= */
+
+.topic-card{
+
+    background: #ffffff;
+
+    border-radius: 28px;
+
+    padding: 45px;
+
+    margin-bottom: 45px;
+
+    box-shadow: 0 10px 35px rgba(15, 23, 42, 0.08);
+
+    transition: all 0.35s ease;
+
+    border: 1px solid #e2e8f0;
+
+    position: relative;
+
+    overflow: hidden;
+
+}
+
+/* TOP BORDER EFFECT */
+
+.topic-card::before{
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+
+    left: 0;
+
+    width: 100%;
+
+    height: 5px;
+
+    background: linear-gradient(to right,#0d6efd,#14b8a6,#8b5cf6);
+
+}
+
+/* HOVER EFFECT */
+
+.topic-card:hover{
+
+    transform: translateY(-8px);
+
+    box-shadow: 0 22px 45px rgba(15, 23, 42, 0.14);
+
+}
+
+/* =========================================================
+
+   SECTION ICON
+
+========================================================= */
+
+.section-icon{
+
+    width: 75px;
+
+    height: 75px;
+
+    background: linear-gradient(to right,#ccfbf1,#dbeafe);
+
+    border-radius: 22px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    margin-bottom: 25px;
+
+    box-shadow: 0 8px 18px rgba(20, 184, 166, 0.15);
+
+}
+
+/* ICON */
+
+.section-icon i{
+
+    font-size: 34px;
+
+    color: #0f766e;
+
+}
+
+/* =========================================================
+
+   SECTION TITLE
+
+========================================================= */
+
+.section-title{
+
+    font-size: 42px;
+
+    font-weight: 800;
+
+    margin-bottom: 18px;
+
+    color: #0f172a;
+
+    line-height: 1.2;
+
+    letter-spacing: -1px;
+
+}
+
+/* =========================================================
+
+   SECTION DESCRIPTION
+
+========================================================= */
+
+.section-desc{
+
+    color: #64748b;
+
+    font-size: 18px;
+
+    line-height: 1.9;
+
+    margin-bottom: 35px;
+
+    font-weight: 400;
+
+}
+
+/* =========================================================
+
+   TOPIC LIST
+
+========================================================= */
+
+.topic-list{
+
+    list-style: none;
+
+    padding-left: 0;
+
+    margin-bottom: 0;
+
+}
+
+/* LIST ITEM */
+
+.topic-list li{
+
+    margin-bottom: 22px;
+
+}
+
+/* LINK */
+
+.topic-list a{
+
+    text-decoration: none;
+
+    font-size: 17px;
+
+    font-weight: 500;
+
+    color: #0f766e;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    transition: all 0.3s ease;
+
+    position: relative;
+
+}
+
+/* ICON */
+
+.topic-list a i{
+
+    margin-right: 14px;
+
+    color: #14b8a6;
+
+    font-size: 18px;
+
+    transition: all 0.3s ease;
+
+}
+
+/* HOVER */
+
+.topic-list a:hover{
+
+    color: #0f172a;
+
+    transform: translateX(8px);
+
+}
+
+/* ICON HOVER */
+
+.topic-list a:hover i{
+
+    color: #0d6efd;
+
+}
+
+/* =========================================================
+
+   CODE BLOCKS
+
+========================================================= */
+
+/* pre{
+
+    background-color: #0f172a;
+
+    color: #f8fafc;
+
+    padding: 22px;
+
+    border-radius: 16px;
+
+    overflow-x: auto;
+
+    margin-top: 20px;
+
+    margin-bottom: 20px;
+
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+
+}
+
+code{
+
+    color: #f8fafc;
+
+    font-size: 15px;
+
+} */
+
+/* =========================================================
+
+   MODULE / FEATURE BOXES
+
+========================================================= */
+
+.module-box{
+
+    background: linear-gradient(to right,#2563eb,#14b8a6);
+
+    color: white;
+
+    padding: 18px;
+
+    border-radius: 16px;
+
+    margin: 12px;
+
+    text-align: center;
+
+    font-weight: 600;
+
+    box-shadow: 0 8px 20px rgba(37,99,235,0.2);
+
+    transition: all 0.3s ease;
+
+}
+
+.module-box:hover{
+
+    transform: scale(1.03);
+
+}
+
+/* =========================================================
+
+   ANALOGY / NOTE BOXES
+
+========================================================= */
+
+.analogy-box{
+
+    background: #fff7ed;
+
+    border-left: 6px solid #f59e0b;
+
+    padding: 28px;
+
+    border-radius: 18px;
+
+    margin-top: 20px;
+
+}
+
+.important-note{
+
+    background: #ecfeff;
+
+    border-left: 6px solid #06b6d4;
+
+    padding: 28px;
+
+    border-radius: 18px;
+
+    margin-top: 20px;
+
+}
+
+.interview-box{
+
+    background: #f8fafc;
+
+    border-left: 6px solid #64748b;
+
+    padding: 28px;
+
+    border-radius: 18px;
+
+    margin-top: 20px;
+
+}
+
+/* =========================================================
+
+   TABLE DESIGN
+
+========================================================= */
+
+/* .table{
+
+    border-radius: 16px;
+
+    overflow: hidden;
+
+}
+
+.table thead{
+
+    background-color: #0f172a;
+
+    color: white;
+
+}
+
+.table th,
+
+.table td{
+
+    padding: 18px;
+
+    vertical-align: middle;
+
+} */
+
+/* =========================================================
+
+   ALERTS
+
+========================================================= */
+
+.alert{
+
+    border-radius: 18px;
+
+    padding: 20px;
+
+}
+
+/* =========================================================
+
+   MOBILE RESPONSIVE
+
+========================================================= */
+
+@media(max-width:768px){
+
+    .topic-card{
+
+        padding: 28px;
+
+    }
+
+    .section-title{
+
+        font-size: 30px;
+
+    }
+
+    .section-desc{
+
+        font-size: 16px;
+
+    }
+
+    .section-icon{
+
+        width: 60px;
+
+        height: 60px;
+
+    }
+
+    .section-icon i{
+
+        font-size: 28px;
+
+    }
+
+    .topic-list a{
+
+        font-size: 15px;
+
+    }
+
+    pre{
+
+        padding: 16px;
+
+    }
+
+}

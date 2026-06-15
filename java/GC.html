@@ -1,0 +1,2688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Mark & Sweep Algorithm | Java Garbage Collection</title>
+
+    <meta name="description"
+    content="Learn Mark & Sweep Algorithm in Java Garbage Collection with step-by-step explanation, pros, cons, memory fragmentation, and heap visualization.">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <link rel="canonical"
+    href="https://codingcure.co.in/java/mark-sweep-algorithm.html">
+    <link rel="stylesheet" href="../css/SectionCards.css">
+    <link rel="stylesheet" href="../css/box.css">
+
+</head>
+
+<body>
+
+<div id="include-index"></div>
+
+<script>
+    fetch('../codingcure.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('include-index').innerHTML = data;
+        });
+</script>
+
+<!-- Scroll to Top Button -->
+<button id="scrollToTopBtn"
+class="btn btn-primary rounded-circle position-fixed"
+title="Go to top"
+style="bottom: 20px; right: 20px; display: none;">
+
+    <i class="fas fa-arrow-up"></i>
+
+</button>
+
+<script src="../scrollTop.js"></script>
+
+<div class="container-fluid mt-4 mb-5">
+
+    <!-- PAGE TITLE -->
+
+    <div class="text-center mb-4">
+
+        <h1 class="main-title">
+
+            Mark & Sweep Algorithm
+
+        </h1>
+
+        <p class="sub-text">
+
+            This is the foundation of Java Garbage Collection.
+
+        </p>
+
+    </div>
+
+    <!-- MARK & SWEEP -->
+
+    <div class="card section-card">
+
+        <div class="card-header-custom">
+
+            <h2>Mark & Sweep Algorithm</h2>
+
+        </div>
+
+        <div class="card-body p-4">
+
+            <h3 class="text-primary">
+
+                ✅ How it works (Step by Step)
+
+            </h3>
+
+            <div class="step-box common-box">
+
+                <h5>Step 1: Mark phase</h5>
+
+                <ul class="mt-3">
+
+                    <li>GC starts from GC Roots</li>
+
+                    <li>Marks all reachable objects as alive</li>
+
+                </ul>
+
+            </div>
+
+            <div class="step-box common-box">
+
+                <h5>Step 2: Sweep phase</h5>
+
+                <ul class="mt-3">
+
+                    <li>Scans heap</li>
+
+                    <li>Deletes unmarked objects</li>
+
+                </ul>
+
+            </div>
+
+            <hr class="mt-5">
+
+            <div class="visual-title mb-4">
+
+                Visual
+
+            </div>
+
+            <div class="heap-box common-box">
+
+                [A ✅]
+
+                &nbsp;
+
+                [B ✅]
+
+                &nbsp;
+
+                [C ❌]
+
+                &nbsp;
+
+                [D ✅]
+
+                &nbsp;
+
+                [E ❌]
+
+            </div>
+
+            <div class="alert alert-danger mt-4 text-center fw-bold">
+
+                Sweep removes → C, E
+
+            </div>
+
+            <hr class="mt-5">
+
+            <div class="pros-box common-box">
+
+                <h4 class="text-success">
+
+                    ✅ Pros
+
+                </h4>
+
+                <ul class="mt-3 mb-0">
+
+                    <li>✅ Simple</li>
+
+                    <li>✅ No extra memory needed</li>
+
+                    <li>✅ Works well with reachability analysis</li>
+
+                </ul>
+
+            </div>
+
+            <div class="cons-box mt-4 common-box">
+
+                <h4 class="text-danger">
+
+                    ❌ Cons (VERY IMPORTANT)
+
+                </h4>
+
+                <ul class="mt-3">
+
+                    <li>❌ Stops The World</li>
+
+                    <li>❌ Memory fragmentation</li>
+
+                </ul>
+
+                <div class="heap-box mt-4">
+
+                    [A][ ][B][ ][D][ ]
+
+                </div>
+
+                <p class="mt-4 fw-bold">
+
+                    Small holes between objects
+
+                </p>
+
+                <p>
+
+                    Hard to allocate big objects later
+
+                </p>
+
+                <ul class="mb-0">
+
+                    <li>❌ Allocation becomes slow</li>
+
+                </ul>
+
+            </div>
+
+            <div class="used-box mt-4 common-box">
+
+                <h4 class="text-primary">
+
+                    ✅ Where used
+
+                </h4>
+
+                <ul class="mt-3 mb-0">
+
+                    <li>Older JVMs</li>
+
+                    <li>Still used conceptually</li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- MARK SWEEP COMPACT -->
+
+    <div class="card section-card">
+
+        <div class="card-header-custom">
+
+            <h2> Mark, Sweep & Compact Algorithm</h2>
+
+        </div>
+
+        <div class="card-body p-4">
+
+            <p class="fs-5">
+
+                This solves the main problem of Mark & Sweep
+
+            </p>
+
+            <h3 class="text-primary mt-4">
+
+                ✅ How it works
+
+            </h3>
+
+            <div class="step-box common-box">
+
+                <h5>Step 1: Mark</h5>
+
+                <p class="mb-0">
+
+                    Same as before
+
+                </p>
+
+            </div>
+
+            <div class="step-box common-box">
+
+                <h5>Step 2: Sweep</h5>
+
+                <p class="mb-0">
+
+                    Delete garbage objects
+
+                </p>
+
+            </div>
+
+            <div class="step-box common-box">
+
+                <h5>Step 3: Compact</h5>
+
+                <ul class="mt-3 mb-0">
+
+                    <li>Move remaining objects together</li>
+
+                    <li>Remove memory gaps</li>
+
+                </ul>
+
+            </div>
+
+            <hr class="mt-5">
+
+            <div class="visual-title mb-4">
+
+                Visual
+
+            </div>
+
+            <div class="text-center">
+
+                <h5 class="fw-bold">
+
+                    Before:
+
+                </h5>
+
+                <div class="heap-box mt-3">
+
+                    [A][ ][B][ ][D]
+
+                </div>
+
+            </div>
+
+            <div class="text-center mt-5">
+
+                <h5 class="fw-bold text-success">
+
+                    After Compaction:
+
+                </h5>
+
+                <div class="heap-box mt-3">
+
+                    [A][B][D][ ][ ]
+
+                </div>
+
+            </div>
+
+            <hr class="mt-5">
+
+            <div class="pros-box common-box">
+
+                <h4 class="text-success">
+
+                    ✅ Pros
+
+                </h4>
+
+                <ul class="mt-3 mb-0">
+
+                    <li>✅ No fragmentation</li>
+
+                    <li>✅ Better memory utilization</li>
+
+                    <li>✅ Faster object allocation after GC</li>
+
+                </ul>
+
+            </div>
+
+            <div class="cons-box mt-4 common-box">
+
+                <h4 class="text-danger">
+
+                    ❌ Cons
+
+                </h4>
+
+                <ul class="mt-3 mb-0">
+
+                    <li>❌ Moving objects is expensive</li>
+
+                    <li>❌ Application paused longer</li>
+
+                    <li>❌ Object references must be updated</li>
+
+                </ul>
+
+            </div>
+
+            <div class="used-box mt-4 common-box">
+
+                <h4 class="text-primary">
+
+                    ✅ Where used
+
+                </h4>
+
+                <ul class="mt-3 mb-0">
+
+                    <li>✔ Old Generation</li>
+
+                    <li>✔ Full GC scenarios</li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- COPYING ALGORITHM -->
+
+<div class="card section-card">
+
+    <div class="card-header-custom">
+
+        <h2>Copying Algorithm ( MOST IMPORTANT )</h2>
+
+    </div>
+
+    <div class="card-body p-4">
+
+        <p class="fs-5 fw-bold text-primary">
+
+            Used in Young Generation
+
+        </p>
+        <div class="alert alert-info mt-4">
+
+            <b>Copying Algorithm</b> means we are copying the alive objects 
+
+            in Young Generation from Eden Space to Survivor Space.
+
+        </div>
+
+        <!-- IMAGE -->
+
+        <div class="text-center mt-4">
+
+            <img
+
+                src="../image/copy-algo.png"
+
+                alt="Copying Algorithm in Young Generation"
+
+                class="img-fluid rounded shadow"
+
+                style="max-width:800px;"
+
+            >
+
+        </div>
+
+        <div class="pros-box common-box mt-4">
+
+            <h4 class="text-success">
+
+                ✅ Basic Idea
+
+            </h4>
+
+            <p class="mt-3 mb-0">
+
+                Instead of deleting garbage
+
+                <br>
+
+                👉 Copy only alive objects
+
+                <br>
+
+                Garbage is ignored
+
+            </p>
+
+        </div>
+
+        <div class="used-box mt-4 common-box">
+
+            <h4 class="text-primary">
+
+                ✅ Heap Structure for This
+
+            </h4>
+
+            <p class="mt-3 mb-2 fw-bold">
+
+                Young Generation:
+
+            </p>
+
+            <ul class="mb-0">
+
+                <li>Eden</li>
+
+                <li>Survivor S0</li>
+
+                <li>Survivor S1</li>
+
+            </ul>
+
+        </div>
+
+        <h3 class="text-primary mt-5">
+
+            ✅ How it works
+
+        </h3>
+
+        <div>
+
+            <p class="mb-2">
+
+                1.Objects created in Eden
+
+            </p>
+
+            <p class="mb-2">
+
+                2.Minor GC runs
+
+            </p>
+
+            <p class="mb-2">
+
+                3.Alive objects copied:
+
+            </p>
+
+            <ul>
+
+                <li>From Eden → S0</li>
+
+            </ul>
+
+            <p class="mb-0">
+
+                4.Eden cleared completely ✅
+
+            </p>
+
+        </div>
+
+        <div class="common-box">
+
+            <h5>Next GC:</h5>
+
+            <ul class="mb-0">
+
+                <li>Alive objects from S0 → S1</li>
+
+                <li>S0 cleared</li>
+
+                <li>Flip spaces</li>
+
+            </ul>
+
+        </div>
+
+        <hr class="mt-5">
+
+        <div class="visual-title mb-4">
+
+            Visual
+
+        </div>
+
+        <div class="text-center">
+
+            <h5 class="fw-bold">
+
+                Before GC:
+
+            </h5>
+
+            <div class="heap-box mt-3 common-box">
+
+                Eden:
+
+                &nbsp;
+
+                A
+
+                &nbsp;
+
+                B
+
+                &nbsp;
+
+                C ❌
+
+                &nbsp;
+
+                D ❌
+
+            </div>
+
+        </div>
+
+        <div class="text-center mt-5">
+
+            <h5 class="fw-bold text-success">
+
+                After GC:
+
+            </h5>
+
+            <div class="heap-box mt-3">
+
+                Survivor:
+
+                &nbsp;
+
+                A
+
+                &nbsp;
+
+                B
+
+            </div>
+
+        </div>
+
+        <div class="alert alert-success mt-4 fw-bold text-center">
+
+            (No sweeping required)
+
+        </div>
+
+        <div class="pros-box mt-5 common-box">
+
+            <h4 class="text-success">
+
+                ✅ Pros
+
+            </h4>
+
+            <ul class="mt-3 mb-0">
+
+                <li>✅ Very fast</li>
+
+                <li>✅ No fragmentation</li>
+
+                <li>✅ Simple allocation (just copy)</li>
+
+            </ul>
+
+        </div>
+
+        <div class="cons-box mt-4 common-box">
+
+            <h4 class="text-danger">
+
+                ❌ Cons
+
+            </h4>
+
+            <ul class="mt-3 mb-0">
+
+                <li>❌ Extra memory required (2 survivor spaces)</li>
+
+                <li>❌ Not suitable for long-living objects</li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- CMS -->
+
+<div class="card section-card">
+
+    <div class="card-header-custom">
+
+        <h2> CMS (Concurrent Mark Sweep) – Deprecated</h2>
+
+    </div>
+
+    <div class="card-body p-4">
+
+        <div>
+
+            <h4 class="text-primary">
+
+                ✅ What problem it solved?
+
+            </h4>
+
+            <p class="mt-3 mb-0">
+
+                Reduce long pause time of Old Gen GC.
+
+            </p>
+
+        </div>
+
+        <h3 class="text-primary mt-5">
+
+            ✅ How it works
+
+        </h3>
+
+        <div>
+
+            <ul class="mb-0">
+
+                <li>Mark & Sweep</li>
+
+                <li>Runs concurrently with application threads</li>
+
+            </ul>
+
+        </div>
+
+        <div class="pros-box mt-5 common-box">
+
+            <h4 class="text-success">
+
+                ✅ Pros
+
+            </h4>
+
+            <ul class="mt-3 mb-0">
+
+                <li>✅ Low pause time</li>
+
+                <li>✅ Good for interactive apps</li>
+
+            </ul>
+
+        </div>
+
+        <div class="cons-box mt-4 common-box">
+
+            <h4 class="text-danger">
+
+                ❌ Cons
+
+            </h4>
+
+            <ul class="mt-3 mb-0">
+
+                <li>❌ Fragmentation (no compaction)</li>
+
+                <li>❌ Complex</li>
+
+                <li>❌ Deprecated</li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- COMPARISON TABLE -->
+
+<div class="card section-card mb-5">
+
+    <div class="card-header-custom">
+
+        <h2>GC Algorithm Comparison</h2>
+
+    </div>
+
+    <div class="card-body p-4">
+
+        <div class="table-responsive">
+
+            <table class="table table-bordered table-hover align-middle">
+
+                <thead class="table-primary">
+
+                    <tr>
+
+                        <th>GC Algorithm</th>
+
+                        <th>Applied in Young Generation?</th>
+
+                        <th>Applied in Old Generation?</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+
+                        <td>Mark & Sweep</td>
+
+                        <td>❌ No</td>
+
+                        <td>✅ Yes (historically / conceptually)</td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>Mark, Sweep & Compact</td>
+
+                        <td>❌ No</td>
+
+                        <td>✅ Yes</td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>Copying Algorithm</td>
+
+                        <td>✅ Yes</td>
+
+                        <td>❌ No</td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="card section-card mb-5">
+
+    <div class="card-header-custom">
+
+        <h2>Young Generation vs Old Generation & Object Promotion</h2>
+
+    </div>
+
+    <div class="card-body p-4">
+
+        <div class="alert alert-primary">
+
+            👉 Young Generation uses Copying
+
+            <br>
+
+            👉 Old Generation uses Mark–Sweep–Compact
+
+        </div>
+
+        <h3 class="text-primary mt-4">
+
+            Why Mark & Sweep is NOT used in Young Generation
+
+        </h3>
+
+        <div class="common-box">
+
+            <h5>Nature of Young Generation</h5>
+
+            <ul class="mt-3 mb-0">
+
+                <li>Very small</li>
+
+                <li>Objects die very quickly</li>
+
+                <li>GC runs very frequently</li>
+
+            </ul>
+
+        </div>
+
+        <div class="cons-box mt-4 common-box">
+
+            <h5>Problem with Mark & Sweep in Young Gen</h5>
+
+            <ul class="mt-3">
+
+                <li>Leaves fragmentation</li>
+
+                <li>Requires scanning heap again to allocate memory</li>
+
+                <li>Too slow for frequent GC</li>
+
+            </ul>
+
+            <div class="alert alert-danger mb-0">
+
+                ❌ Bad choice for Young Generation
+
+            </div>
+
+        </div>
+
+        <hr class="mt-5">
+
+        <h3 class="text-primary">
+
+            How objects move from Young Generation to Old Generation
+
+        </h3>
+
+        <p class="mt-3">
+
+            If Young Gen uses Copying and Old Gen uses Mark–Sweep–Compact,
+
+            how do objects move from Young Generation to Old Generation?
+
+        </p>
+
+        <p>
+
+            The answer is:
+
+        </p>
+
+        <div class="alert alert-success fw-bold">
+
+            👉 Object Promotion (also called Tenuring)
+
+        </div>
+
+        <h3 class="text-primary mt-5">
+
+            ✅ Object Age Concept
+
+        </h3>
+
+        <div class="common-box">
+
+            <p>
+
+                Each object has an age counter (not reference count).
+
+            </p>
+
+            <p class="mb-0">
+
+                Age = number of Minor GCs survived
+
+            </p>
+
+        </div>
+
+        <div class="step-box common-box mt-4">
+
+            <h5>Example:</h5>
+
+            <ul class="mb-0">
+
+                <li>After 1st Minor GC → age = 1</li>
+
+                <li>After 2nd Minor GC → age = 2</li>
+
+                <li>...</li>
+
+            </ul>
+
+        </div>
+
+        <h3 class="text-primary mt-5">
+
+            4️⃣ Promotion Rule (HOW Object Moves to Old Gen)
+
+        </h3>
+
+        <p class="mt-3">
+
+            An object is promoted to Old Generation when ANY ONE of these conditions is true 👇
+
+        </p>
+
+        <div class="pros-box common-box">
+
+            <h4 class="text-success">
+
+                ✅ Rule 1: Age Threshold Reached (Tenuring Threshold)
+
+            </h4>
+
+            <p class="mt-3">
+
+                JVM has a parameter:
+
+            </p>
+
+            <div class="heap-box">
+
+                -XX:MaxTenuringThreshold
+
+            </div>
+
+            <p class="mt-3">
+
+                Default value: 15
+
+            </p>
+
+            <p>
+
+                Meaning:
+
+            </p>
+
+            <p>
+
+                If an object survives 15 minor GCs, it moves to Old Gen
+
+            </p>
+
+            <h5 class="mt-4">
+
+                Flow:
+
+            </h5>
+
+            <div class="heap-box">
+
+                Eden → S0 (age 1)
+
+                <br>
+
+                S0 → S1 (age 2)
+
+                <br>
+
+                S1 → S0 (age 3)
+
+                <br>
+
+                ...
+
+                <br>
+
+                age == threshold → Old Gen
+
+            </div>
+
+            <div class="alert alert-success mt-4 mb-0">
+
+                ✅ This is the normal and most common path
+
+            </div>
+
+        </div>
+
+        <div class="cons-box mt-4 common-box">
+
+            <h4 class="text-success">
+
+                ✅ Rule 2: Survivor Space Is Full (Premature Promotion)
+
+            </h4>
+
+            <p class="mt-3">
+
+                If Survivor space does not have enough space:
+
+            </p>
+
+            <p>
+
+                👉 JVM directly promotes object to Old Gen
+
+            </p>
+
+            <h5 class="mt-4">
+
+                Why?
+
+            </h5>
+
+            <ul>
+
+                <li>Copying Algorithm needs free space</li>
+
+                <li>If Survivor is full → cannot copy</li>
+
+            </ul>
+
+            <div class="alert alert-success">
+
+                ✅ This avoids GC failure
+
+            </div>
+
+            <div class="alert alert-danger mb-0">
+
+                ❌ But too many such promotions can cause Old Gen pressure
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<div class="card section-card mb-5">
+    <div class="card-header-custom">
+
+    <h2>Traditional GC — How it actually works (baseline)</h2>
+
+</div>
+
+<div class="card-body p-4">
+
+    <h3 class="text-primary">
+
+        Traditional Generational GC layout
+
+    </h3>
+
+    <div class="heap-box common-box mt-4">
+
+        Heap
+
+        <br><br>
+
+        ┌────────────────────────┐
+
+        <br>
+
+        │       Old Gen          │  ← large, long-living objects
+
+        <br>
+
+        │                        │
+
+        <br>
+
+        ├────────────────────────┤
+
+        <br>
+
+        │ Survivor S1            │
+
+        <br>
+
+        ├────────────────────────┤
+
+        <br>
+
+        │ Survivor S0            │
+
+        <br>
+
+        ├────────────────────────┤
+
+        <br>
+
+        │ Eden                   │  ← new objects
+
+        <br>
+
+        └────────────────────────┘
+
+    </div>
+
+    <h3 class="text-primary mt-5">
+
+        Traditional rules
+
+    </h3>
+
+    <div class="common-box">
+
+        <ul class="mb-0">
+
+            <li>
+
+                Young Gen
+
+                <ul>
+
+                    <li>Uses Copying algorithm</li>
+
+                    <li>Minor GC → fast, frequent</li>
+
+                </ul>
+
+            </li>
+
+            <li>
+
+                Old Gen
+
+                <ul>
+
+                    <li>Uses Mark → Sweep → Compact</li>
+
+                    <li>Major / Full GC → slow</li>
+
+                </ul>
+
+            </li>
+
+        </ul>
+
+    </div>
+
+    <div class="alert alert-success mt-4">
+
+        ✅ This design worked fine when heaps were small
+
+    </div>
+
+    <hr class="mt-5">
+
+    <h2 class="text-danger">
+
+        2️⃣ The REAL problems in Traditional GC (this is the key)
+
+    </h2>
+
+    <p class="mt-4">
+
+        Let’s not talk theory — let’s talk what breaks in production.
+
+    </p>
+
+    <div class="cons-box mt-4 common-box">
+
+        <h4>
+
+            ❌ Problem 1: Old Generation is ONE BIG BLOCK
+
+        </h4>
+
+        <p class="mt-3">
+
+            Traditional GC sees Old Gen like this:
+
+        </p>
+
+        <div class="heap-box">
+
+            [ Old Generation = ONE HUGE AREA ]
+
+        </div>
+
+        <p class="mt-4">
+
+            When Old Gen is full or fragmented:
+
+        </p>
+
+        <p>
+
+            👉 GC must:
+
+        </p>
+
+        <ul>
+
+            <li>Stop the application</li>
+
+            <li>Scan the ENTIRE Old Gen</li>
+
+            <li>Mark everything</li>
+
+            <li>Sweep everything</li>
+
+            <li>Compact everything</li>
+
+        </ul>
+
+        <div class="alert alert-danger mb-0">
+
+            ⛔ No partial cleanup
+
+            <br>
+
+            ⛔ No prioritization
+
+        </div>
+
+    </div>
+
+    <div class="cons-box mt-4 common-box">
+
+        <h4>
+
+            ❌ Problem 2: Long Stop-the-World pauses
+
+        </h4>
+
+        <p class="mt-3">
+
+            Example:
+
+        </p>
+
+        <ul>
+
+            <li>Heap size: 16 GB</li>
+
+            <li>Old Gen is nearly full</li>
+
+        </ul>
+
+        <p>
+
+            Traditional GC:
+
+        </p>
+
+        <div class="alert alert-warning">
+
+            “Stop all threads, I need time…”
+
+        </div>
+
+        <p>
+
+            ⏳ Pause = seconds
+
+        </p>
+
+        <p>
+
+            For:
+
+        </p>
+
+        <ul>
+
+            <li>Banking APIs</li>
+
+            <li>Trading</li>
+
+            <li>User-facing apps</li>
+
+        </ul>
+
+        <div class="alert alert-danger mb-0">
+
+            👉 Unacceptable
+
+        </div>
+
+    </div>
+
+    <div class="cons-box mt-4 common-box">
+
+        <h4>
+
+            ❌ Problem 3: No control over pause time
+
+        </h4>
+
+        <p class="mt-3">
+
+            Traditional GC cannot answer this:
+
+        </p>
+
+        <div class="alert alert-info">
+
+            “Can you clean memory within 200 ms?”
+
+        </div>
+
+        <p>
+
+            It doesn’t know.
+
+        </p>
+
+        <p>
+
+            It just:
+
+        </p>
+
+        <ul>
+
+            <li>Starts GC</li>
+
+            <li>Finishes when it finishes</li>
+
+        </ul>
+
+        <div class="alert alert-danger mb-0">
+
+            ❌ No predictability
+
+        </div>
+
+    </div>
+
+    <div class="cons-box mt-4 common-box">
+
+        <h4>
+
+            ❌ Problem 4: Full GC is ALL or NOTHING
+
+        </h4>
+
+        <p class="mt-3">
+
+            If promotion fails or memory is fragmented:
+
+        </p>
+
+        <div class="alert alert-warning">
+
+            👉 FULL GC
+
+            <br>
+
+            Stop app
+
+            <br>
+
+            Clean entire heap
+
+            <br>
+
+            Resume
+
+        </div>
+
+        <p>
+
+            Even if:
+
+        </p>
+
+        <ul>
+
+            <li>Only 5% garbage exists</li>
+
+        </ul>
+
+        <div class="alert alert-danger mb-0">
+
+            ❌ Overkill
+
+        </div>
+
+    </div>
+
+    <div class="alert alert-primary mt-5 text-center fw-bold">
+
+        G1 GC — comes to picture now
+
+    </div>
+
+</div>
+</div>
+<div class="card section-card mb-5">
+    <div class="card-header-custom">
+
+    <h2>What G1 changes (step by step)</h2>
+
+</div>
+
+<div class="card-body p-4">
+
+    <div class="pros-box common-box">
+
+        <h4 class="text-success">
+
+            ✅ Change #1: Break heap into SMALL REGIONS
+
+        </h4>
+
+        <p class="mt-3">
+
+            Traditional GC:
+
+        </p>
+
+        <div class="heap-box">
+
+            Young = fixed area
+
+            <br>
+
+            Old = fixed area
+
+        </div>
+
+        <p class="mt-4">
+
+            G1 GC:
+
+        </p>
+
+        <div class="heap-box">
+
+            Heap → many small regions (1–32 MB)
+
+        </div>
+
+        <p class="mt-4">
+
+            Example:
+
+        </p>
+
+        <div class="heap-box">
+
+            [R1][R2][R3][R4][R5]
+
+            <br>
+
+            [R6][R7][R8][R9][R10]
+
+        </div>
+
+        <p class="mt-4">
+
+            Each region can be:
+
+        </p>
+
+        <ul>
+
+            <li>Young</li>
+
+            <li>Survivor</li>
+
+            <li>Old</li>
+
+            <li>Empty</li>
+
+        </ul>
+
+        <div class="alert alert-success mb-0">
+
+            ✅ No giant Old Gen anymore
+
+        </div>
+
+    </div>
+
+    <div class="pros-box common-box mt-4">
+
+        <h4 class="text-success">
+
+            ✅ Change #2: Measure garbage PER REGION
+
+        </h4>
+
+        <p class="mt-3">
+
+            G1 tracks:
+
+        </p>
+
+        <div class="alert alert-info">
+
+            “How much garbage is in each region?”
+
+        </div>
+
+        <p>
+
+            Example:
+
+        </p>
+
+        <ul>
+
+            <li>Region R1 → 80% garbage ✅</li>
+
+            <li>Region R2 → 10% garbage ❌</li>
+
+            <li>Region R3 → 70% garbage ✅</li>
+
+        </ul>
+
+    </div>
+
+    <div class="pros-box common-box mt-4">
+
+        <h4 class="text-success">
+
+            ✅ Change #3: Collect GARBAGE FIRST (name comes from here)
+
+        </h4>
+
+        <p class="mt-3">
+
+            Instead of:
+
+        </p>
+
+        <div class="alert alert-warning">
+
+            “Clean the whole Old Gen”
+
+        </div>
+
+        <p>
+
+            G1 says:
+
+        </p>
+
+        <div class="alert alert-success">
+
+            “Clean R1 and R3 only — they give max benefit”
+
+        </div>
+
+        <ul class="mb-0">
+
+            <li>✅ Less work</li>
+
+            <li>✅ Smaller pause</li>
+
+            <li>✅ Faster reclamation</li>
+
+        </ul>
+
+    </div>
+
+    <div class="pros-box common-box mt-4">
+
+        <h4 class="text-success">
+
+            ✅ Change #4: Predictable pause time
+
+        </h4>
+
+        <p class="mt-3">
+
+            You can tell G1:
+
+        </p>
+
+        <div class="heap-box">
+
+            Max pause time = 200 ms
+
+        </div>
+
+        <p class="mt-4">
+
+            G1 calculates:
+
+        </p>
+
+        <ul>
+
+            <li>How many regions it can clean within 200 ms</li>
+
+            <li>Cleans only that many</li>
+
+        </ul>
+
+        <div class="alert alert-danger">
+
+            ⛔ It stops before exceeding pause time
+
+        </div>
+
+        <p class="mb-0">
+
+            Traditional GC cannot do this.
+
+        </p>
+
+    </div>
+
+    <div class="pros-box common-box mt-4">
+
+        <h4 class="text-success">
+
+            ✅ Change #5: Incremental Old Gen cleanup
+
+        </h4>
+
+        <p class="mt-3">
+
+            Traditional:
+
+        </p>
+
+        <div class="heap-box">
+
+            Old Gen cleaned → all at once
+
+        </div>
+
+        <p class="mt-4">
+
+            G1:
+
+        </p>
+
+        <div class="heap-box">
+
+            Old Gen cleaned → bit by bit → region by region
+
+        </div>
+
+        <ul class="mt-4 mb-0">
+
+            <li>✅ No massive Full GC</li>
+
+            <li>✅ Old Gen cleanup is incremental</li>
+
+        </ul>
+
+    </div>
+
+    <hr class="mt-5">
+
+    <h3 class="text-primary">
+
+        6️⃣ Why G1 still uses same algorithms (but smarter)
+
+    </h3>
+
+    <div class="common-box">
+
+        <p>
+
+            Important point:
+
+        </p>
+
+        <p>
+
+            G1 does NOT invent new algorithms.
+
+        </p>
+
+        <p>
+
+            It still uses:
+
+        </p>
+
+        <ul>
+
+            <li>Copying for young regions</li>
+
+            <li>Mark + Copy/Compact for old regions</li>
+
+        </ul>
+
+        <div class="alert alert-info">
+
+            💡 Difference is “WHERE and HOW” they are applied
+        </div>
+
+        <p>
+
+            Traditional:
+
+        </p>
+
+        <ul>
+
+            <li>Algorithm applied to whole generation</li>
+
+        </ul>
+
+        <p>
+
+            G1:
+
+        </p>
+
+        <ul class="mb-0">
+
+            <li>Algorithm applied to selected regions</li>
+
+        </ul>
+
+    </div>
+
+    <hr class="mt-5">
+
+    <div class="alert alert-primary">
+
+    <ul class="mb-0">
+
+        <li>👉 Quick recap of the OLD problem (why ZGC exists)</li>
+
+        <li>👉 ZGC: idea, how it works, why pauses are tiny</li>
+
+        <li>👉 ZGC vs G1 (simple comparison)</li>
+
+        <li>👉 What is Metaspace</li>
+
+        <li>👉 Why Metaspace was introduced (problem it solved)</li>
+
+        <li>👉 How Metaspace works & common issues</li>
+
+        <li>👉 Interview-ready summary</li>
+
+    </ul>
+
+</div>
+
+</div>
+</div>
+<div class="card section-card mb-5">
+    <div class="card-header-custom">
+
+    <h2>ZGC – Why it was introduced</h2>
+
+</div>
+
+<div class="card-body p-4">
+
+    <div class="alert alert-warning">
+
+        Even G1 GC, though much better than traditional GC:
+
+        <ul class="mt-3 mb-0">
+
+            <li>Still has Stop-the-World pauses</li>
+
+            <li>Pause time is low but not zero</li>
+
+            <li>Object relocation (compaction) still pauses app</li>
+
+        </ul>
+
+    </div>
+
+    <p class="mt-4">
+
+        For some systems, even 100–200 ms pause is too much:
+
+    </p>
+
+    <ul>
+
+        <li>Trading systems</li>
+
+        <li>Real-time pricing</li>
+
+        <li>Low-latency APIs</li>
+
+        <li>Huge heaps (50GB, 100GB)</li>
+
+    </ul>
+
+    <div class="alert alert-primary">
+
+        💡 ZGC was created to make GC pauses almost invisible.
+
+    </div>
+
+    <h3 class="text-primary mt-5">
+
+        2️⃣ ZGC – Core idea (only ONE sentence)
+
+    </h3>
+
+    <div class="alert alert-success fw-bold">
+
+        ZGC runs garbage collection, object movement, and compaction while the application is still running.
+
+    </div>
+
+    <p class="fw-bold">
+
+        That’s it.
+
+        <br>
+
+        That’s the breakthrough.
+
+    </p>
+
+    <h3 class="text-primary mt-5">
+
+        4️⃣ What ZGC changes (THIS is the magic)
+
+    </h3>
+
+    <div class="common-box">
+
+        <div class="heap-box">
+
+            Application keeps running
+
+            <br>
+
+            GC works in parallel
+
+            <br>
+
+            Objects move while app runs
+
+            <br>
+
+            References fixed live
+
+        </div>
+
+        <div class="alert alert-success mt-4 mb-0">
+
+            ✅ Stop-the-World pauses become very small (1–10 ms)
+
+        </div>
+
+    </div>
+
+</div>
+</div>
+<div class="card section-card mb-5">
+    <div class="card-header-custom">
+
+    <h2>What is PermGen</h2>
+
+</div>
+
+<div class="card-body p-4">
+
+    <h3 class="text-primary">
+
+        ✅ Definition (from scratch)
+
+    </h3>
+
+    <div class="alert alert-info">
+
+        PermGen (Permanent Generation) is a JVM memory area used to store class metadata.
+
+    </div>
+
+    <p>
+
+        It existed in:
+
+    </p>
+
+    <ul>
+
+        <li>Java 6</li>
+
+        <li>Java 7</li>
+
+        <li>❌ Removed in Java 8</li>
+
+    </ul>
+
+    <p>
+
+        Before understanding PermGen, first understand what kind of data the JVM stores.
+
+    </p>
+
+    <h3 class="text-primary mt-5">
+
+        JVM stores two very different things
+
+    </h3>
+
+    <div class="pros-box common-box">
+
+        <h4 class="text-success">
+
+            ✅ 1. Objects (runtime data)
+
+        </h4>
+
+        <ul class="mt-3">
+
+            <li>new User()</li>
+
+            <li>ArrayList, String, DTOs, etc.</li>
+
+        </ul>
+
+        <div class="alert alert-success mb-0">
+
+            👉 These go to the Heap
+
+        </div>
+
+    </div>
+
+    <div class="pros-box common-box mt-4">
+
+        <h4 class="text-success">
+
+            ✅ 2. Class-related information (metadata)
+
+        </h4>
+
+        <p class="mt-3">
+
+            When JVM loads a class, it must store:
+
+        </p>
+
+        <ul>
+
+            <li>Class name</li>
+
+            <li>Methods</li>
+
+            <li>Fields</li>
+
+            <li>Bytecode</li>
+
+            <li>Constant pool</li>
+
+            <li>Annotations</li>
+
+            <li>Static variables</li>
+
+        </ul>
+
+        <div class="alert alert-primary">
+
+            👉 This is NOT object data
+
+            <br>
+
+            👉 This is class metadata
+
+        </div>
+
+        <p class="mb-0">
+
+            ✅ JVM needed a separate memory area for this.
+
+        </p>
+
+    </div>
+
+    <h3 class="text-primary mt-5">
+
+        3️⃣ Where does PermGen exist in JVM memory?
+
+    </h3>
+
+    <p>
+
+        PermGen was inside the JVM-managed memory, alongside the heap.
+
+    </p>
+
+    <div class="heap-box common-box">
+
+        JVM Memory
+
+        <br>
+
+        ├── Heap
+
+        <br>
+
+        │ &nbsp;&nbsp; ├── Young Generation
+
+        <br>
+
+        │ &nbsp;&nbsp; └── Old Generation
+
+        <br>
+
+        │
+
+        <br>
+
+        └── PermGen ✅
+
+    </div>
+
+    <div class="alert alert-success mt-4">
+
+        ✅ PermGen was not Young or Old
+
+        <br>
+
+        ✅ It was its own separate space
+
+    </div>
+
+    <h3 class="text-primary mt-5">
+
+        5️⃣ How does data enter PermGen?
+
+    </h3>
+
+    <p>
+
+        Very important.
+
+    </p>
+
+    <p>
+
+        When does PermGen grow?
+
+    </p>
+
+    <p>
+
+        Whenever JVM:
+
+    </p>
+
+    <ul>
+
+        <li>Loads a new class</li>
+
+        <li>Loads a framework</li>
+
+        <li>Creates a dynamic proxy</li>
+
+        <li>Uses reflection</li>
+
+        <li>Uses custom class loaders</li>
+
+    </ul>
+
+    <p>
+
+        Example:
+
+    </p>
+
+    <div class="heap-box">
+
+        Class.forName("com.myapp.Service");
+    </div>
+
+    <div class="alert alert-primary mt-4">
+
+        👉 Metadata of Service goes into PermGen
+
+    </div>
+
+    <h3 class="text-primary mt-5">
+
+        6️⃣ Is PermGen managed by GC?
+
+    </h3>
+
+    <div class="alert alert-success">
+
+        ✅ YES – 100%
+
+    </div>
+
+    <p>
+
+        This is a key point.
+
+    </p>
+
+    <h4>
+
+        How GC interacts with PermGen
+
+    </h4>
+
+    <ul>
+
+        <li>GC does class unloading</li>
+
+        <li>If a ClassLoader becomes unreachable</li>
+
+        <li>All classes loaded by it can be removed</li>
+
+        <li>PermGen memory can be reclaimed</li>
+
+    </ul>
+
+    <div class="common-box">
+
+        <h5>Example (simplified flow)</h5>
+
+        <p class="mb-1">ClassLoader → loads classes</p>
+
+        <p class="mb-1">PermGen → stores metadata</p>
+
+        <br>
+
+        <p class="mb-1">ClassLoader unreachable</p>
+
+        <p class="mb-1">↓</p>
+
+        <p class="mb-1">GC detects it</p>
+
+        <p class="mb-1">↓</p>
+
+        <p class="mb-1">Classes unloaded</p>
+
+        <p class="mb-1">↓</p>
+
+        <p class="mb-0">PermGen memory freed ✅</p>
+
+    </div>
+
+    <div class="alert alert-success mt-4">
+
+        So yes:
+
+        <br>
+
+        ✅ PermGen is part of GC
+
+    </div>
+
+    <h3 class="text-primary mt-5">
+
+        7️⃣ Then what was the BIG problem with PermGen?
+
+    </h3>
+
+    <p>
+
+        PermGen had ONE MAJOR DESIGN FLAW.
+
+    </p>
+
+    <div class="alert alert-danger">
+
+        ❌ Fixed size
+    </div>
+
+    <p>
+
+        It had a fixed maximum size.
+
+    </p>
+
+    <p>
+
+        Controlled by:
+
+    </p>
+
+    <div class="heap-box">
+
+        -XX:MaxPermSize
+    </div>
+
+    <p class="mt-4">
+
+        If you didn’t size it correctly → 💥
+
+    </p>
+
+    <h3 class="text-primary mt-5">
+
+        8️⃣❌ Why PermGen became a big issue in real projects?
+
+    </h3>
+
+    <p>
+
+        Modern Java apps:
+
+    </p>
+
+    <ul>
+
+        <li>Spring</li>
+
+        <li>Hibernate</li>
+
+        <li>App servers</li>
+
+        <li>Hot redeployments</li>
+
+        <li>Dynamic proxies</li>
+
+        <li>Bytecode generation</li>
+
+    </ul>
+
+    <p>
+
+        They:
+
+    </p>
+
+    <ul>
+
+        <li>Load lots of classes</li>
+
+        <li>Sometimes don’t unload class loaders properly</li>
+
+    </ul>
+
+    <div class="alert alert-warning">
+
+        Result:
+
+        <br>
+
+        👉 PermGen fills up even though Heap has space
+
+    </div>
+
+    <h3 class="text-primary mt-5">
+
+        9️⃣ Common PermGen Error (Very Famous)
+
+    </h3>
+
+    <div class="alert alert-danger fw-bold">
+
+        java.lang.OutOfMemoryError: PermGen space
+
+    </div>
+
+    <p>
+
+        This error:
+
+    </p>
+
+    <ul>
+
+        <li>Had NOTHING to do with heap size</li>
+
+        <li>Could appear even if heap is mostly free</li>
+
+    </ul>
+
+    <h3 class="text-primary mt-5">
+
+        Why PermGen was REMOVED in Java 8
+
+    </h3>
+
+    <p>
+
+        Oracle realized:
+
+    </p>
+
+    <ul>
+
+        <li>Fixed-size metadata space is a bad idea</li>
+
+        <li>Modern apps load classes dynamically</li>
+
+        <li>PermGen tuning is painful</li>
+
+    </ul>
+
+    <div class="alert alert-success fw-bold">
+
+        ✅ Solution = Metaspace
+
+    </div>
+
+</div>
+</div>
+<div class="card section-card mb-5">
+
+    <div class="card-header-custom">
+
+        <h2>Metaspace (Java 8+)</h2>
+
+    </div>
+
+    <div class="card-body p-4">
+
+        <div class="alert alert-warning">
+
+            So when people said:
+
+            <br><br>
+
+            “PermGen is inside Method Area”
+
+            <br><br>
+
+            ❌ That wording is slightly wrong
+
+            <br><br>
+
+            ✅ Correct wording is:
+
+            <br>
+
+            <strong>PermGen implemented the Method Area</strong>
+
+        </div>
+
+        <h3 class="text-primary mt-5">
+
+            2️⃣ Before Java 8: PermGen (why it failed)
+
+        </h3>
+
+        <ul>
+
+            <li>Class metadata was stored in PermGen</li>
+
+            <li>PermGen was:
+                <ul>
+                    <li>Inside JVM memory</li>
+                    <li>Fixed size</li>
+                    <li>Hard to tune</li>
+                    <li>Frequently overflowed</li>
+                </ul>
+            </li>
+        </ul>
+
+        <div class="alert alert-danger">
+
+            Result:
+
+            <br><br>
+
+            OutOfMemoryError: PermGen space
+
+        </div>
+
+        <ul>
+
+            <li>❌ Even when heap had free memory</li>
+
+            <li>❌ Especially bad for Spring / Hibernate / Tomcat</li>
+
+        </ul>
+
+        <div class="alert alert-success">
+
+            Metaspace is the JVM’s actual memory implementation of the Method Area (from Java 8 onward).
+
+        </div>
+
+        <h3 class="text-primary mt-5">
+
+            Java 8+ solution: Metaspace ✅
+
+        </h3>
+
+        <div class="heap-box">
+
+            Method Area (concept)
+
+            <br>
+
+            ↓
+
+            <br>
+
+            Metaspace (actual memory)
+
+        </div>
+
+        <h3 class="text-primary mt-5">
+
+            6️⃣ Where Metaspace lives (THIS IS KEY)
+
+        </h3>
+
+        <div class="alert alert-danger">
+
+            ❌ Metaspace is NOT in the Java Heap
+
+        </div>
+
+        <div class="alert alert-success">
+
+            ✅ Metaspace lives in native (OS) memory
+
+        </div>
+
+        <div class="heap-box">
+
+            JVM Process Memory
+
+            <br><br>
+
+            Heap
+
+            <br>
+
+            ├── Young Generation
+
+            <br>
+
+            └── Old Generation
+
+            <br><br>
+
+            Native Memory
+
+            <br>
+
+            ├── Metaspace ✅
+
+            <br>
+
+            ├── Thread Stacks
+
+            <br>
+
+            └── Direct Buffers
+
+        </div>
+
+        <p class="mt-4">
+
+            This is why Metaspace:
+
+        </p>
+
+        <ul>
+
+            <li>Can grow dynamically</li>
+
+            <li>Is not limited by -Xmx</li>
+
+        </ul>
+
+        <h3 class="text-primary mt-5">
+
+            8️⃣ How Metaspace works (step by step)
+
+        </h3>
+
+        <div class="step-box common-box">
+
+            <h5>Step 1: Application starts</h5>
+
+            <ul class="mb-0">
+
+                <li>JVM loads core classes (Object, String, etc.)</li>
+
+                <li>Metadata stored in Metaspace</li>
+
+            </ul>
+
+        </div>
+
+        <div class="step-box common-box">
+
+            <h5>Step 2: Framework loads classes</h5>
+
+            <p class="mb-0">
+
+                (Spring, Hibernate, proxies)
+
+            </p>
+
+            <br>
+
+            <div class="heap-box">
+
+                ClassLoader loads class
+
+                <br>
+
+                ↓
+
+                <br>
+
+                Metadata allocated
+
+                <br>
+
+                ↓
+
+                <br>
+
+                Metaspace grows
+
+            </div>
+
+            <div class="alert alert-success mt-4 mb-0">
+
+                ✅ JVM requests native memory from OS as needed
+
+            </div>
+
+        </div>
+
+        <div class="alert alert-info mt-4">
+
+            👉 gets memory from the OS, not directly from RAM.
+
+            <br><br>
+
+            So when we say:
+
+            <br>
+
+            “JVM requests native memory from OS”
+
+            <br><br>
+
+            It means:
+
+            <br>
+
+            JVM asks the OS:
+
+            <br>
+
+            “Please give me some RAM for my internal usage.”
+
+        </div>
+
+        <div class="step-box common-box">
+
+            <h5>Step 3: Application runs</h5>
+
+            <ul class="mb-0">
+
+                <li>More classes → Metaspace expands</li>
+
+                <li>No fixed upper limit by default</li>
+
+            </ul>
+
+        </div>
+
+        <div class="step-box common-box">
+
+            <h5>Step 4: Class unloading (GC interaction)</h5>
+
+            <p>
+
+                Metaspace is managed by GC, but differently.
+
+            </p>
+
+            <p>
+
+                GC does class unloading, not object deletion.
+
+            </p>
+
+            <p>
+
+                Metadata is freed ONLY IF:
+
+            </p>
+
+            <ol>
+
+                <li>Class is no longer needed</li>
+
+                <li>Its ClassLoader becomes unreachable</li>
+
+            </ol>
+
+            <div class="heap-box">
+
+                ClassLoader unreachable
+
+                <br>
+
+                ↓
+
+                <br>
+
+                GC detects it
+
+                <br>
+
+                ↓
+
+                <br>
+
+                Classes unloaded
+
+                <br>
+
+                ↓
+
+                <br>
+
+                Metaspace memory released ✅
+
+            </div>
+
+            <div class="alert alert-danger mt-4 mb-0">
+
+                If ClassLoader is still referenced → ❌ no cleanup
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div> 
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
